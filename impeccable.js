@@ -23,22 +23,25 @@ jQuery(document).ready(function($) {
 	$('.time-part.seconds.tens').css('animation-timing-function', 'cubic-bezier(1,0,1,0)');
 
 	$('.time-part.minutes.ones').css('-webkit-animation-timing-function', 'cubic-bezier(1,0,1,0)');
-	$('.time-part.minutes.ones').css('animation-timing-function', 'cubic-bezier(1,0,1,0)');	
+	$('.time-part.minutes.ones').css('animation-timing-function', 'cubic-bezier(1,0,1,0)');
 
-	$('.time-part.hours.ones .digit-wrapper').css('-webkit-animation-timing-function', 'step-end');		
-	$('.time-part.hours.ones .digit-wrapper').css('animation-timing-function', 'step-end');		
+	$('.time-part.minutes.tens').css('-webkit-animation-timing-function', 'step-end');
+	$('.time-part.minutes.tens').css('animation-timing-function', 'step-end');
 
-	$('.time-part.hours.tens .digit-wrapper').css('-webkit-animation-timing-function', 'step-end');		
-	$('.time-part.hours.tens .digit-wrapper').css('animation-timing-function', 'step-end');		
+	$('.time-part.hours.ones .digit-wrapper').css('-webkit-animation-timing-function', 'step-end');
+	$('.time-part.hours.ones .digit-wrapper').css('animation-timing-function', 'step-end');
 
-	$('.time-part.days.ones .digit-wrapper').css('-webkit-animation-timing-function', 'step-end');		
-	$('.time-part.days.ones .digit-wrapper').css('animation-timing-function', 'step-end');		
+	$('.time-part.hours.tens .digit-wrapper').css('-webkit-animation-timing-function', 'step-end');
+	$('.time-part.hours.tens .digit-wrapper').css('animation-timing-function', 'step-end');
 
-	$('.time-part.days.tens .digit-wrapper').css('-webkit-animation-timing-function', 'step-end');		
-	$('.time-part.days.tens .digit-wrapper').css('animation-timing-function', 'step-end');		
+	$('.time-part.days.ones .digit-wrapper').css('-webkit-animation-timing-function', 'step-end');
+	$('.time-part.days.ones .digit-wrapper').css('animation-timing-function', 'step-end');
+
+	$('.time-part.days.tens .digit-wrapper').css('-webkit-animation-timing-function', 'step-end');
+	$('.time-part.days.tens .digit-wrapper').css('animation-timing-function', 'step-end');
 
 	$('.digit-wrapper').css('-webkit-animation-delay', elapseInSecs + 's');
 	$('.digit-wrapper').css('animation-delay', elapseInSecs + 's');
 
-	$('.digit-wrapper').addClass('animation-running');	
+	$('.digit-wrapper').addClass('animation-running');
 });
