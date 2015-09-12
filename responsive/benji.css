@@ -3,13 +3,14 @@
   height: 50px;
   line-height: 50px;
   text-align: center;
-  /*position: relative;
-  top: 10px;
-  left: 10px;*/
-  margin-left: 50%;
+  position: relative;
+  top: 50%;
+  left: 50%;
   -webkit-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      -moz-transform: translate(-50%, -50%);
+      -o-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
   font-family: helvetica, arial, sans-serif;
   text-transform: uppercase;
   font-weight: 900;
@@ -22,9 +23,12 @@
   width: 15px;
   height: 15px;
   background: #000;
-  position: absolute;
-  -webkit-animation: load 1s infinite alternate ease-in-out;
-  animation: load 1s infinite alternate ease-in-out;
+  position: fixed;
+  -moz-animation: load .7s infinite alternate ease-in-out;
+  -ms-animation: load .7s infinite alternate ease-in-out;
+  -o-animation: load .7s infinite alternate ease-in-out;
+  -webkit-animation: load .7s infinite alternate ease-in-out;
+          animation: load .7s infinite alternate ease-in-out;
 }
 .loader::before {
   top: 0;
