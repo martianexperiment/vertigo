@@ -50,7 +50,7 @@
 @media all and (max-width: 768px) {
  .time-part-wrapper#hundreths:after {
   content: none;
- } 
+} 
 }
 
 
@@ -476,7 +476,7 @@ body {
   left: 0;
   height: 20px;
   z-index: 10;
-}*/
+  }*/
 
 /*.wrapper:before {
   top: 0px;
@@ -495,25 +495,25 @@ body {
   background-image: -moz-linear-gradient(top, rgba(241, 97, 75, 0) 0%, #f1614b 100%);
   background-image: -webkit-linear-gradient(top, rgba(241, 97, 75, 0) 0%, #f1614b 100%);
   background-image: linear-gradient(to bottom, rgba(241, 97, 75, 0) 0%, #f1614b 100%);
-}*/
+  }*/
 
-#event-title
-{
-  color:#000;
-  font-size: 50px;
-  font-family: 'Aldrich';
-}
+  #event-title
+  {
+    color:#000;
+    font-size: 50px;
+    font-family: 'Aldrich';
+  }
 
-#sign-in-IE, #sign-in
-{
-  color:#000;
-  text-align: center;
-  margin-top:50px;
-  font-size:25px;
-  font-family: 'Aldrich'; 
-}
+  #sign-in-IE, #sign-in
+  {
+    color:#000;
+    text-align: center;
+    margin-top:50px;
+    font-size:25px;
+    font-family: 'Aldrich'; 
+  }
 
-body {
+  body {
     background-color: red;
     -webkit-animation-name: example; /* Chrome, Safari, Opera */
     -webkit-animation-duration: 25s; /* Chrome, Safari, Opera */
@@ -521,23 +521,23 @@ body {
     animation-name: example;
     animation-duration: 25s;
     animation-iteration-count: infinite;
-}
+  }
 
 
-/* Chrome, Safari, Opera */
-@-webkit-keyframes example {
-    0%   {background-color:#008d4c; /*Green*/  } 
-    25%  {background-color:#555299; /*Purple*/  }
-    50%  {background-color:#D73925; /*Red*/  }
-    75%  {background-color:#367FA9; /*Blue*/  }
-    100% {background-color:#008d4c; /*Green*/  }
+  /* Chrome, Safari, Opera */
+  @-webkit-keyframes example {
+  0%   {background-color:#008d4c; /*Green*/  } 
+25%  {background-color:#555299; /*Purple*/  }
+50%  {background-color:#D73925; /*Red*/  }
+75%  {background-color:#367FA9; /*Blue*/  }
+100% {background-color:#008d4c; /*Green*/  }
 }
 
 /* Standard syntax */
 @keyframes example {
-    0%   {background-color:#008d4c; /*Green*/  } 
-    25%  {background-color:#555299; /*Purple*/  }
-    50%  {background-color:#D73925; /*Red*/  }
-    75%  {background-color:#367FA9; /*Blue*/  }
-    100% {background-color:#008d4c; /*Green*/  }
+0%   {background-color:#008d4c; /*Green*/  } 
+25%  {background-color:#555299; /*Purple*/  }
+50%  {background-color:#D73925; /*Red*/  }
+75%  {background-color:#367FA9; /*Blue*/  }
+100% {background-color:#008d4c; /*Green*/  }
 }
