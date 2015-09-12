@@ -17,8 +17,8 @@ jQuery(document).ready(function($) {
 
 	if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))
 	{   
-		$(".time-part-wrapper").remove();
-		$('#sign-in-IE').hide();
+		$(".time-part-wrapper").parents('.row').remove();
+		$('#sign-in-IE').parents('.row').hide();
 		isIE = true;
 	}
 	else
