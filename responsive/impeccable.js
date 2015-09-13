@@ -19,6 +19,7 @@ jQuery(document).ready(function($) {
 	{   
 		$(".time-part-wrapper").parents('.row').remove();
 		$('#sign-in-IE').parents('.row').hide();
+		$('#starts-text-row').hide();
 		isIE = true;
 	}
 	else
