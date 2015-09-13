@@ -7,10 +7,10 @@
   top: 50%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
-      -ms-transform: translate(-50%, -50%);
-      -moz-transform: translate(-50%, -50%);
-      -o-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
   font-family: helvetica, arial, sans-serif;
   text-transform: uppercase;
   font-weight: 900;
@@ -28,7 +28,7 @@
   -ms-animation: load .7s infinite alternate ease-in-out;
   -o-animation: load .7s infinite alternate ease-in-out;
   -webkit-animation: load .7s infinite alternate ease-in-out;
-          animation: load .7s infinite alternate ease-in-out;
+  animation: load .7s infinite alternate ease-in-out;
 }
 .loader::before {
   top: 0;
