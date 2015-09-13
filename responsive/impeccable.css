@@ -514,6 +514,13 @@ body {
     font-family: 'Aldrich'; 
   }
 
+  .start-text
+  {
+    color:black;
+    text-align: center;
+    font-family: 'Aldrich';
+  }
+
   body {
     background-color: red;
     -webkit-animation-name: example; /* Chrome, Safari, Opera */
