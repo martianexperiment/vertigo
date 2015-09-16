@@ -1,6 +1,6 @@
 /*IMPORTANT: Requires jQuery*/
 
-/*Added feature*/
+//Added feature
 /*
 	Typing indicator -- refers root/css/typing-indicator.css
 */
