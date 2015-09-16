@@ -1,6 +1,6 @@
 /*IMPORTANT: Requires jQuery*/
 
-//Added feature
+/*Added feature*/
 /*
 	Typing indicator -- refers root/css/typing-indicator.css
 */
@@ -119,12 +119,17 @@ Loops thro the list and populates the characters
 function loadCharacters(charactersModel, charactersDOMNode)
 {
 	var charactersUL = charactersDOMNode.find('ul.users-list');
+	var numOfCharactersElement = charactersDOMNode.find('#num-of-characters');
 	if(charactersUL != null)
 	{
-		for (characterModel in charactersModel)
+		var iter = 0;
+		var len = charactersModel.length;
+		numOfCharactersElement.html(len);
+		for (; iter < len; iter++)
 		{
-			var characterDOMNode = createCharacterDOMNode();
-			bindCharacterModel(character, characterDOMNode);
+			var characterModel = charactersModel[iter];
+    		var characterDOMNode = createCharacterDOMNode();
+			bindCharacterModel(characterModel, characterDOMNode);
 			charactersUL.append(characterDOMNode);
 		}
 		return charactersDOMNode;
