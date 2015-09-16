@@ -1,11 +1,11 @@
-//IMPORTANT: Requires jQuery
+/*IMPORTANT: Requires jQuery*/
 
-//Added feature
+/*Added feature*/
 /*
 	Typing indicator -- refers root/css/typing-indicator.css
 */
 
-// Model that is used to bind to the direct and charaters
+/*Model that is used to bind to the direct and charaters*/
 /*
 conversation: {	characters:	[ {name: '', imgUrl:''}, {}],
 				texts: [ { characterIndex: <index>, msg:'' }, {}]
@@ -16,8 +16,7 @@ var strRight ='right';
 var pullLeft = 'pull-left';
 var pullRight = 'pull-right';
 
-var chatMsgHTML = 
-'<div class="direct-chat-msg">  \
+var chatMsgHTML = '<div class="direct-chat-msg">  \
 	<div class="direct-chat-info clearfix">  \
 		<span class="direct-chat-name">name</span>  \
 		<span class="direct-chat-timestamp">timeStamp</span>  \
@@ -28,19 +27,16 @@ var chatMsgHTML =
 	</div>  \
 </div>';
 
-var characterHTML=
-'<li> \
+var characterHTML='<li> \
 	<img src="#" alt="Character Image">  \
 	<span class="users-list-name">Character Name</span> \
 </li>';
 
-var typingIndicatorHTML=
-'<div class="typing-indicator"> \
+var typingIndicatorHTML='<div class="typing-indicator"> \
 	<span></span> \
 	<span></span> \
   <span></span> \
-</div>
-'
+</div>';
 
 /*Returns a DOM Object for ChatMsgHTML*/
 function createChatMsgDOMNode()
@@ -105,12 +101,17 @@ Loops thro the list and populates the characters
 function loadCharacters(charactersModel, charactersDOMNode)
 {
 	var charactersUL = charactersDOMNode.find('ul.users-list');
+	var numOfCharactersElement = charactersDOMNode.find('#num-of-characters');
 	if(charactersUL != null)
 	{
-		for (characterModel in charactersModel)
+		var iter = 0;
+		var len = charactersModel.length;
+		numOfCharactersElement.html(len);
+		for (; iter < len; iter++)
 		{
-			var characterDOMNode = createCharacterDOMNode();
-			bindCharacterModel(character, characterDOMNode);
+			var characterModel = charactersModel[iter];
+    		var characterDOMNode = createCharacterDOMNode();
+			bindCharacterModel(characterModel, characterDOMNode);
 			charactersUL.append(characterDOMNode);
 		}
 		return charactersDOMNode;
