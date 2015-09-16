@@ -37,11 +37,13 @@
 .typing-indicator-right:before
 {
   right:-2px !important;
+  left: auto !important;
 }
 
 .typing-indicator-right:after
 {
   right:-10px !important;
+  left: auto !important;
 }
 
 .typing-indicator span {

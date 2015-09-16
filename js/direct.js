@@ -15,6 +15,7 @@ conversation: {	characters:	[ {name: '', imgUrl:''}, {}],
 var strRight ='right';
 var pullLeft = 'pull-left';
 var pullRight = 'pull-right';
+var _RIGHT_ = 'right'
 
 var chatMsgHTML = '<div class="direct-chat-msg">  \
 	<div class="direct-chat-info clearfix">  \
@@ -48,6 +49,23 @@ function createChatMsgDOMNode()
 function createCharacterDOMNode()
 {
 	return $(characterHTML);
+}
+
+function createTypingIndicator(direction)
+{
+	var typingIndicatorDOM = $(typingIndicatorHTML);
+	if(direction == _RIGHT_)
+		typingIndicatorDOM.addClass('typing-indicator-right').addClass('pull-right');
+	return typingIndicatorDOM;
+}
+
+function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
 }
 
 function bindChatMsgModel(textModel, characterModel, characterIndex, directMsgDOMNode)
@@ -143,12 +161,24 @@ function loadConversation(directModel, directDOMNode)
 			var pullDirection='';
 
 			if(characterIndex==0)
-				pullDirection= strRight;
+				pullDirection= _RIGHT_;
 
+			var typingIndicator = createTypingIndicator(pullDirection);
 			bindChatMsgModel(textModel, characterModel, characterIndex, directMsgDOMNode);
+
+			var delay = calculateDelay(textModel.msg);
+			directListElement.append(typingIndicator);
+			sleep(delay);
+			directListElement.children().last().remove();
 			directListElement.append(directMsgDOMNode);
 		}
 		return directDOMNode;
 	}
 	return null;
+}
+
+var __CPS__ = 5;
+function calculateDelay(text)
+{
+	return ( text.length/__CPS__ )*1000;
 }
