@@ -96,3 +96,24 @@ function bindCharacterModel(characterModel, characterDOMNode)
 	}
 	return characterDOMNode;
 }
+
+/*
+Given the list of character models.
+And a character container node.
+Loops thro the list and populates the characters
+*/
+function loadCharacters(charactersModel, charactersDOMNode)
+{
+	var charactersUL = charactersDOMNode.find('ul.users-list');
+	if(charactersUL != null)
+	{
+		for (characterModel in charactersModel)
+		{
+			var characterDOMNode = createCharacterDOMNode();
+			bindCharacterModel(character, characterDOMNode);
+			charactersUL.append(characterDOMNode);
+		}
+		return charactersDOMNode;
+	}
+	return null;
+}
