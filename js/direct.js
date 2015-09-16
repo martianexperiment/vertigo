@@ -1,5 +1,10 @@
 //IMPORTANT: Requires jQuery
 
+//Added feature
+/*
+	Typing indicator -- refers root/css/typing-indicator.css
+*/
+
 // Model that is used to bind to the direct and charaters
 /*
 conversation: {	characters:	[ {name: '', imgUrl:''}, {}],
@@ -28,6 +33,14 @@ var characterHTML=
 	<img src="#" alt="Character Image">  \
 	<span class="users-list-name">Character Name</span> \
 </li>';
+
+var typingIndicatorHTML=
+'<div class="typing-indicator"> \
+	<span></span> \
+	<span></span> \
+  <span></span> \
+</div>
+'
 
 /*Returns a DOM Object for ChatMsgHTML*/
 function createChatMsgDOMNode()
@@ -82,31 +95,4 @@ function bindCharacterModel(characterModel, characterDOMNode)
 		imgElement.attr('src',characterModel.imgUrl);
 	}
 	return characterDOMNode;
-}
-
-function bindDirectMsg(model_directChatMsg, chatMsgNode)
-{
-	if (chatMsgNode.hasClass('direct-chat-msg'))
-	{
-		var nameElement = chatMsgNode.find('.direct-chat-name');
-		var timeStampElement = chatMsgNode.find('.direct-chat-timestamp');
-		var imgElement = chatMsgNode.find('.direct-chat-img');
-		var msgElement = chatMsgNode.find('.direct-chat-text');
-
-		if (model_directChatMsg.user.isUser)
-		{
-			chatMsgNode.addClass(strRight);
-			nameElement.addClass(pullRight);
-			timeStampElement.addClass(pullLeft);
-		}
-		else
-		{
-			nameElement.addClass(pullLeft);
-			timeStampElement.addClass(pullRight);
-		}
-		nameElement.html(model_directChatMsg.user.name);
-		timeStampElement.html(model_directChatMsg.timestamp);
-		imgElement.attr('src',model_directChatMsg.imgUrl);
-		msgElement.html(model_directChatMsg.text);
-	};
 }
