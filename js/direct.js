@@ -50,18 +50,18 @@ function createCharacterDOMNode()
 	return $(characterHTML);
 }
 
-function bindChatMsgModel(chatMsgModel, chatMsgDOMNode, pullDirection)
+function bindChatMsgModel(textModel, characterModel, characterIndex, directMsgDOMNode)
 {
-	if (chatMsgNode.hasClass('direct-chat-msg'))
+	if (directMsgDOMNode.hasClass('direct-chat-msg'))
 	{
-		var nameElement = chatMsgNode.find('.direct-chat-name');
-		var timeStampElement = chatMsgNode.find('.direct-chat-timestamp');
-		var imgElement = chatMsgNode.find('.direct-chat-img');
-		var msgElement = chatMsgNode.find('.direct-chat-text');
+		var nameElement = directMsgDOMNode.find('.direct-chat-name');
+		var timeStampElement = directMsgDOMNode.find('.direct-chat-timestamp');
+		var imgElement = directMsgDOMNode.find('.direct-chat-img');
+		var msgElement = directMsgDOMNode.find('.direct-chat-text');
 
-		if (model_directChatMsg.user.isUser)
+		if (characterIndex == 0)
 		{
-			chatMsgNode.addClass(strRight);
+			directMsgDOMNode.addClass(strRight);
 			nameElement.addClass(pullRight);
 			timeStampElement.addClass(pullLeft);
 		}
@@ -70,13 +70,13 @@ function bindChatMsgModel(chatMsgModel, chatMsgDOMNode, pullDirection)
 			nameElement.addClass(pullLeft);
 			timeStampElement.addClass(pullRight);
 		}
-		nameElement.html(model_directChatMsg.user.name);
-		timeStampElement.html(model_directChatMsg.timestamp);
-		imgElement.attr('src',model_directChatMsg.imgUrl);
-		msgElement.html(model_directChatMsg.text);
+		nameElement.html(characterModel.name);
+		timeStampElement.html((new Date()).toLocaleTimeString());
+		imgElement.attr('src',characterModel.imgUrl);
+		msgElement.html(textModel.msg);
 
-		return chatMsgDOMNode;
-	};
+		return directMsgDOMNode;
+	}
 	return null;
 }
 
@@ -115,6 +115,40 @@ function loadCharacters(charactersModel, charactersDOMNode)
 			charactersUL.append(characterDOMNode);
 		}
 		return charactersDOMNode;
+	}
+	return null;
+}
+
+/*
+Given the list of texts.
+and the chat container
+Loops thro the list and populates the chat
+*/
+function loadConversation(directModel, directDOMNode)
+{
+	var characters = directModel.characters;
+	var texts = directModel.texts;
+	var directListElement = directDOMNode.find('.direct-chat-messages');
+
+	if(directListElement != null)
+	{
+		var iter = 0;
+		var len = texts.length;
+		for( ; iter <len; iter++)
+		{
+			var textModel = texts[iter];
+			var characterIndex = textModel.characterIndex;
+			var characterModel = characters[characterIndex];
+			var directMsgDOMNode = createChatMsgDOMNode();
+			var pullDirection='';
+
+			if(characterIndex==0)
+				pullDirection= strRight;
+
+			bindChatMsgModel(textModel, characterModel, characterIndex, directMsgDOMNode);
+			directListElement.append(directMsgDOMNode);
+		}
+		return directDOMNode;
 	}
 	return null;
 }
