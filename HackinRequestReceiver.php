@@ -19,7 +19,7 @@ require_once(__DIR__ . "/php/HackinGlobalFunctions.php");
             $functionRequest = $_REQUEST["function"];
             switch ($functionRequest) {
                 case "logIn()":
-                    readfile(__DIR__ . "/index.html");//link to first page
+                    readfile(__DIR__ . "/ajaxRequestSender.php");//link to test ajax
                     break;
                 }
             return;
