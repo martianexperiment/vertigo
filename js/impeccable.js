@@ -1,5 +1,5 @@
 today = new Date();
-var BigDay = new Date("September 16, 2015 10:00:00");
+var BigDay = new Date("September 18, 2015 18:00:00");
 
 var countDownStartDate = new Date(BigDay);
 countDownStartDate.setDate(countDownStartDate.getDate() - 100);
