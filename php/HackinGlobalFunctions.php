@@ -29,7 +29,7 @@
                     else false.
             TODO: change all request methods to post and encrypt them
         */
-        function isRequestFromHackinUser() {
+        public static function isRequestFromHackinUser() {
             $isRequestFromHackin = false;
 
             if(isset($_REQUEST) && !empty($_REQUEST) && isset($_REQUEST["function"])) {

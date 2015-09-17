@@ -50,7 +50,7 @@
             self::verifySession();
             $hackinSessionId = rand(1111, 9999);////use the openssl functionality
             $hackinUserInfo = self::getHackinUserInfo();
-            $hackinDbHelper = new HackinDbHelper();
+            //$hackinDbHelper = new HackinDbHelper();
             $gameState = NULL;//$hackinDbHelper->getHackinGameState();
             $hackinSession = new HackinSession($hackinSessionId, $hackinUserInfo, $gameState);
             return $hackinSession;
