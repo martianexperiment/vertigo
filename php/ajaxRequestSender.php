@@ -5,7 +5,7 @@
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script type="text/javascript">
 	function sendAjaxRequest(){
-		$.ajax( "./php/ajaxRequestReceiver.php"). done(function(data){
+		$.ajax( "./ajaxRequestReceiver.php"). done(function(data){
 			alert(data);
 		});
 	}

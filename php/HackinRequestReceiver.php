@@ -1,6 +1,6 @@
 <?php
-require_once(__DIR__ . "/php/HackinSessionHandler.php");
-require_once(__DIR__ . "/php/HackinGlobalFunctions.php");
+require_once(__DIR__ . "/HackinSessionHandler.php");
+require_once(__DIR__ . "/HackinGlobalFunctions.php");
 /**
     Every request comes and flows through this php.
     Handles session via HackinSessionHandler.php
@@ -19,7 +19,11 @@ require_once(__DIR__ . "/php/HackinGlobalFunctions.php");
             $functionRequest = $_REQUEST["function"];
             switch ($functionRequest) {
                 case "logIn()":
-                    readfile(__DIR__ . "/ajaxRequestSender.php");//link to test ajax
+                    readfile(__DIR__ . "/../dash.html");
+                    break;
+                case "logOut()":
+                    session_unset();
+                    header("Location: ../index.html");
                     break;
                 }
             return;
