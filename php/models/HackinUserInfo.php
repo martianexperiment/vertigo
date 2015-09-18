@@ -25,6 +25,8 @@
             $this->collegeName = $collegeName;
         }
     }
-    /*$newHackinUser = new HackinUserInfo("thirukkakarnan@gmail.com", "Karnaa", "1", "", "9842146152", "11PW38", "", "", "");
-    echo json_encode($newHackinUser);*/
+    /*
+    $newHackinUser = new HackinUserInfo("thirukkakarnan@gmail.com", "Karnaa", "1", "", "9842146152", "11PW38", "", "", "");
+    echo json_encode($newHackinUser);
+    //*/
 ?>
