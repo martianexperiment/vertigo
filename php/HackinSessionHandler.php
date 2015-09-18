@@ -38,27 +38,8 @@
             }
         }
 
-        /**
-            to get the hackin session object populated with values
-            Retrieves HackinUserInfo and HackinGameState objects from session variables and database respectively
-            Used everywhere instead of session variables.
-            TODO: getHackinGameState from db for the user.
-            TODO: Include processes for authorization too.(Disallow multiple user access)
-            return: $hackinSession
-        */
-        public static function getHackinSession() {
-            self::verifySession();
-            $hackinSessionId = rand(1111, 9999);////use the openssl functionality
-            $hackinUserInfo = self::getHackinUserInfo();
-            //$hackinDbHelper = new HackinDbHelper();
-            $gameState = NULL;//$hackinDbHelper->getHackinGameState();
-            $hackinSession = new HackinSession($hackinSessionId, $hackinUserInfo, $gameState);
-            return $hackinSession;
-        }
-
         public static function getHackinUserInfo() {
-            //$functionalityForWhichExceptionExpected = "getting HackinUser Info from session variables";
-            $hackinUserInfo = NULL;            
+            $hackinUserInfo = NULL;
             $isUserAlumni = NULL;
             if(strcasecmp($_SESSION['ses_account_type'], 'PAR') == 0) {
                 $isUserAlumni = $_SESSION['is_user_alumni'] = 0;
@@ -86,6 +67,73 @@
 
             $hackinUserInfo = new HackinUserInfo($emailId, $screenName, $isUserAlumni, $profilePic, $phoneNo, $rollNo, $collegeCode, $departmentName, $collegeName);
             return $hackinUserInfo;
+        }
+
+        /**
+            create unique id for every new session.
+            openssl_random_pseudo_bytes() can also be used.
+            return: $hackinSessionId
+        */
+        private static function createHackinSessionId() {
+            $prefix = "hackin_";
+            $hackinSessionId = uniqid($prefix);
+            return $hackinSessionId;
+        }
+
+        public static function getHackinSessionId() {
+            if(!isset($_SESSION['hackin_session'])) {
+                //generate uniqid
+                $hackinSessionId = self::createHackinSessionId();
+                $_SESSION['hackin_session'] = $hackinSessionId;
+            } else {
+                //check whether he is the same as the last recently used user.
+                $hackinSessionId = $_SESSION['hackin_session'];
+            }
+            return $hackinSessionId;
+        }
+
+        /**
+            Function to get currentHackinSessionInfo
+            TODO: get browser, ip and other details from php.
+            return $currentHackinSessionInfo
+        */
+        public static function getCurrentHackinSessionInfo() {
+            $hackinUserInfo = self::getHackinUserInfo();
+            $hackinSessionId = self::getHackinSessionId();
+            //HackinGlobalFunctions::timeStampFromPhpToSql(time()) can also be used.
+            $hackinSessionInfo = new HackinSessionInfo($hackinUserInfo->emailId, session_id(), $hackinSessionId, time());
+            return $hackinSessionInfo;
+        }
+
+        /**
+            to get the hackin session object populated with values
+            Retrieves HackinUserInfo and HackinGameState objects from session variables and database respectively
+            Used everywhere instead of session variables.
+            TODO: getHackinGameState from db for the user.
+            return: $hackinSession
+        */
+        public static function getHackinSession() {
+            self::verifySession();
+            $hackinUserInfo = self::getHackinUserInfo();
+            $hackinSessionInfo = self::getCurrentHackinSessionInfo();
+            $hackinDbHelper = new HackinDbHelper();
+            $liveHackinSessionInfo = $hackinDbHelper->getAliveHackinSessionNotEqualToCurrentSession($hackinSessionInfo, $hackinUserInfo);
+            if(strcasecmp($liveHackinSessionInfo->hackinSessionId, $hackinSessionInfo->hackinSessionId) != 0) {
+                //echo "<br>. getHackinSession(): take care of multiple sessions.""
+                //echo '<br><br>liveHackinSessionInfo::<br>'. json_encode($liveHackinSessionInfo);
+                $interruption = HackinGlobalFunctions::$multipleSessionInterruption;
+                $interruptionMsg = 
+                    '{' .  
+                        '"interruption": ' . json_encode($interruption) . ',' .
+                        '"aliveSession": ' . json_encode(json_decode($liveHackinSessionInfo->additionalInfo)) . ',' . 
+                        '"currentSession": ' . json_encode(json_decode($hackinSessionInfo->additionalInfo)) . 
+                    '}';
+                echo HackinErrorHandler::interruptHandler($interruption, $interruptionMsg);
+                exit();
+            }
+            $gameState = NULL;//$hackinDbHelper->getHackinGameState();
+            $hackinSession = new HackinSession($hackinSessionInfo, $hackinUserInfo, $gameState);
+            return $hackinSession;
         }
     }
     //HackinSessionHandler::getHackinSession();

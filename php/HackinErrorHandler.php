@@ -1,7 +1,8 @@
 <?php
     /**
         Global, centralized error handler for Hackin event
-        TODO: Create error model to be help handling easier in frontend.
+        TODO: Create error model to be help handling easier in frontend and bind the message and errors.
+        TODO: Create a log and log all these exceptions.
     */
     class HackinErrorHandler {
         /**
@@ -27,5 +28,17 @@
                          "<a href=\"http://psglogin.in\">Login15</a> <br>";
             return $errorMsg;
         }
+
+        /**
+            Use this function to interrupt the current flow other than error
+        */
+        public static function interruptHandler($interruption, $interruptionMsg) {
+            if(strcasecmp($interruption, HackinGlobalFunctions::$multipleSessionInterruption) == 0) {
+                //$jsonObject = json_decode($interruptionMsg);
+                $interruptionMsg = $interruptionMsg . "<br>click link to force sign in via current session: ";
+            }
+            return $interruptionMsg;
+        }
+
     }
 ?>

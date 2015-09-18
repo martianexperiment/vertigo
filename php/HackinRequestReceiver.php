@@ -11,7 +11,11 @@ require_once(__DIR__ . "/HackinGlobalFunctions.php");
     try {
         //process request first to avoid verifying game state of the user, for invalid requests.
         $functionalityForWhichExceptionExpected = "RequestReceiver.php: Verifying whether the request is valid";
-        HackinGlobalFunctions::isRequestFromHackinUser();
+        if(!HackinGlobalFunctions::isRequestFromHackinPage()) {
+            $ex = new Exception("Invalid request. Intrusion detected");
+            echo HackinErrorHandler::errorHandler($ex, $functionalityForWhichExceptionExpected);
+            exit();
+        }
         $functionalityForWhichExceptionExpected = "Verify whether session is valid";
         $hackinSession = HackinSessionHandler::getHackinSession();
         //process all requests here.
