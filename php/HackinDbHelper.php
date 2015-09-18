@@ -1,8 +1,8 @@
 <?php
-    require_once("HackinErrorHandler.php");
-    require_once("HackinGlobalFunctions.php");
-    require_once("models/hackinSessionInfo.php");
-    require_once('models/HackinUserInfo.php');
+    require_once(__DIR__ . "/HackinErrorHandler.php");
+    require_once(__DIR__ . "/HackinGlobalFunctions.php");
+    require_once(__DIR__ . "/models/HackinSessionInfo.php");
+    require_once(__DIR__ . "/models/HackinUserInfo.php");
     /**
         Wrapper over PDO (or mysqli) connections to create and use database connections privately and dynamically
         List of all databases should be mentioned before hand, during construction

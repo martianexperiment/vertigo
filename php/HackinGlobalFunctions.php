@@ -1,6 +1,6 @@
 <?php
     class HackinGlobalFunctions {
-        public static $phpServer = /**/'localhost/hackin15/vertigo';//*/"hackin.psglogin.in";
+        public static $phpServer = /**'localhost/hackin15/vertigo';//*/"hackin.psglogin.in";
         public static $multipleSessionInterruption = "MulitpleSessionsInterruption";
         
         /**
