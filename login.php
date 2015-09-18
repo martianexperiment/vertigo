@@ -36,12 +36,11 @@
         Post method from login.php to HackinRequestReceiver.php, to load the page when a user logs in for the first time.
     */
     $protocol = "http";
-    $server = /**/'localhost/hackin15/vertigo';//*/"hackin.psglogin.in";
     $filePathFromServer = "/php/HackinRequestReceiver.php". "?" . session_name() . "=". session_id();
     $data = array('function' => 'logIn()');
     $header = "Content-type: application/x-www-form-urlencoded\r\n" . 
                 "Cookie: " . session_name() . "=" . session_id() . "\r\n";
     $method = 'POST';
     session_write_close();
-    echo HackinGlobalFunctions::simulateHttpRequest($protocol, $server, $filePathFromServer, $data, $header, $method);
+    echo HackinGlobalFunctions::simulateHttpRequest($protocol, HackinGlobalFunctions::$phpServer, $filePathFromServer, $data, $header, $method);
 ?>
