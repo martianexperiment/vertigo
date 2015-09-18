@@ -27,7 +27,7 @@ require_once(__DIR__ . "/HackinGlobalFunctions.php");
                     break;
                 case "logOut()":
                     session_unset();
-                    readfile(__DIR__ . "/../index.html");
+                    header("Location: ../index.html");
                     break;
                 }
             return;
