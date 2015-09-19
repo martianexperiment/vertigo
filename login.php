@@ -1,5 +1,6 @@
 <?php
     require_once(__DIR__ . "/php/HackinGlobalFunctions.php");
+    require_once(__DIR__ . "/php/HackinSessionStarter.php");
 
     require_once(__DIR__ . "/php/config/HackinConfig.php");
     /**
@@ -7,13 +8,12 @@
         The header remains the same, though the content body is dynamically determined by the post request.
         Helps to maintain the website as single page html content.
     */
-    if(!isset($_SESSION)) {
+    if(!isset($_SESSION['ses_auth'])) {
         /**
             insert or remove '/' between /** and header('... to switch on/off simulations
         */
         /**header('LOCATION: //accounts.psglogin.in/index.php?r=hackin');/*/
         //Simulating  the sessions from accounts.psglogin.in
-        require_once(__DIR__ . "/php/HackinSessionStarter.php");
         $_SESSION['ses_auth'] = "1";
         $_SESSION['ses_account_type'] = 'PAR';
         $_SESSION['ses_email'] = 'thirukkakarnan@gmail.com';
