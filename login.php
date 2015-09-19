@@ -36,7 +36,7 @@
         Post method from login.php to HackinRequestReceiver.php, to load the page when a user logs in for the first time.
     */
     $protocol = "http";
-    $filePathFromServer = "/php/HackinRequestReceiver.php". "?" . session_name() . "=". session_id();
+    $filePathFromServer = "/php/HackinRequestReceiver.php";
     $data = array('function' => 'logIn()');
     $header = "Content-type: application/x-www-form-urlencoded\r\n" . 
                 "Cookie: " . session_name() . "=" . session_id() . "\r\n";
