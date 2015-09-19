@@ -1,6 +1,8 @@
 <?php
     require_once(__DIR__ . "/HackinErrorHandler.php");
     require_once(__DIR__ . "/HackinGlobalFunctions.php");
+    require_once(__DIR__ . "/HackinJsonHandler.php");
+
     require_once(__DIR__ . "/models/HackinSessionInfo.php");
     require_once(__DIR__ . "/models/HackinUserInfo.php");
     /**
@@ -18,8 +20,11 @@
         private $db_accounts;// = "psgtech_login15_hackin_team_accounts";
         private $db_quora;// = "psgtech_login15_hackin_quora";
         private $db_game_engine;// = "psgtech_login15_hackin_game_engine";
+        private $db_logger;
         private $db_test;
         private $db_connection_logger;
+        private $db_session_logger;
+        private $db_request_logger;
 
         private $debug = 0;
 
@@ -34,22 +39,28 @@
             return: void
         */
         public function __construct() {
-            $this->host = "localhost";
-            $this->user = /**"psgtechs_hackin");//*/"root";
-            $this->pwd =  /**"UDKIPFTKUHS8");//*/"";
+            $this->host = HackinGlobalFunctions::$dbServer;
+            $this->user = HackinGlobalFunctions::$dbUser;
+            $this->pwd =  HackinGlobalFunctions::$dbPwd;
 
             $this->dbPlatform = "mysql";
             $this->db_accounts = "psgtech_login15_hackin_team_accounts";
             $this->db_quora = "psgtech_login15_hackin_quora";
             $this->db_game_engine = "psgtech_login15_hackin_game_engine";
+            $this->db_logger = $this->db_accounts;
             $this->db_test = $this->db_accounts;
-            $this->db_connection_logger = $this->db_accounts;
+            $this->db_connection_logger = $this->db_logger;
+            $this->db_session_logger = $this->db_logger;
+            $this->db_request_logger = $this->db_logger;
 
             $this->dsn = self::createDsnBasedOnDb($this->host, $this->dbPlatform);
             $pdo = self::createPDOConnectionToDbAndVerifyUser($this->dsn, $this->user, $this->pwd, $this->db_test);
 
             try {
                 $functionalityForWhichExceptionExpected = "verifying connection with the dbs";
+                /**
+                    QUERY: check presence of db
+                */
                 $query = "use ";
                 $pdo->query($query.$this->db_accounts);
                 $pdo->query($query.$this->db_quora."");
@@ -121,7 +132,7 @@
             }
             $pdo = self::createPDOConnectionToDbAndVerifyUser($this->dsn, $this->user, $this->pwd, $this->db_test);
             $this->newConnectionCreated($pdo, $additionalInfo);
-            return $pdo;
+        return $pdo;
         }
 
         /**
@@ -130,6 +141,9 @@
             Only getPDOConnectionToDbAndVerifyUser() should call this method
         */
         private function newConnectionCreated($pdo, $additionalInfo="NULL") {
+            /**
+                QUERY: logger, connection creation.
+            */
             $connection_logger_query = 
                 "insert into `" . $this->db_connection_logger . "`.`connections_creation_logger` " . 
                     "(      `additional_info`     ) values " . 
@@ -145,9 +159,12 @@
             Excludes those access made while logging the connection creation and db access for this function
         */
         private function newAccessToDb($pdo, $db_name, $additionalInfo = "NULL") {
+            /**
+                QUERY: logger, connection's db access.
+            */
             $db_logger_query = 
                 "insert into `" . $this->db_connection_logger . "`.`connections_db_access_logger` " .
-                    "(      `db_name`     ,      `additional_info`    ) values " .
+                    "(      `db_name`     ,      `additional_info`   ) values " .
                     "( '" . $db_name . "' , '" . $additionalInfo ."' )";
             if($this->debug) {
                 echo "<br><br>newAccessToDb():<br>" . $db_logger_query;
@@ -195,9 +212,13 @@
             $functionalityForWhichExceptionExpected = "Retreiving alive session for the user:" . $hackinUserInfo->emailId;
             $liveHackinSessionInfo = NULL;
             try {
+                /**
+                    Query: logger, session, Live session retrieval
+                */
                 $db_live_session_retrieval_query = 
                     "select * from `" . $this->db_accounts . "`.`sessions_alive` " .
-                        "where `email_id` = '". $hackinUserInfo->emailId . "'";
+                        "where " . 
+                            "`email_id` = '". $hackinUserInfo->emailId . "'";
                 if($this->debug) {
                     echo "<br><br>getLiveSessionInfo():<br>" . $db_live_session_retrieval_query;
                 }
@@ -214,13 +235,8 @@
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 foreach($rows as $row) {
-                    foreach($row as $field => $fieldValue) {
-                        $member = HackinGlobalFunctions::underscores_toCamelCase($field);
-                        /**
-                            TODO: Move this functionality to HackinGlobalFunctions.php and generalize it for nested classes too.
-                        */
-                        $liveHackinSessionInfo->$member = $fieldValue;
-                    }
+                    $liveHackinSessionInfo = HackinJsonHandler::hackinSessionInfoRetrievalFromObject($row);
+                    
                     if($this->debug) {
                         echo "<br>liveHackinSessionInfo (for user= " . $hackinUserInfo->emailId . ")= ". json_encode($liveHackinSessionInfo);
                     }
@@ -265,17 +281,23 @@
 
             if($liveHackinSessionInfo == NULL) {
                 $liveHackinSessionInfo = $hackinSessionInfo;
-                $db_live_session_accounting_query = 
+                /**
+                    QUERY: logger, session, account new incoming session
+                */
+                $db_new_live_session_accounting_query = 
                     "insert into  `" . $this->db_accounts . "`.`sessions_alive` " .
-                        "(     `email_id`                    ,             `php_session_id`                   ,             `hackin_session_id`                          )  values " .
+                        "(     `email_id`                           ,             `php_session_id`                   ,             `hackin_session_id`                   )  values " .
                         "( '". $liveHackinSessionInfo->emailId . "' , '" . $liveHackinSessionInfo->phpSessionId . "' , '" . $liveHackinSessionInfo->hackinSessionId . "' )";
             
                 if($this->debug) {
-                    echo "<br><br>checkMultipleAccess(): db_live_session_accounting_query<br>" . $db_live_session_accounting_query;
+                    echo "<br><br>checkMultipleAccess(): db_live_session_accounting_query<br>" . $db_new_live_session_accounting_query;
                 }
             
-                $stmt = $pdo->query($db_live_session_accounting_query);
+                $stmt = $pdo->query($db_new_live_session_accounting_query);
             } else if(strcasecmp($liveHackinSessionInfo->hackinSessionId, $hackinSessionInfo->hackinSessionId) == 0){
+                /**
+                    QUERY: logger, session, update active time.
+                */
                 $db_live_session_updation_query = 
                     "update `" . $this->db_accounts . "`.`sessions_alive` " . 
                         "set `last_login_time` = now()" . 

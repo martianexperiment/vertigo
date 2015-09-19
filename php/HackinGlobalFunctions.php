@@ -1,6 +1,19 @@
 <?php
     class HackinGlobalFunctions {
-        public static $phpServer = /**'localhost/hackin15/vertigo';//*/"hackin.psglogin.in";
+        /**
+            Insert or remove '/' at the end of the line before public static $phpServer to switch
+        */
+        /*/*/
+        public static $phpServer = 'localhost/hackin15/vertigo';
+        public static $dbServer = "localhost";
+        public static $dbUser = "root";
+        public static $dbPwd="";
+        /*///*
+        public static $phpServer = "hackin.psglogin.in";
+        public static $dbServer = "localhost";
+        public static $dbUser = "psgtechs_hackin");
+        public static $dbPwd="UDKIPFTKUHS8");//*/
+
         public static $multipleSessionInterruption = "MulitpleSessionsInterruption";
         
         /**

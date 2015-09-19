@@ -1,7 +1,8 @@
 <?php
     require_once(__DIR__ . "/HackinSessionStarter.php");
-    require_once(__DIR__ . "/models/HackinSession.php");
     require_once(__DIR__ . "/HackinDbHelper.php");
+        
+    require_once(__DIR__ . "/models/HackinSession.php");
     /**
         The only place where session variables are to be accessed.
         To maintain the code clean and for easier maintenance of changes to session variables.
