@@ -1,8 +1,9 @@
 <?php
     require_once(__DIR__ . "/HackinSessionStarter.php");
     require_once(__DIR__ . "/HackinDbHelper.php");
-        
+
     require_once(__DIR__ . "/models/HackinSession.php");
+    require_once(__DIR__ . "/config/HackinConfig.php");
     /**
         The only place where session variables are to be accessed.
         To maintain the code clean and for easier maintenance of changes to session variables.
@@ -122,7 +123,7 @@
             if(strcasecmp($liveHackinSessionInfo->hackinSessionId, $hackinSessionInfo->hackinSessionId) != 0) {
                 //echo "<br>. getHackinSession(): take care of multiple sessions.""
                 //echo '<br><br>liveHackinSessionInfo::<br>'. json_encode($liveHackinSessionInfo);
-                $interruption = HackinGlobalFunctions::$multipleSessionInterruption;
+                $interruption = HackinConfig::$multipleSessionInterruption;
                 $interruptionMsg = 
                     '{' .  
                         '"interruption": ' . json_encode($interruption) . ',' .

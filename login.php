@@ -1,5 +1,7 @@
 <?php
     require_once(__DIR__ . "/php/HackinGlobalFunctions.php");
+
+    require_once(__DIR__ . "/php/config/HackinConfig.php");
     /**
         The page which is loaded initially on sign in.
         The header remains the same, though the content body is dynamically determined by the post request.
@@ -42,5 +44,5 @@
                 "Cookie: " . session_name() . "=" . session_id() . "\r\n";
     $method = 'POST';
     session_write_close();
-    echo HackinGlobalFunctions::simulateHttpRequest($protocol, HackinGlobalFunctions::$phpServer, $filePathFromServer, $data, $header, $method);
+    echo HackinGlobalFunctions::simulateHttpRequest($protocol, HackinConfig::$phpServer, $filePathFromServer, $data, $header, $method);
 ?>

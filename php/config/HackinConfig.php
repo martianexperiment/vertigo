@@ -32,7 +32,7 @@
         public static $dbUser = "psgtechs_hackin";
         public static $dbPwd="UDKIPFTKUHS8";
         public static $dbPlatform = "mysql";
-        public static $db_accounts="psgtechs_hackin_team_accounts";
+        public static $db_accounts="psgtechs_hackin_accounts";
         public static $db_game_engine = "psgtechs_hackin_game_engine";
         public static $db_quora;
         public static $db_logger;

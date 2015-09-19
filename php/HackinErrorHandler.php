@@ -1,4 +1,5 @@
 <?php
+    require_once(__DIR__ . "/config/HackinConfig.php");
     /**
         Global, centralized error handler for Hackin event
         TODO: Create error model to be help handling easier in frontend and bind the message and errors.
@@ -33,7 +34,7 @@
             Use this function to interrupt the current flow other than error
         */
         public static function interruptHandler($interruption, $interruptionMsg) {
-            if(strcasecmp($interruption, HackinGlobalFunctions::$multipleSessionInterruption) == 0) {
+            if(strcasecmp($interruption, HackinConfig::$multipleSessionInterruption) == 0) {
                 //$jsonObject = json_decode($interruptionMsg);
                 $interruptionMsg = $interruptionMsg . "<br>click link to force sign in via current session: ";
             }

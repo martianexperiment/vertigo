@@ -1,25 +1,25 @@
 <?php
     require_once(__DIR__ . "/HackinErrorHandler.php");
-    require_once(__DIR__ . "/HackinGlobalFunctions.php");
     require_once(__DIR__ . "/HackinJsonHandler.php");
 
     require_once(__DIR__ . "/models/HackinSessionInfo.php");
     require_once(__DIR__ . "/models/HackinUserInfo.php");
+    require_once(__DIR__ . "/config/HackinConfig.php");
     /**
         Wrapper over PDO (or mysqli) connections to create and use database connections privately and dynamically
         List of all databases should be mentioned before hand, during construction
         TODO: Move all configuration parameters out of the class
     */
     class HackinDbHelper {
-        private $host;// = "localhost";
-        private $user;// = /**"psgtechs_hackin");//*/"root";
-        private $pwd;// = /**"UDKIPFTKUHS8");//*/"";    
+        private $host;
+        private $user;
+        private $pwd;
         private $dsn;
-        private $dbPlatform;//="mysql";
+        private $dbPlatform;
         
-        private $db_accounts;// = "psgtech_login15_hackin_team_accounts";
-        private $db_quora;// = "psgtech_login15_hackin_quora";
-        private $db_game_engine;// = "psgtech_login15_hackin_game_engine";
+        private $db_accounts;
+        private $db_game_engine;
+        private $db_quora;
         private $db_logger;
         private $db_test;
         private $db_connection_logger;
@@ -39,19 +39,19 @@
             return: void
         */
         public function __construct() {
-            $this->host = HackinGlobalFunctions::$dbServer;
-            $this->user = HackinGlobalFunctions::$dbUser;
-            $this->pwd =  HackinGlobalFunctions::$dbPwd;
+            $this->host = HackinConfig::$dbServer;
+            $this->user = HackinConfig::$dbUser;
+            $this->pwd =  HackinConfig::$dbPwd;
 
-            $this->dbPlatform = "mysql";
-            $this->db_accounts = "psgtech_login15_hackin_team_accounts";
-            $this->db_quora = "psgtech_login15_hackin_quora";
-            $this->db_game_engine = "psgtech_login15_hackin_game_engine";
-            $this->db_logger = $this->db_accounts;
-            $this->db_test = $this->db_accounts;
-            $this->db_connection_logger = $this->db_logger;
-            $this->db_session_logger = $this->db_logger;
-            $this->db_request_logger = $this->db_logger;
+            $this->dbPlatform = HackinConfig::$dbPlatform;
+            $this->db_accounts = HackinConfig::$db_accounts;
+            $this->db_game_engine = HackinConfig::$db_game_engine;
+            $this->db_quora = HackinConfig::$db_quora;
+            $this->db_logger = HackinConfig::$db_logger;
+            $this->db_test = HackinConfig::$db_test;
+            $this->db_connection_logger = HackinConfig::$db_connection_logger;
+            $this->db_session_logger = HackinConfig::$db_session_logger;
+            $this->db_request_logger = HackinConfig::$db_request_logger;
 
             $this->dsn = self::createDsnBasedOnDb($this->host, $this->dbPlatform);
             $pdo = self::createPDOConnectionToDbAndVerifyUser($this->dsn, $this->user, $this->pwd, $this->db_test);
