@@ -1,0 +1,25 @@
+@import url(http://fonts.googleapis.com/css?family=Aldrich);
+
+.logo
+{
+	color: black !important;
+	font-family: 'Aldrich' !important;
+}
+
+.logo .logo-mini
+{
+	animation:spin;
+}
+
+.fill-height-or-more {
+	display: flex;
+	flex-direction: column;
+}
+
+.fill-height-or-more > div {
+  flex: 1;
+
+  display: flex
+  justify-content: center;
+  flex-direction: column;
+}

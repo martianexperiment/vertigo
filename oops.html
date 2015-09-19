@@ -1,0 +1,68 @@
+<html>
+<head>
+	<title>Hack[IN] 2015</title>
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	<!-- Favicon -->
+	<link rel="icon" href="img/favicon.png" type="image/png" sizes="32x32">
+	<style>
+	@import url(http://fonts.googleapis.com/css?family=Aldrich);
+
+			body {
+				background-color: red;
+				-webkit-animation-name: example; /* Chrome, Safari, Opera */
+				-webkit-animation-duration: 25s; /* Chrome, Safari, Opera */
+				-webkit-animation-iteration-count: infinite; /* Chrome, Safari, Opera */
+				animation-name: example;
+				animation-duration: 25s;
+				animation-iteration-count: infinite;
+			}
+
+
+			/* Chrome, Safari, Opera */
+			@-webkit-keyframes example {
+			0%   {background-color:#008d4c; /*Green*/  } 
+		25%  {background-color:#555299; /*Purple*/  }
+	50%  {background-color:#D73925; /*Red*/  }
+	75%  {background-color:#367FA9; /*Blue*/  }
+	100% {background-color:#008d4c; /*Green*/  }
+	}
+
+	/* Standard syntax */
+	@keyframes example {
+	0%   {background-color:#008d4c; /*Green*/  } 
+	25%  {background-color:#555299; /*Purple*/  }
+	50%  {background-color:#D73925; /*Red*/  }
+	75%  {background-color:#367FA9; /*Blue*/  }
+	100% {background-color:#008d4c; /*Green*/  }
+	}
+
+	.container
+	{
+		padding-top: 25px;
+	}
+	.voffset
+	{
+		margin-top:50px;
+		font-size: 32px;
+		color:white;
+		font-family: 'Aldrich';
+	}
+	</style>
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 text-center">
+				<img src="img/sad.png" height="150" alt="Sad Smiley :(">
+			</div>
+		</div>
+		<div class="row voffset">
+			<div class="col-lg-12 text-center">
+				<p id="error-text">{{ERROR Message}}</p>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

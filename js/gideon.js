@@ -1,9 +1,21 @@
+/*NOTE: Works with gideon.css*/
+
+var gideon = $('div.gideon');
+var gideonHolder = $('.gideon .golder-holder');
+var gideonLoader = $('.gideon .gideon-loader');
+var gideonResponse = $('.gideon .response');
+
 function pauseGideon()
 {
-	$('.gideon-loader').removeClass('gideon-loader-playing');
+	gideonLoader.removeClass('gideon-loader-playing');
 }
 
 function playGideon()
 {
-	$('.gideon-loader').addClass('gideon-loader-playing');
+	gideonLoader.addClass('gideon-loader-playing');
+}
+
+function speakGideon(text)
+{
+	gideonResponse.html(text);
 }

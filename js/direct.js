@@ -193,7 +193,7 @@ function loadConversation(directModel, directDOMNode)
 
 			var delay = calculateDelay(textModel.msg);
 			directListElement.append(typingIndicator);
-			sleep(delay);
+			// sleep(delay);
 			directListElement.children().last().remove();
 			directListElement.append(directMsgDOMNode);
 		}
