@@ -1,241 +1,177 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Hack[IN] 2015</title>
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Hack[IN] 2015</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
-    <!-- Favicon -->
-    <link rel="icon" href="img/favicon.png" type="image/png" sizes="32x32">
+  <!-- Favicon -->
+  <link rel="icon" href="img/favicon.png" type="image/png" sizes="32x32">
 
-    <!-- Bootstrap 3.3.5 -->
-    <link rel="stylesheet" href="plugins/bootstrap/bootstrap.min.css">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
-    <!-- Skin styles -->
-    <link rel="stylesheet" href="dist/css/skins/skin-blue.min.css"/>
+  <!-- Bootstrap 3.3.5 -->
+  <link rel="stylesheet" href="plugins/bootstrap/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+  <!-- Skin styles -->
+  <link rel="stylesheet" href="dist/css/skins/skin-blue.min.css"/>
 
-    <!-- Typing Indicator -->
-    <link rel="stylesheet" href="css/typing-indicator.css"/>
-    <!-- Gideon -->
-    <link rel="stylesheet" href="css/gideon.css">
-    <!-- Dash -->
-    <link rel="stylesheet" href="css/dash.css">
+  <!-- Typing Indicator -->
+  <link rel="stylesheet" href="css/typing-indicator.css"/>
+  <!-- Gideon -->
+  <link rel="stylesheet" href="css/gideon.css">
+  <!-- Dash -->
+  <link rel="stylesheet" href="css/dash.css">
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
+        <![endif]-->
+      </head>
 
-  <body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
-    <div class="wrapper">
+      <body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
+        <div class="wrapper">
 
-      <!-- Main Header -->
-      <header class="main-header">
+          <!-- Main Header -->
+          <header class="main-header">
 
-        <!-- Logo -->
-        <a href="index2.html" class="logo">
-          <!-- mini logo for sidebar mini 50x50 pixels -->
-          <span class="logo-mini"><b>H</b></span>
-          <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg"><b>Hack[IN]</b></span>
-        </a>
+            <!-- Logo -->
+            <a href="index2.html" class="logo">
+              <!-- mini logo for sidebar mini 50x50 pixels -->
+              <span class="logo-mini"><b>H</b></span>
+              <!-- logo for regular state and mobile devices -->
+              <span class="logo-lg"><b>Hack[IN]</b></span>
+            </a>
 
-        <!-- Header Navbar -->
-        <nav class="navbar navbar-static-top" role="navigation">
-          <!-- Sidebar toggle button-->
-          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-            <span class="sr-only">Toggle navigation</span>
-          </a>
-          <!-- Navbar Right Menu -->
-          <div class="navbar-custom-menu">
-            <ul class="nav navbar-nav">
-              
-              <!-- User Account Menu -->
-              <li class="dropdown user user-menu" id="user-account-menu">
-                <!-- Menu Toggle Button -->
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                  <span class="hidden-xs" id="user-screen-name">Name</span>
-                </a>
-                <ul class="dropdown-menu">
-                  <!-- Menu Body -->
-                  <li class="user-body">
-                    <div class="col-xs-12 text-center">
-                      <span id="user-details"></span>
-                    </div>
+            <!-- Header Navbar -->
+            <nav class="navbar navbar-static-top" role="navigation">
+              <!-- Sidebar toggle button-->
+              <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+              </a>
+              <!-- Navbar Right Menu -->
+              <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+
+                  <!-- User Account Menu -->
+                  <li class="dropdown user user-menu" id="user-account-menu">
+                    <!-- Menu Toggle Button -->
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                      <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                      <span class="hidden-xs" id="user-screen-name">Name</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <!-- Menu Body -->
+                      <li class="user-body">
+                        <div class="col-xs-12 text-center">
+                          <span id="user-details"></span>
+                        </div>
+                      </li>
+                      <!-- Menu Footer-->
+                      <li class="user-footer">
+                        <div class="pull-right">
+                          <a href="php/HackinRequestReceiver.php?function=logOut()" class="btn btn-default btn-flat">Sign out</a>
+                        </div>
+                      </li>
+                    </ul>
                   </li>
-                  <!-- Menu Footer-->
-                  <li class="user-footer">
-                    <div class="pull-right">
-                      <a href="javascript:logout();" class="btn btn-default btn-flat">Sign out</a>
-                    </div>
-                  </li>
+
                 </ul>
-              </li>
-              
-            </ul>
-          </div>
-        </nav>
-      </header>
-      <!-- Left side column. contains the logo and sidebar -->
-      <aside class="main-sidebar">
+              </div>
+            </nav>
+          </header>
+          <!-- Left side column. contains the logo and sidebar -->
+          <aside class="main-sidebar">
 
-        <!-- sidebar: style can be found in sidebar.less -->
-        <section class="sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
 
-          <!-- Sidebar user panel (optional) -->
-          <div class="user-panel">
-            <div class="pull-left image">
-              <img src="#" class="img-circle" alt="{User Image}" id="characterImage">
-            </div>
-            <div class="pull-left info">
-              <p id="characterName">{{characterName}}</p>
-              <!-- Status -->
-            </div>
-          </div>
-
-          
-        </section>
-        <!-- /.sidebar -->
-      </aside>
-
-      <!-- Content Wrapper. Contains page content -->
-      <div class="content-wrapper">
-
-        <!-- Main content -->
-        <section class="content">
-
-          <!-- Single row for three cols of the question -->
-          <div class="row">
-            <!-- Giving equal width for each div -->
-
-            <!-- Col for Conversation of a question -->
-            <div class="col-lg-4">
-              <div class="row">
-                <div class="col-lg-12">
-
-                  <!-- direct-chat -->
-                  <div class="box box-primary direct-chat direct-chat-primary" id="conversation">
-                    <div class="box-header with-border">
-                      <h3 class="box-title">Conversation</h3>
-                      <div class="box-tools pull-right">
-                        <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                      </div>
-                    </div>
-                    <div class="box-body">
-                      <!-- Conversations are loaded here -->
-                      <div class="direct-chat-messages nano">
-                          <!-- Msgs will be loaded here -->
-                      </div>
-                      
-                    </div><!-- /.box-body -->
-                  </div>
-                  <!-- /direct-chat -->
+              <!-- Sidebar user panel (optional) -->
+              <div class="user-panel">
+                <div class="pull-left image">
+                  <img src="#" class="img-circle" alt="{User Image}" id="characterImage">
+                </div>
+                <div class="pull-left info">
+                  <p id="characterName">{{characterName}}</p>
+                  <!-- Status -->
                 </div>
               </div>
+
+
+            </section>
+            <!-- /.sidebar -->
+          </aside>
+
+          <!-- Content Wrapper. Contains page content -->
+          <div class="content-wrapper">
+
+            <!-- Main content -->
+            <section class="content">
+
               <div class="row">
-                <div class="col-lg-12">
-                <!-- characters -->
-                <div class="box box-danger" id="characters" >
-                    <div class="box-header with-border">
-                      <h3 class="box-title">Characters</h3>
-                      <div class="box-tools pull-right">
-                        <span class="label label-danger" id="num-of-characters">0</span>
-                        <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                      </div>
-                    </div><!-- /.box-header -->
-                    <div class="box-body no-padding">
-                      <ul class="users-list clearfix">
-                      </ul><!-- /.users-list -->
-                    </div><!-- /.box-body -->
-                </div>
-                <!-- /characters -->
-                </div>
-              </div>
-            </div>
-          
-            <!-- Col for description of the question -->
-            <div class="col-lg-4 fill-height-or-more">
-              <div class="row">
-                <div class="col-lg-12">
-                  <div class="box box-warning">
-                    <div class="box-header with-border">
-                      <h3 class="box-title" id="location">{{location}}</h3>
-                      <div class="box-tools pull-right">
-                        <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-map-marker"></i></button>
-                      </div>
+              <div class="col-lg-offset-1 col-lg-10">
+                <!-- Single row for three cols of the question -->
+                <div class="box box-danger">
+                  <div class='box-header with-border'>
+                    <span class="box-title"><strong>Prologue</strong></span>
+                    <div class='box-tools'>
+                      <button class='btn btn-box-tool' data-widget='collapse'><i class='fa fa-minus'></i></button>      
                     </div>
                   </div>
-                </div>
-              </div>
-              
-              <div class="row">
-                <div class="col-lg-12">
-                  <div class="box box-success">
-                    <div class="box-header with-border">
-                      <h3 class="box-title">Mission Description</h3>
-                      <div class="box-tools pull-right">
-                        <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                      </div>
-                    </div>
-                    <div class="box-body">
-                      <strong><i class="fa fa-book margin-r-5"></i>Objective</strong>
-                      <p class="text-muted" id="description-text">{{description-text}}</p>
-                      <hr>
-                      <div id="attachments">
-                        <strong><i class="fa fa-paperclip margin-r-5"></i>Attachments</strong>
-                        <!-- Loop through -->
-                        <p><a href="{{file-link}}"><span class="label label-primary">{{file-name}}</span></a></p>
-                      </div>
-                      <hr>
-                      <div class="ques-plugin" id="plugin"></div>
-                    </div><!-- /.box-body -->
-                  </div><!-- /.box -->
-                </div>
-              </div>
-              
-            </div>
+                  <div class='box-body' id="prologue">
+                    <p>Her footsteps were unhurried and the eyes were straight despite the strong wind.
+                      The marching was done in unison but anyone witnessing the army-march scene for the first time, 
+                      would swiftly admire the lone girl in the marching regiment. Its not just the beauty in her eyes 
+                      which turns heads but its her stentorian commands coupled with boldness in her marches which strikes her apart. 
+                      From her humble beginning as a cadet, Veronica carved a special place in the Russian para-military which is 
+                      a testimony to her integrity.</p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As the march-past came to an end and the unit was dispersing, a soldier came running to Veronica and said,   
+                        "Veronica! You must report to the Commander in 5 minutes. And its A-Level urgency".  
+                        Usually, such A-Level urgent calls are meant for the top insignia holders during wars and she was quite puzzled at the 
+                        motive of the call. As she walked towards the Commander's office, fragmentary images of the possibility of the meeting came to her mind.
+                        Upon stepping into the entrance, she found Dimitry too reporting to the Commander. </p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dimitry was one of the distinguished war soldier in the Russian army group. His eyes were sharp and voice deep, cultured. With the sobriquet
+                          of 'Wary Wolf' among his peers, Dimitry was known for his warrior instincts in the battlefield and his act of circumspection off the field.
+                          He preferred the solitude of his military base and did not easily get along with the crowd. It was two years back, when Veronica first met
+                          Dimitry at the army training camp. The duo led the Moscow youth wing there and complemented each other well. From then on each rose up their
+                          hierarchy ladder and seldom met each other.</p>
+                          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Veronica reporting Sir", she saluted at the Commander. The Commander's eyes were gray, his old face looked fatigued. He wore his typical 
+                            three piece suit and held a pipe in his hand as usual. He uttered in his low voice, "Guys. The rumours are true. United States is building up a secret 
+                            Nuclear facility in the mountains near the Pacific to retaliate our recent air strikes against them."
+                            "Another Attack then? The time has come to display our manoeuvres again", replied Dimitry assertively.
+                            Commander in a deep tone replied, "It's war Dimitry. Atomic War. Only when we decode their nuclear attack pattern we can prevent this attack" and continued,
+                            "The upper office has given consent to infiltrate the United States Military office and steal the nuclear launch plans. And it has appointed..".</p>
 
-            <!-- Col for Gideon -->
-            <div class="col-lg-4">
-              <div class="box box-primary">
-                <div class="box-header with-border">
-                  <h3 class="box-title">Gideon</h3>
-                  <div class="box-tools pull-right">
-                    <!-- <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button> -->
-                  </div>
-                </div>
-                <div class="box-body">
-                  <div class="gideon">
-                    <h1>
-                      <div class='gideon-holder'>
-                        <span class='gideon-loader'></span>
-                      </div>
-                      <p class='response'>Response Text</p>
-                    </h1>
-                  </div>
-                </div>
-              </div>
-            </div>
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The apparent fatigue due to the jet lag and freaking coldness of the city never stopped Veronica and Dimitry in taking a stroll
+                              across the streets of New York. The heavy movement of the party-modded nocturnal humans, discordant string sounds of the musical flash mobs,
+                              squeaking sounds of the city cabs' door hinges and ornated digital boards outside the casinos distinctly marked the night life of the city.
+                              Dimitry looked unusually big as he was covered under a fat, squashy winter coat. The new unfit leather boots hampered his footsteps sometimes but the zest 
+                              in the city never made him realise it. Veronica wore a typical outfit of a young californian opera singer during the Halloween and the dimaonds of her
+                              necklace created a spectrum under the lights of the 1740 Broadway.</p>
+                              <p>"Hands up!", yelled the police officer approaching the duo from the back. "Do not move. I told you to raise your hands or the bullet comes off."</p>
+                            </div>
+                            <div class='box-footer box-comments'>
+                              <div class='box-comment'>
+                                <button class="btn btn-primary" onclick="getCurrentView();" >Next ></button>
+                              </div>
+                            </div>
+                          </div>
+                          </div>
+                          </div>
 
-          </div>
+                        </section><!-- /.content -->
+                      </div><!-- /.content-wrapper -->
 
-        </section><!-- /.content -->
-      </div><!-- /.content-wrapper -->
-
-      <!-- Main Footer -->
-      <footer class="main-footer">
-        <!-- To the right -->
+                      <!-- Main Footer -->
+                      <footer class="main-footer">
+                        <!-- To the right -->
         <!-- <div class="pull-right hidden-xs">
           Anything you want
         </div> -->
@@ -267,5 +203,6 @@
 
     <!-- Test -->
     <script  type="text/javascript" src="js/test.js"></script>
+
   </body>
-</html>
+  </html>

@@ -11,10 +11,8 @@
 		<i class="fa fa-paperclip margin-r-5"></i>
 		Attachments
 	</strong>
-	<p>
-		<span class="label label-primary">04448aa850e334f5edca</span>
-		<span class="label label-primary">bf2c9efdfb1b1863aa5d</span>
-		<span class="label label-primary">c583c693761ceb5dc957</span>
-		<span class="label label-primary">2f02b92863db9fc84f91</span>
-	</p>
+	<p><span class="label label-primary">04448aa850e334f5edca</span></p>
+	<p><span class="label label-primary">bf2c9efdfb1b1863aa5d</span></p>
+	<p><span class="label label-primary">c583c693761ceb5dc957</span></p>
+	<p><span class="label label-primary">2f02b92863db9fc84f91</span></p>
 </div>

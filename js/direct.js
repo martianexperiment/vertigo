@@ -90,7 +90,7 @@ function bindChatMsgModel(textModel, characterModel, characterIndex, directMsgDO
 		nameElement.html(characterModel.name);
 		//timeStampElement.html((new Date()).toLocaleTimeString());
 		imgElement.attr('src',characterModel.profilePic);
-		msgElement.html(textModel.message.text);
+		msgElement.html(textModel.text);
 
 		return directMsgDOMNode;
 	}
@@ -166,10 +166,8 @@ Given the list of texts.
 and the chat container
 Loops thro the list and populates the chat
 */
-function loadConversation(directModel, directDOMNode)
+function loadConversation(characters, texts, directDOMNode)
 {
-	var characters = directModel.charactersInvolved;
-	var texts = directModel.messages;
 	var directListElement = directDOMNode.find('.direct-chat-messages');
 
 	if(directListElement != null)
