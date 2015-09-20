@@ -14,19 +14,22 @@
             Simulates http request.
             TODO: Extend the support to all types of protocols and header values
         */
-        public static function simulateHttpRequest($protocol, $server, $filePathFromServer, $data, $header, $method) {
+        public static function simulateHttpRequest($protocol, $server, $filePathFromServer, $header, $method, $data = NULL) {
             $url = $protocol . '://' . $server . $filePathFromServer;
             // using key as 'http' even if the request is to https://...
             $key = $protocol;
             if($protocol == "https") {
                 $key = "http";
             }
-            $options = array(
-                $key => array(
+            $httpQuery = array(
                     'header'  => $header,
                     'method'  => $method,
-                    'content' => http_build_query($data),
-                    ),
+                    );
+            if($data != NULL) {
+                $httpQuery['content'] = http_build_query($data);
+            }
+            $options = array(
+                $key => $httpQuery,
                 );
             $context  = stream_context_create($options);
             $result = file_get_contents($url, false, $context);

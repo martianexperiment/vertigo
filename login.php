@@ -44,5 +44,5 @@
                 "Cookie: " . session_name() . "=" . session_id() . "\r\n";
     $method = 'POST';
     session_write_close();
-    echo HackinGlobalFunctions::simulateHttpRequest($protocol, HackinConfig::$phpServer, $filePathFromServer, $data, $header, $method);
+    echo HackinGlobalFunctions::simulateHttpRequest($protocol, HackinConfig::$phpServer, $filePathFromServer, $header, $method, $data);
 ?>
