@@ -73,12 +73,6 @@
 			<div class="col-lg-12 text-center">
 				<p id="error-msg">Live Session: Firefox, 134:72:1:1</p>
 				<p id="error-msg">Current Session: Chrome, 134:72:1:1</p>
-			<div class="col-lg-12 text-center" id="error-msg">
-				<?php 
-					function($obj) {
-						echo getContent($obj);
-					}
-				?>
 			</div>
 		</div>
 		<div class="row voffset1">

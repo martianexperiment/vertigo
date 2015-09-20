@@ -37,6 +37,7 @@
                 //$jsonObject = json_decode($interruptionMsg);
                 $interruptionMsg = $interruptionMsg;
             }*/
+
             return $interruptionMsg;
             /*$obj = json_decode($interruptionMsg);
             $file = __DIR__ . "\..\mutiple.html";
