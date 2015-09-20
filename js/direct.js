@@ -20,7 +20,6 @@ var _RIGHT_ = 'right'
 var chatMsgHTML = '<div class="direct-chat-msg">  \
 	<div class="direct-chat-info clearfix">  \
 		<span class="direct-chat-name">name</span>  \
-		<span class="direct-chat-timestamp">timeStamp</span>  \
 	</div>  \
 	<img class="direct-chat-img" src="" alt="message user image" /> \
 	<div class="direct-chat-text">  \
@@ -73,7 +72,7 @@ function bindChatMsgModel(textModel, characterModel, characterIndex, directMsgDO
 	if (directMsgDOMNode.hasClass('direct-chat-msg'))
 	{
 		var nameElement = directMsgDOMNode.find('.direct-chat-name');
-		var timeStampElement = directMsgDOMNode.find('.direct-chat-timestamp');
+		//var timeStampElement = directMsgDOMNode.find('.direct-chat-timestamp');
 		var imgElement = directMsgDOMNode.find('.direct-chat-img');
 		var msgElement = directMsgDOMNode.find('.direct-chat-text');
 
@@ -81,17 +80,17 @@ function bindChatMsgModel(textModel, characterModel, characterIndex, directMsgDO
 		{
 			directMsgDOMNode.addClass(strRight);
 			nameElement.addClass(pullRight);
-			timeStampElement.addClass(pullLeft);
+			//timeStampElement.addClass(pullLeft);
 		}
 		else
 		{
 			nameElement.addClass(pullLeft);
-			timeStampElement.addClass(pullRight);
+			//timeStampElement.addClass(pullRight);
 		}
 		nameElement.html(characterModel.name);
-		timeStampElement.html((new Date()).toLocaleTimeString());
-		imgElement.attr('src',characterModel.imgUrl);
-		msgElement.html(textModel.msg);
+		//timeStampElement.html((new Date()).toLocaleTimeString());
+		imgElement.attr('src',characterModel.profilePic);
+		msgElement.html(textModel.message.text);
 
 		return directMsgDOMNode;
 	}
@@ -106,7 +105,7 @@ function bindCharacterModel(characterModel, characterDOMNode)
 		var imgElement = characterDOMNode.find('img');
 
 		nameElement.html(characterModel.name);
-		imgElement.attr('src',characterModel.imgUrl);
+		imgElement.attr('src',characterModel.profilePic);
 	}
 	return characterDOMNode;
 }
@@ -140,7 +139,7 @@ function loadCharacters(charactersModel, charactersDOMNode)
 Given the list of character models.
 And a character container node.
 Loops thro the list and populates the characters
-*/
+
 function loadCharacters(charactersModel, charactersDOMNode)
 {
 	var charactersUL = charactersDOMNode.find('ul.users-list');
@@ -160,7 +159,7 @@ function loadCharacters(charactersModel, charactersDOMNode)
 		return charactersDOMNode;
 	}
 	return null;
-}
+}*/
 
 /*
 Given the list of texts.
@@ -169,8 +168,8 @@ Loops thro the list and populates the chat
 */
 function loadConversation(directModel, directDOMNode)
 {
-	var characters = directModel.characters;
-	var texts = directModel.texts;
+	var characters = directModel.charactersInvolved;
+	var texts = directModel.messages;
 	var directListElement = directDOMNode.find('.direct-chat-messages');
 
 	if(directListElement != null)
@@ -180,7 +179,7 @@ function loadConversation(directModel, directDOMNode)
 		for( ; iter <len; iter++)
 		{
 			var textModel = texts[iter];
-			var characterIndex = textModel.characterIndex;
+			var characterIndex = textModel.fromCharacterIndex;
 			var characterModel = characters[characterIndex];
 			var directMsgDOMNode = createChatMsgDOMNode();
 			var pullDirection='';
@@ -191,7 +190,7 @@ function loadConversation(directModel, directDOMNode)
 			var typingIndicator = createTypingIndicator(pullDirection);
 			bindChatMsgModel(textModel, characterModel, characterIndex, directMsgDOMNode);
 
-			var delay = calculateDelay(textModel.msg);
+			//var delay = calculateDelay(textModel.msg);
 			directListElement.append(typingIndicator);
 			// sleep(delay);
 			directListElement.children().last().remove();
