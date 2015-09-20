@@ -1,6 +1,7 @@
 <?php
     require_once(__DIR__ . "/php/HackinGlobalFunctions.php");
     require_once(__DIR__ . "/php/HackinSessionStarter.php");
+    require_once(__DIR__ . "/php/models/HackinUserMonitor.php");
 
     require_once(__DIR__ . "/php/config/HackinConfig.php");
     /**
@@ -34,6 +35,9 @@
         //*/
     }
 
+    $userBrowserInfo = new UserBrowserInfo();
+    $_SESSION['hackin_user_agent'] = $userBrowserInfo->userAgent;
+
     /**
         Post method from login.php to HackinRequestReceiver.php, to load the page when a user logs in for the first time.
     */
@@ -45,4 +49,5 @@
     $method = 'POST';
     session_write_close();
     echo HackinGlobalFunctions::simulateHttpRequest($protocol, HackinConfig::$phpServer, $filePathFromServer, $header, $method, $data);
+    session_start();
 ?>
