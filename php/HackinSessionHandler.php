@@ -3,6 +3,7 @@
     require_once(__DIR__ . "/HackinDbHelper.php");
 
     require_once(__DIR__ . "/models/HackinSession.php");
+    require_once(__DIR__ . "/models/HackinUserMonitor.php");
     require_once(__DIR__ . "/config/HackinConfig.php");
     /**
         The only place where session variables are to be accessed.
@@ -102,8 +103,15 @@
         public static function getCurrentHackinSessionInfo() {
             $hackinUserInfo = self::getHackinUserInfo();
             $hackinSessionId = self::getHackinSessionId();
+            $hackinUserMonitor = new HackinUserMonitor();
+            $userBrowserInfo = $hackinUserMonitor->userBrowserInfo;
+            $userIpInfo = $hackinUserMonitor->userIpInfo;
+
             //HackinGlobalFunctions::timeStampFromPhpToSql(time()) can also be used.
-            $hackinSessionInfo = new HackinSessionInfo($hackinUserInfo->emailId, session_id(), $hackinSessionId, time());
+            $hackinSessionInfo = new HackinSessionInfo($hackinUserInfo->emailId, session_id(), $hackinSessionId, 
+                                                        time(), time(), time(),
+                                                        $userBrowserInfo->userAgent, $userBrowserInfo->browser, $userBrowserInfo->browserDetails,
+                                                        $userIpInfo->ip, $userIpInfo->ipDetails);
             return $hackinSessionInfo;
         }
 
