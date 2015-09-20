@@ -14,6 +14,7 @@
             hackinSessionId- Session id for hackin15
         */
         public $hackinSessionId;
+        
         public $lastLoginTime;
         public $lastRefreshTime;
         public $lastActiveTime;
@@ -57,7 +58,8 @@
             return $isEqual;
         }
     }
-    $hackinUserMonitor = new HackinUserMonitor();
+
+    /*$hackinUserMonitor = new HackinUserMonitor();
     $userBrowserInfo = $hackinUserMonitor->userBrowserInfo;
     $userIpInfo = $hackinUserMonitor->userIpInfo;
     $hackinSessionInfo = new HackinSessionInfo("thirukkakarnan@gmail.com", "somePHPId", uniqid("hackin_"), 

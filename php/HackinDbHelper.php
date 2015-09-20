@@ -5,6 +5,7 @@
     require_once(__DIR__ . "/models/HackinSessionInfo.php");
     require_once(__DIR__ . "/models/HackinUserInfo.php");
     require_once(__DIR__ . "/config/HackinConfig.php");
+
     /**
         Wrapper over PDO (or mysqli) connections to create and use database connections privately and dynamically
         List of all databases should be mentioned before hand, during construction
@@ -182,10 +183,13 @@
 
         public function testGetAliveHackinSessionNotEqualToCurrentSession() {
             $hackinUserInfo = new HackinUserInfo("thirukkakarnan@gmail.com", "Karnaa", "1", "", "9842146152", "11PW38", "", "", "");
-            $suffix = "hackin_";
-            $hackinSessionId = uniqid($suffix);//openssl_random_pseudo_bytes() can also be used.
-            $hackinSessionInfo = new HackinSessionInfo("thirukkakarnan@gmail.com", "php_session_id", time(), $hackinSessionId, "some more info");
-
+            $hackinUserMonitor = new HackinUserMonitor();
+            $userBrowserInfo = $hackinUserMonitor->userBrowserInfo;
+            $userIpInfo = $hackinUserMonitor->userIpInfo;
+            $hackinSessionInfo = new HackinSessionInfo("thirukkakarnan@gmail.com", "somePHPId", uniqid("hackin_"), 
+                                                        time(), time(), time(),
+                                                        $userBrowserInfo->userAgent, $userBrowserInfo->browser, $userBrowserInfo->browserDetails,
+                                                        $userIpInfo->ip, $userIpInfo->ipDetails);
             /**/echo "<br><br>checkMultipleAccessTest():<br>session info";
             echo json_encode($hackinSessionInfo);
             echo "<br> user info";
@@ -241,6 +245,9 @@
                         echo "<br>liveHackinSessionInfo (for user= " . $hackinUserInfo->emailId . ")= ". json_encode($liveHackinSessionInfo);
                     }
                 }
+                $liveHackinSessionInfo->lastLoginTime = HackinGlobalFunctions::timeStampFromSqlToPhp($liveHackinSessionInfo->lastLoginTime);
+                $liveHackinSessionInfo->lastRefreshTime = HackinGlobalFunctions::timeStampFromSqlToPhp($liveHackinSessionInfo->lastRefreshTime);
+                $liveHackinSessionInfo->lastActiveTime = HackinGlobalFunctions::timeStampFromSqlToPhp($liveHackinSessionInfo->lastActiveTime);
             } catch(Exception $ex) {
                 echo HackinErrorHandler::errorHandler($ex, $functionalityForWhichExceptionExpected);
                 exit();
@@ -260,23 +267,26 @@
                         //take care of multiple alive sessions.
         */
         public function getAliveHackinSessionNotEqualToCurrentSession($hackinSessionInfo, $hackinUserInfo) {
-            $additionalInfo =  '{"Check Multiple Access": {
-                                    "hackinSessionId": ' . json_encode($hackinSessionInfo) . ',
-                                    "hackinUserInfo": ' . json_encode($hackinUserInfo). '
-                                    }
-                                }';
+            $additionalInfo =  '{"Check Multiple Access": {' .
+                                    '"hackinSessionInfo": ' . json_encode($hackinSessionInfo) . 
+                                    ',' .'"hackinUserInfo": ' . json_encode($hackinUserInfo) . 
+                                    '}' .
+                                '}';
+            if($this->debug) {
+                echo $additionalInfo;
+            }
             $pdo = $this->getPDOConnectionToDbAndVerifyUser($additionalInfo);
             $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
             $liveHackinSessionInfo = $this->getLiveSessionInfo($pdo, $hackinUserInfo);
 
             if($this->debug) {
-                echo "<br> checkMultipleAccess():";
+                echo "<br> ********************checkMultipleAccess():";
                 echo "<br> user info";
                 echo json_encode($hackinUserInfo);
                 echo "<br>hackin session info";
                 echo json_encode($hackinSessionInfo);
                 echo "<br> live session info";
-                echo json_encode($liveHackinSessionInfo);;
+                echo json_encode($liveHackinSessionInfo);
             }
 
             if($liveHackinSessionInfo == NULL) {
@@ -285,23 +295,56 @@
                     QUERY: logger, session, account new incoming session
                 */
                 $db_new_live_session_accounting_query = 
-                    "insert into  `" . $this->db_accounts . "`.`sessions_alive` " .
-                        "(     `email_id`                           ,             `php_session_id`                   ,             `hackin_session_id`                   )  values " .
-                        "( '". $liveHackinSessionInfo->emailId . "' , '" . $liveHackinSessionInfo->phpSessionId . "' , '" . $liveHackinSessionInfo->hackinSessionId . "' )";
+                    "insert into " . $this->db_accounts . ".`sessions_alive` ( " .
+                            "`email_id` " .
+                            ", `php_session_id` " .
+                            " , `hackin_session_id` " . 
+                            " , `last_login_time` " .
+                            ", `last_refresh_time` " .
+                            ", `last_active_time` " .
+                             ", `last_active_user_agent` " .
+                             ", `last_active_browser` " .
+                             ", `last_active_browser_details` " .
+                             " , `last_active_ip` , `last_active_ip_details` " . 
+                        ") values ( " .
+                        " :emailId , :phpSessionId , :hackinSessionId " . 
+                        ", :lastLoginTime            ,  :lastRefreshTime               ,   :lastActiveTime" .
+                        ", :lastActiveUserAgent, :lastActiveBrowser, :lastActiveBrowserDetails " .
+                        ", :lastActiveIp, :lastActiveIpDetails" .
+                        ")";
             
+                $stmt = $pdo->prepare($db_new_live_session_accounting_query);
+                $array = array( ":emailId"                   => $liveHackinSessionInfo->emailId
+                                , ":phpSessionId"              => $liveHackinSessionInfo->phpSessionId
+                                , ":hackinSessionId"           => $liveHackinSessionInfo->hackinSessionId
+                                , ":lastLoginTime"             => HackinGlobalFunctions::timeStampFromPhpToSql($liveHackinSessionInfo->lastLoginTime)
+                                , ":lastRefreshTime"           => HackinGlobalFunctions::timeStampFromPhpToSql($liveHackinSessionInfo->lastRefreshTime)
+                                , ":lastActiveTime"            => HackinGlobalFunctions::timeStampFromPhpToSql($liveHackinSessionInfo->lastActiveTime)
+                                , ":lastActiveUserAgent"       => $liveHackinSessionInfo->lastActiveUserAgent
+                                , ":lastActiveBrowser"         => $liveHackinSessionInfo->lastActiveBrowser
+                                , ":lastActiveBrowserDetails"  => $liveHackinSessionInfo->lastActiveBrowserDetails
+                                , ":lastActiveIp"              => $liveHackinSessionInfo->lastActiveIp
+                                , ":lastActiveIpDetails"       => $liveHackinSessionInfo->lastActiveIpDetails
+                                );
+                $stmt->execute($array);
+                
                 if($this->debug) {
                     echo "<br><br>checkMultipleAccess(): db_live_session_accounting_query<br>" . $db_new_live_session_accounting_query;
+                    $stmt->debugDumpParams();//
                 }
             
-                $stmt = $pdo->query($db_new_live_session_accounting_query);
-            } else if(strcasecmp($liveHackinSessionInfo->hackinSessionId, $hackinSessionInfo->hackinSessionId) == 0){
+                //$stmt = $pdo->query($db_new_live_session_accounting_query);
+            } else if($liveHackinSessionInfo->equals($hackinSessionInfo) == 0) {
                 /**
                     QUERY: logger, session, update active time.
                 */
                 $db_live_session_updation_query = 
                     "update `" . $this->db_accounts . "`.`sessions_alive` " . 
-                        "set `last_login_time` = now()" . 
-                        "where `email_id` = '". $liveHackinSessionInfo->emailId ."'";
+                        "set `last_active_time` = now()" . 
+                        "where `email_id` = '". $liveHackinSessionInfo->emailId ."' ";
+                /**
+                    QUERY: logger, session, 
+                */
 
                 if($this->debug) {
                     echo "<br><br>checkMultipleAccess: db_live_session_updation_query<br>" . $db_live_session_updation_query;

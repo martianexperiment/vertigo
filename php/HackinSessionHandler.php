@@ -95,6 +95,16 @@
             return $hackinSessionId;
         }
 
+        public static function getHackinUserMonitor() {
+            $hackinUserMonitor = new HackinUserMonitor();
+            $userBrowserInfo = $hackinUserMonitor->userBrowserInfo;
+            if(empty($userBrowserInfo->userAgent)) {
+                $userBrowserInfo = new UserBrowserInfo($_SESSION['hackin_user_agent']);
+            }
+            $hackinUserMonitor->userBrowserInfo = $userBrowserInfo;
+            return $hackinUserMonitor;
+        }
+
         /**
             Function to get currentHackinSessionInfo
             TODO: get browser, ip and other details from php.
@@ -103,7 +113,7 @@
         public static function getCurrentHackinSessionInfo() {
             $hackinUserInfo = self::getHackinUserInfo();
             $hackinSessionId = self::getHackinSessionId();
-            $hackinUserMonitor = new HackinUserMonitor();
+            $hackinUserMonitor = self::getHackinUserMonitor();
             $userBrowserInfo = $hackinUserMonitor->userBrowserInfo;
             $userIpInfo = $hackinUserMonitor->userIpInfo;
 
@@ -128,15 +138,24 @@
             $hackinSessionInfo = self::getCurrentHackinSessionInfo();
             $hackinDbHelper = new HackinDbHelper();
             $liveHackinSessionInfo = $hackinDbHelper->getAliveHackinSessionNotEqualToCurrentSession($hackinSessionInfo, $hackinUserInfo);
+            
             if(strcasecmp($liveHackinSessionInfo->hackinSessionId, $hackinSessionInfo->hackinSessionId) != 0) {
-                //echo "<br>. getHackinSession(): take care of multiple sessions.""
-                //echo '<br><br>liveHackinSessionInfo::<br>'. json_encode($liveHackinSessionInfo);
                 $interruption = HackinConfig::$multipleSessionInterruption;
+                $aliveSession = "\"aliveSession\": {" . 
+                                        "\"browser\": " . json_encode($liveHackinSessionInfo->lastActiveBrowser) . ",". 
+                                        "\"ip\": " . json_encode($liveHackinSessionInfo->lastActiveIp) . ',' .
+                                        "\"lastActiveTime\": " . json_encode(HackinGlobalFunctions::timeStampFromPhpToSql($liveHackinSessionInfo->lastActiveTime)) .
+                                 "}";
+                $currentSession = '"currentSession": {' .
+                                           '"browser": ' . json_encode($hackinSessionInfo->lastActiveBrowser) . ', ' .
+                                            '"ip": ' . json_encode($hackinSessionInfo->lastActiveIp) . ', ' .
+                                            '"lastActiveTime": ' . json_encode(HackinGlobalFunctions::timeStampFromPhpToSql($hackinSessionInfo->lastActiveTime)) .
+                                         '}';
                 $interruptionMsg = 
                     '{' .  
                         '"interruption": ' . json_encode($interruption) . ',' .
-                        '"aliveSession": ' . json_encode(json_decode($liveHackinSessionInfo->additionalInfo)) . ',' . 
-                        '"currentSession": ' . json_encode(json_decode($hackinSessionInfo->additionalInfo)) . 
+                        $aliveSession . ',' .
+                        $currentSession .
                     '}';
                 echo HackinErrorHandler::interruptHandler($interruption, $interruptionMsg);
                 exit();
