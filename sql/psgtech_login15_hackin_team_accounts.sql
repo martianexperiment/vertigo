@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 15, 2015 at 06:09 PM
+-- Generation Time: Sep 20, 2015 at 10:57 AM
 -- Server version: 5.5.24-log
 -- PHP Version: 5.3.13
 
@@ -19,9 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `psgtech_login15_hackin_team_accounts`
 --
-DROP DATABASE `psgtech_login15_hackin_team_accounts`;
-CREATE DATABASE `psgtech_login15_hackin_team_accounts` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `psgtech_login15_hackin_team_accounts`;
 
 -- --------------------------------------------------------
 
@@ -45,6 +42,7 @@ CREATE TABLE IF NOT EXISTS `connections_creation_logger` (
 CREATE TABLE IF NOT EXISTS `connections_db_access_logger` (
   `db_access_no` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id for the table',
   `db_name` varchar(50) NOT NULL COMMENT 'name of the db being accessed',
+  `db_purpose` varchar(35) DEFAULT NULL COMMENT 'purpose of access- to overcome db shrinking, (session logger, request logger, access logger, quora logger, game engine logger)',
   `at_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'accessed at time',
   `additional_info` text COMMENT 'purpose of db access',
   PRIMARY KEY (`db_access_no`)
@@ -95,19 +93,17 @@ CREATE TABLE IF NOT EXISTS `hacks_logger` (
 --
 
 CREATE TABLE IF NOT EXISTS `registration` (
-  `screen_name` varchar(30) DEFAULT NULL COMMENT 'screen name of the hacking team',
-  `roll_no` varchar(10) DEFAULT NULL COMMENT 'roll no- alumni''s in general',
-  `email_id` varchar(60) NOT NULL COMMENT 'email id used by the hacking team',
-  `department_name` varchar(65) CHARACTER SET latin1 COLLATE latin1_general_cs NOT NULL COMMENT 'hacking team''s dept name',
-  `college_name` varchar(65) CHARACTER SET latin1 COLLATE latin1_general_cs NOT NULL COMMENT 'belonging to college',
-  `photo_for_team` text CHARACTER SET latin1 COLLATE latin1_general_cs COMMENT 'location to photo of the team(alumni/participant)',
+  `email_id` varchar(60) NOT NULL COMMENT 'id for the table',
+  `screen_name` varchar(30) DEFAULT NULL COMMENT 'name of the user',
+  `roll_no` varchar(15) DEFAULT NULL COMMENT 'rollno of the user- especially if alumni',
+  `is_user_alumni` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'if alumni=1',
+  `profile_pic` text COMMENT 'path to the image',
   `phone_no` varchar(13) NOT NULL COMMENT 'phone no for contacting the team',
-  `is_user_alumni` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'alumni = 1, participant = 0',
-  PRIMARY KEY (`email_id`),
-  UNIQUE KEY `screen_name` (`screen_name`,`phone_no`),
-  UNIQUE KEY `roll_no` (`roll_no`),
-  KEY `college_name` (`college_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='to register new users';
+  `college_code` varchar(10) DEFAULT NULL COMMENT 'code set for the college',
+  `department_name` varchar(50) DEFAULT NULL COMMENT 'name of the department',
+  `college_name` varchar(50) DEFAULT NULL COMMENT 'name of the college',
+  PRIMARY KEY (`email_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='register users for the first time to store information about them';
 
 -- --------------------------------------------------------
 
@@ -117,10 +113,19 @@ CREATE TABLE IF NOT EXISTS `registration` (
 
 CREATE TABLE IF NOT EXISTS `sessions_alive` (
   `email_id` varchar(60) NOT NULL COMMENT 'id for the table',
-  `session_id` varchar(10) NOT NULL COMMENT 'unique id for the person',
-  `last_login_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'time of recent login',
+  `php_session_id` varchar(50) NOT NULL COMMENT 'php''s session id as provided by <?php session_id() ?>',
+  `hackin_session_id` varchar(40) NOT NULL COMMENT 'session id assigned by Hackin event for tracking down',
+  `last_login_time` timestamp NULL DEFAULT NULL COMMENT 'time at which login happened',
+  `last_refresh_time` timestamp NULL DEFAULT NULL COMMENT 'time at which reload happened = login.php called',
+  `last_active_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'time at which any request is received',
+  `last_active_user_agent` text COMMENT 'browser agent for further details',
+  `last_active_browser` varchar(30) DEFAULT NULL COMMENT 'browser name',
+  `last_active_browser_details` text COMMENT 'complete information about the browser-> from useragentstring.com',
+  `last_active_ip` text COMMENT 'last used IP',
+  `last_active_ip_details` text NOT NULL COMMENT 'complete ip details',
   PRIMARY KEY (`email_id`),
-  KEY `session_id` (`session_id`)
+  KEY `php_session_id` (`php_session_id`),
+  KEY `hackin_session_id` (`hackin_session_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='only alive sessions';
 
 -- --------------------------------------------------------
@@ -130,18 +135,22 @@ CREATE TABLE IF NOT EXISTS `sessions_alive` (
 --
 
 CREATE TABLE IF NOT EXISTS `sessions_logger` (
+  `no` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id for the table',
   `email_id` varchar(60) NOT NULL,
-  `session_id` varchar(10) NOT NULL,
-  `is_new_incoming_session` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Whether the logging session is new or not',
-  `session_login_count` int(8) NOT NULL DEFAULT '0' COMMENT 'the no of time, at which the session logs in with the same session id',
-  `login_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'the time at which he logs in',
-  `http_header` text COMMENT 'header details of the user',
-  `browser_agent` text COMMENT 'browser agent details',
-  `logout_time` timestamp NULL DEFAULT NULL COMMENT 'the time at which he logs out/switches over the session',
-  `is_logged_out_by_new_request` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'whether he logs out on his own(=1) or by alternate user',
-  `ip_list_used_by_user` text COMMENT 'list of all IPs used by the player',
-  PRIMARY KEY (`email_id`,`session_id`,`session_login_count`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='logs all users login and logout times';
+  `php_session_id` varchar(30) NOT NULL COMMENT 'php''s session id as provided by <?php session_id() ?>',
+  `hackin_session_id` varchar(30) NOT NULL COMMENT 'hackin session id used to isolate hackin users',
+  `session_type` varchar(15) NOT NULL COMMENT 'type of session = [login, logout, refresh, access, force_logout]',
+  `browser_name` varchar(30) DEFAULT NULL COMMENT 'name of the browser used',
+  `user_agent` text COMMENT 'user agent string',
+  `browser_details` text COMMENT 'as provided by useragentstring.com',
+  `ip` text COMMENT 'from ip',
+  `ip_details` text COMMENT 'complete ip details as json',
+  PRIMARY KEY (`no`),
+  KEY `email_id` (`email_id`),
+  KEY `hackin_session_id` (`hackin_session_id`),
+  KEY `browser_name` (`browser_name`),
+  KEY `session_type` (`session_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='logs all users login and logout times' AUTO_INCREMENT=1 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

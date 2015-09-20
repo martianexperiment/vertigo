@@ -5,21 +5,21 @@
     class HackinUserInfo {
         public $emailId;
         public $screenName;
+        public $rollNo;
         public $isUserAlumni;
         public $profilePic;
         public $phoneNo;
-        public $rollNo;
         public $collegeCode;
         public $departmentName;
         public $collegeName;
 
-        public function __construct($emailId, $screenName, $isUserAlumni, $profilePic, $phoneNo, $rollNo, $collegeCode, $departmentName, $collegeName) {
+        public function __construct($emailId, $screenName, $rollNo, $isUserAlumni, $profilePic, $phoneNo, $collegeCode, $departmentName, $collegeName) {
             $this->emailId = $emailId;
             $this->screenName = $screenName;
+            $this->rollNo = $rollNo;
             $this->isUserAlumni = $isUserAlumni;
             $this->profilePic = $profilePic;
             $this->phoneNo = $phoneNo;
-            $this->rollNo = $rollNo;
             $this->collegeCode = $collegeCode;
             $this->departmentName = $departmentName;
             $this->collegeName = $collegeName;

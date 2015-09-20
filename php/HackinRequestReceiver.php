@@ -1,6 +1,7 @@
 <?php
 require_once(__DIR__ . "/HackinSessionHandler.php");
 require_once(__DIR__ . "/HackinGlobalFunctions.php");
+require_once(__DIR__ . "/HackinRequestHandler.php");
 /**
     Every request comes and flows through this php.
     Handles session via HackinSessionHandler.php
@@ -17,12 +18,13 @@ require_once(__DIR__ . "/HackinGlobalFunctions.php");
             exit();
         }
         $functionalityForWhichExceptionExpected = "Verify whether session is valid";
-        $hackinSession = HackinSessionHandler::getHackinSession();
+        //$hackinSession = HackinSessionHandler::getHackinSession();
         //process all requests here.
         if(isset($_REQUEST["function"])){
             $functionRequest = $_REQUEST["function"];
             switch ($functionRequest) {
                 case "logIn()":
+                    HackinRequestHandler::logIn();
                     readfile(__DIR__ . "/../dash.html");
                     break;
                 case "logOut()":

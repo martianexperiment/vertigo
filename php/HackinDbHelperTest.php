@@ -3,4 +3,5 @@
     $dbHelper = new HackinDbHelper();
     $dbHelper->testConnectionCreation();
     $dbHelper->testGetAliveHackinSessionNotEqualToCurrentSession();
+    $dbHelper->testHasUserRegistered();
 ?>

@@ -13,7 +13,7 @@
         /**
             insert or remove '/' between /** and header('... to switch on/off simulations
         */
-        /**header('LOCATION: //accounts.psglogin.in/index.php?r=hackin');/*/
+        /**/header('LOCATION: //accounts.psglogin.in/index.php?r=hackin');/*/
         //Simulating  the sessions from accounts.psglogin.in
         $_SESSION['ses_auth'] = "1";
         $_SESSION['ses_account_type'] = 'PAR';
@@ -37,6 +37,7 @@
 
     $userBrowserInfo = new UserBrowserInfo();
     $_SESSION['hackin_user_agent'] = $userBrowserInfo->userAgent;
+    //print_r($_SESSION);
 
     /**
         Post method from login.php to HackinRequestReceiver.php, to load the page when a user logs in for the first time.
