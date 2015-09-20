@@ -372,7 +372,7 @@
             $pdo = $this->getPDOConnectionToDbAndVerifyUser($additionalInfo);
             $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
             $liveHackinSessionInfo = $hackinSessionInfo;
-            $functionalityForWhichExceptionExpected = "create new live HackinSessionInfo for session:" . json_encode($HackinSessionInfo);
+            $functionalityForWhichExceptionExpected = "create new live HackinSessionInfo for session:" . json_encode($hackinSessionInfo);
             try {
                 /**
                     QUERY: logger, session, account new incoming session
@@ -441,7 +441,7 @@
                 */
 
                 if($this->debug) {
-                    echo "<br><br>checkMultipleAccess: db_live_session_updation_query<br>" . $db_live_session_updation_query;
+                    echo "<br><br>firstLiveSession: db_live_session_updation_query<br>" . $db_live_session_updation_query;
                 }
 
                 $pdo->query($db_live_session_updation_query);
@@ -449,6 +449,87 @@
                 echo HackinErrorHandler::errorHandler($ex, $functionalityForWhichExceptionExpected);
                 exit();
             }
+        }
+
+        public function updateNewLiveSession($liveHackinSessionInfo) {
+            $additionalInfo =  '{"updateNewLiveSession": {' .
+                                    '"liveHackinSessionInfo": ' . json_encode($liveHackinSessionInfo) . 
+                                '}';
+            $functionalityForWhichExceptionExpected = $additionalInfo;
+            $pdo = $this->getPDOConnectionToDbAndVerifyUser($additionalInfo);
+            $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
+            try{
+                $db_force_live_session_accounting_query = 
+                    "update `" . $this->db_accounts . "`.`sessions_alive`  " .
+                        "set php_session_id = '". $liveHackinSessionInfo->phpSessionId . "'" .
+                            ", hackin_session_id = '" . $liveHackinSessionInfo->hackinSessionId . "'" .
+                            ", last_login_time = now() " .
+                            ", last_refresh_time = now() " .
+                            ", last_active_time = now() " .
+                            ", last_active_user_agent = '" . $liveHackinSessionInfo->lastActiveUserAgent . "'" .
+                            ", last_active_browser = '" . $liveHackinSessionInfo->lastActiveBrowser . "'" .
+                            ", last_active_browser_details = '" . $liveHackinSessionInfo->lastActiveBrowserDetails . "'".
+                            ", last_active_ip = '" . $liveHackinSessionInfo->last_active_ip . "'" .
+                            ", last_active_ip_details = '" . $liveHackinSessionInfo->last_active_ip_details . "'" .
+                            "where email_id = '" . $liveHackinSessionInfo->emailId . "' ";
+                    /*"update `" . $this->db_accounts . "`.`sessions_alive`  " .
+                            "set `php_session_id` = :phpSessionId" .
+                            " , `hackin_session_id` = :hackinSessionId" . 
+                            " , `last_login_time` = :lastLoginTime" .
+                            ", `last_refresh_time` = :lastRefreshTime" .
+                            ", `last_active_time` = :lastActiveTime" .
+                             ", `last_active_user_agent` = :lastActiveUserAgent" .
+                             ", `last_active_browser` = :lastActiveBrowser" .
+                             ", `last_active_browser_details` = :lastActiveBrowserDetails" .
+                             " , `last_active_ip` = :lastActiveIp" .
+                             ", `last_active_ip_details` = :lastActiveIpDetails" . 
+                        "where `email_id` = :emailId";
+            
+                $stmt = $pdo->prepare($db_new_live_session_accounting_query);
+                $array = array(   ":phpSessionId"              => $liveHackinSessionInfo->phpSessionId
+                                , ":hackinSessionId"           => $liveHackinSessionInfo->hackinSessionId
+                                , ":lastLoginTime"             => HackinGlobalFunctions::timeStampFromPhpToSql($liveHackinSessionInfo->lastLoginTime)
+                                , ":lastRefreshTime"           => HackinGlobalFunctions::timeStampFromPhpToSql($liveHackinSessionInfo->lastRefreshTime)
+                                , ":lastActiveTime"            => HackinGlobalFunctions::timeStampFromPhpToSql($liveHackinSessionInfo->lastActiveTime)
+                                , ":lastActiveUserAgent"       => $liveHackinSessionInfo->lastActiveUserAgent
+                                , ":lastActiveBrowser"         => $liveHackinSessionInfo->lastActiveBrowser
+                                , ":lastActiveBrowserDetails"  => $liveHackinSessionInfo->lastActiveBrowserDetails
+                                , ":lastActiveIp"              => $liveHackinSessionInfo->lastActiveIp
+                                , ":lastActiveIpDetails"       => $liveHackinSessionInfo->lastActiveIpDetails
+                                , ":emailId"                   => $liveHackinSessionInfo->emailId
+                                );
+                print_r("The final array is::".$array);
+                //$stmt->execute($array);*/
+                if($this->debug) {
+                    echo "The update query is::" . $db_force_live_session_accounting_query;
+                }
+                $pdo->query($db_force_live_session_accounting_query);
+            } catch(Exception $ex) {
+                echo HackinErrorHandler::errorHandler($ex, $functionalityForWhichExceptionExpected);
+                exit();
+            }
+        }
+
+        public function removeLiveHackinSession($hackinSessionInfo) {
+            $additionalInfo = '{"logout-removeLiveHackinSession" :' . json_encode($hackinSessionInfo) . ' }' ;
+            $functionalityForWhichExceptionExpected = $additionalInfo;
+            $pdo = $this->getPDOConnectionToDbAndVerifyUser($additionalInfo);
+            $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
+            try{
+                $db_live_session_deletion_query = 
+                    "delete from `". $this->db_accounts ."`.`sessions_alive` where email_id = '" . $hackinSessionInfo->emailId . "' and hackin_session_id = '" . $hackinSessionInfo->hackinSessionId . "'" ;
+                if($this->debug) {
+                    echo "<br><br>removeLiveHackinSession: db_live_session_deletion_query<br>" . $db_live_session_deletion_query;
+                    echo "<br>";
+                    print_r($hackinSessionInfo);
+                }
+
+                $pdo->query($db_live_session_deletion_query);
+            } catch(Exception $ex) {
+                echo HackinErrorHandler::errorHandler($ex, $functionalityForWhichExceptionExpected);
+                exit();
+            }
+            
         }
     }
 ?>

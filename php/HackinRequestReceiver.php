@@ -25,11 +25,15 @@ require_once(__DIR__ . "/HackinRequestHandler.php");
             switch ($functionRequest) {
                 case "logIn()":
                     HackinRequestHandler::logIn();
-                    readfile(__DIR__ . "/../dash.html");
                     break;
                 case "logOut()":
+                    HackinRequestHandler::logOut();
                     session_destroy();
-                    header("Location: ../index.html");
+                    header("Location: http://hackin.psglogin.in/");
+                    break;
+                case "forceLogIn()":
+                    HackinRequestHandler::forceLogIn();
+                    HackinRequestHandler::logIn();
                     break;
                 }
             return;
