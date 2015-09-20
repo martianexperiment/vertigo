@@ -1,0 +1,20 @@
+<strong>
+	<i class="fa fa-book margin-r-5"></i>
+	Objective
+</strong>
+<p id="description-text">
+	The prison where you are locked up has four levels of security. A digital key is needed to unlock the door at each level. The keys are shared in such a way that any three keys can be used to derive the fourth one. You have managed to get three keys by bribing one of the security guards.<br/> Now, the task is to get the fourth key using these three, so that you can escape the prison.
+</p>
+<hr>
+<div id="attachments">
+	<strong>
+		<i class="fa fa-paperclip margin-r-5"></i>
+		Attachments
+	</strong>
+	<p>
+		<span class="label label-primary">04448aa850e334f5edca</span>
+		<span class="label label-primary">bf2c9efdfb1b1863aa5d</span>
+		<span class="label label-primary">c583c693761ceb5dc957</span>
+		<span class="label label-primary">2f02b92863db9fc84f91</span>
+	</p>
+</div>
