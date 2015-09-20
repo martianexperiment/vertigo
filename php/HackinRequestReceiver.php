@@ -35,6 +35,30 @@ require_once(__DIR__ . "/HackinRequestHandler.php");
                     HackinRequestHandler::forceLogIn();
                     HackinRequestHandler::logIn();
                     break;
+                case "getUserInfo()":
+                    //userinfo -> emailid, colgname obj
+                    echo json_encode(HackinRequestHandler::getHackinUserInfo());
+                    break;
+                case "getGameState()":
+                    echo json_encode(HackinRequestHandler::getGameState());
+                    break;
+                case "getCurrentView()":
+                    //
+                    break;
+                case "getNextQuestion()":
+                    //gives you the entire json file for that question.
+                    break;
+                case "verifyAnswer()":
+                    //
+                    break;
+                default:
+                    try {
+                        throw new Exception("illegal request");
+                    } catch(Exception $ex) {
+                        echo HackinErrorHandler::errorHandler($ex, $_REQUEST['function']);
+                        exit();
+                    }
+                    break;
                 }
             return;
         } /*else if(other functionalities are available) {

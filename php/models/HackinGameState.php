@@ -9,8 +9,8 @@
         public $isUserAlumni;
         public $playsAsCharacter;
 
-        public function __construct($emailId, $currentLevelNo, $currentMissionNo, $currentPlotNo, $currentCountOfAttemptsMade, 
-            $currentScore, $isUserAlumni, $playsAsCharacter) {
+        public function __construct($emailId = NULL, $currentLevelNo = NULL, $currentMissionNo = NULL, $currentPlotNo = NULL, $currentCountOfAttemptsMade = NULL, 
+            $currentScore = NULL, $isUserAlumni = NULL, $playsAsCharacter = NULL) {
             $this->emailId = $emailId;
             $this->currentLevelNo = $currentLevelNo;
             $this->currentMissionNo = $currentMissionNo;

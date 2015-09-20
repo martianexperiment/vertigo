@@ -125,6 +125,13 @@
             return $hackinSessionInfo;
         }
 
+        public static function getHackinGameStateForRegisterdUser() {
+            $hackinUserInfo = self::getHackinUserInfo();
+            $hackinDbHelper = new HackinDbHelper();
+            $gameState = $hackinDbHelper->getHackinGameStateForRegisterdUser($hackinUserInfo);
+            return $gameState;
+        }
+
         /**
             to get the hackin session object populated with values
             Retrieves HackinUserInfo and HackinGameState objects from session variables and database respectively

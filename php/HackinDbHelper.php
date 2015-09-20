@@ -4,6 +4,7 @@
 
     require_once(__DIR__ . "/models/HackinSessionInfo.php");
     require_once(__DIR__ . "/models/HackinUserInfo.php");
+    require_once(__DIR__ . "/models/HackinGameState.php");
     require_once(__DIR__ . "/config/HackinConfig.php");
 
     /**
@@ -469,8 +470,8 @@
                             ", last_active_user_agent = '" . $liveHackinSessionInfo->lastActiveUserAgent . "'" .
                             ", last_active_browser = '" . $liveHackinSessionInfo->lastActiveBrowser . "'" .
                             ", last_active_browser_details = '" . $liveHackinSessionInfo->lastActiveBrowserDetails . "'".
-                            ", last_active_ip = '" . $liveHackinSessionInfo->last_active_ip . "'" .
-                            ", last_active_ip_details = '" . $liveHackinSessionInfo->last_active_ip_details . "'" .
+                            ", last_active_ip = '" . $liveHackinSessionInfo->lastActiveIp . "'" .
+                            ", last_active_ip_details = '" . $liveHackinSessionInfo->lastActiveIpDetails . "'" .
                             "where email_id = '" . $liveHackinSessionInfo->emailId . "' ";
                     /*"update `" . $this->db_accounts . "`.`sessions_alive`  " .
                             "set `php_session_id` = :phpSessionId" .
@@ -530,6 +531,43 @@
                 exit();
             }
             
+        }
+
+        public function getHackinGameStateForRegisterdUser($hackinUserInfo) {
+            $additionalInfo = '{"getGameState":' . json_encode($hackinUserInfo). ' }';
+            $functionalityForWhichExceptionExpected = $additionalInfo;
+            $pdo = $this->getPDOConnectionToDbAndVerifyUser($additionalInfo);
+            $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
+            try{
+                $db_game_state_retrieval_query = 
+                    "select * from `". $this->db_accounts ."`.`game_state` where email_id = '" . $hackinUserInfo->emailId . "'" ;
+                if($this->debug) {
+                    echo "<br><br>getHackinGameState: db_game_state_retrieval_query<br>" . $db_game_state_retrieval_query;
+                    echo "<br>";
+                    print_r($hackinUserInfo);
+                }
+
+                $stmt = $pdo->query($db_game_state_retrieval_query);
+                $row_count = $stmt->rowCount();
+                if($row_count > 1) {
+                    $ex = "Integrity constraint violation. Multiple game states stored in db for same user";
+                    throw $ex;
+                }
+                $gameState = new HackinGameState();
+                $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                foreach($rows as $row) {
+                     $hackinGameState = HackinJsonHandler::hackinGameStateInfoRetrievalFromObject($row);
+                    
+                    if($this->debug) {
+                        echo "<br>hackinGameState (for user= " . $hackinUserInfo->emailId . ")= ". json_encode($hackinGameState);
+                    }
+                }
+            } catch(Exception $ex) {
+                echo HackinErrorHandler::errorHandler($ex, $functionalityForWhichExceptionExpected);
+                exit();
+            }
+            return $hackinGameState;
         }
     }
 ?>

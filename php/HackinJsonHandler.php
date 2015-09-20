@@ -27,5 +27,20 @@
             }
             return $hackinSessionInfo;
         }
+
+        public static function hackinGameStateInfoRetrievalFromObject($obj) {
+            $functionalityWhenInterruptionExpected = "Retrieve data for HackinGameState object:";
+            $hackinGameState = new HackinGameState();
+            try {
+                foreach($obj as $field => $fieldValue) {
+                    $member = HackinGlobalFunctions::underscores_toCamelCase($field);
+                    $hackinGameState->$member = $fieldValue;
+                }
+            } catch(Exception $ex) {
+                echo HackinErrorHandler::errorHandler($ex, $functionalityWhenInterruptionExpected);
+                exit();
+            }
+            return $hackinGameState;
+        }
     }
 ?>

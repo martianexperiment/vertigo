@@ -10,8 +10,8 @@
             TODO: create/use existing error log and dump the state along with the error msg.
         */
         public static function errorHandler(Exception $ex, $errorOccuredIn) {
-            $errorOccuredIn = "Error occured during **".$errorOccuredIn."**" . $ex->getMessage() ;
-            $errorMsg = $errorMsg . self::errorMsgToShowToHackinUser($errorOccuredIn);
+            $errorOccuredIn = "Error occured during **".$errorOccuredIn."** msg=" . $ex->getMessage() ;
+            $errorMsg = $errorOccuredIn . self::errorMsgToShowToHackinUser($errorOccuredIn);
             //log in the file here
             return $errorMsg;
         }
@@ -23,7 +23,7 @@
         private static function errorMsgToShowToHackinUser($errorOccuredIn) {
             $errorMsg = "{" . 
                             "\"error\": " . json_encode($errorOccuredIn) .
-                            //"\"html\": " . json_encode(file_get_contents(__DIR__ . "/../oops.html")) .
+                            "\"html\": " . json_encode(file_get_contents(__DIR__ . "/../oops.html")) .
                         "}";
             return $errorMsg;
         }
@@ -37,6 +37,7 @@
                 //$jsonObject = json_decode($interruptionMsg);
                 $interruptionMsg = $interruptionMsg;
             }*/
+
             return $interruptionMsg;
         }
 

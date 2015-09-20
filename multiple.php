@@ -1,3 +1,9 @@
+<?php
+	function getContent() {
+		return '<p id="liveSession">' . $obj->liveSession->browser . '@' . $obj->liveSession->ip '</p>' . 
+			 '<p id="currentSession">' . $obj->currentSession->browser . '@' . $obj->currentSession->ip .'</p>';
+	}
+?>
 <html>
 <head>
 	<title>Hack[IN] 2015</title>
@@ -67,6 +73,12 @@
 			<div class="col-lg-12 text-center">
 				<p id="error-msg">Live Session: Firefox, 134:72:1:1</p>
 				<p id="error-msg">Current Session: Chrome, 134:72:1:1</p>
+			<div class="col-lg-12 text-center" id="error-msg">
+				<?php 
+					function($obj) {
+						echo getContent($obj);
+					}
+				?>
 			</div>
 		</div>
 		<div class="row voffset1">
