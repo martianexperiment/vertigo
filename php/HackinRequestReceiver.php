@@ -38,30 +38,6 @@ require_once(__DIR__ . "/HackinRequestHandler.php");
                     break;
                 case "getUserInfo()":
                     //userinfo -> emailid, colgname obj
-                    echo json_encode($hackinRequestHandler->getHackinUserInfo());
-                    break;
-                case "getGameState()":
-                    echo json_encode($hackinRequestHandler->getGameState());
-                    break;
-                case "getCurrentView()":
-                    echo file_get_contents(__DIR__."/../questionModel/q1.json");
-                    break;
-                case "getNextQuestion()":
-                    echo file_get_contents(__DIR__."/../questionModel/q1.json");
-                    break;
-                case "verifyAnswer()":
-                    //
-                    break;
-                default:
-                    try {
-                        throw new Exception("illegal request");
-                    } catch(Exception $ex) {
-                        echo HackinErrorHandler::errorHandler($ex, $_REQUEST['function']);
-                        exit();
-                    }
-                    break;
-                case "getUserInfo()":
-                    //userinfo -> emailid, colgname obj
                     echo json_encode(HackinRequestHandler::getHackinUserInfo());
                     break;
                 case "getGameState()":

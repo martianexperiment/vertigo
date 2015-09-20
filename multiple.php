@@ -1,9 +1,3 @@
-<?php
-	function getContent() {
-		return '<p id="liveSession">' . $obj->liveSession->browser . '@' . $obj->liveSession->ip '</p>' . 
-			 '<p id="currentSession">' . $obj->currentSession->browser . '@' . $obj->currentSession->ip .'</p>';
-	}
-?>
 <html>
 <head>
 	<title>Hack[IN] 2015</title>

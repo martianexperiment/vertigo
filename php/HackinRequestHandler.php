@@ -124,16 +124,6 @@
             return HackinSessionHandler::getHackinGameStateForRegisterdUser();
         }
 
-        public static function getHackinUserInfo() {
-            HackinSessionHandler::verifySession();
-            return HackinSessionHandler::getHackinUserInfo();
-        }
-
-        public static function getGameState() {
-            HackinSessionHandler::verifySession();
-            return HackinSessionHandler::getHackinGameStateForRegisterdUser();
-        }
-
     }
     //echo json_encode($_SERVER);
 ?>
