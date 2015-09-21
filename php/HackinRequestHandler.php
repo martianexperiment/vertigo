@@ -119,7 +119,7 @@
             return HackinSessionHandler::getHackinUserInfo();
         }
 
-        public static function getGameState() {
+        public function getGameState() {
             HackinSessionHandler::verifySession();
             return HackinSessionHandler::getHackinGameStateForRegisterdUser();
         }

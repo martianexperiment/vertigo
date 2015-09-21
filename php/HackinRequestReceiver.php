@@ -38,10 +38,10 @@ require_once(__DIR__ . "/HackinRequestHandler.php");
                     break;
                 case "getUserInfo()":
                     //userinfo -> emailid, colgname obj
-                    echo json_encode(HackinRequestHandler::getHackinUserInfo());
+                    echo json_encode($hackinRequestHandler->getHackinUserInfo());
                     break;
                 case "getGameState()":
-                    echo json_encode(HackinRequestHandler::getGameState());
+                    echo json_encode($hackinRequestHandler->getGameState());
                     break;
                 case "getCurrentView()":
                     $obj = json_decode(readfile(__DIR__."/../questionModel/q1.json"));
