@@ -59,7 +59,7 @@
             $screenName = $_SESSION['hackin_alumni_name'] =  "";
             $profilePic = "";
 
-            if($_SESSION['is_user_alumni'] == 0){
+            if($_SESSION['is_user_alumni'] == 0) {
                 $collegeCode = $_SESSION['hackin_code'] = $_SESSION['ses_cCode'];
                 $collegeName = $_SESSION['hackin_college_name'] = $_SESSION['ses_college_name'];
                 $departmentName = $_SESSION['hackin_department_name'] = $_SESSION['ses_dept_name'];
@@ -68,7 +68,7 @@
                 $screenName = $_SESSION['hackin_alumni_name'] =  $_SESSION['ses_alumni_name'];
             }
 
-            $hackinUserInfo = new HackinUserInfo($emailId, $screenName, $isUserAlumni, $profilePic, $phoneNo, $rollNo, $collegeCode, $departmentName, $collegeName);
+            $hackinUserInfo = new HackinUserInfo($emailId, $isUserAlumni, $phoneNo, $screenName, $rollNo, $collegeCode, $departmentName, $collegeName, $profilePic);
             return $hackinUserInfo;
         }
 
