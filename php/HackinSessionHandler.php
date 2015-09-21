@@ -14,10 +14,15 @@
             Verify whether all required session variables are set.
             return: throws exception if not.
         */
+        public static $debug = 0;
+
         public static function verifySession() {
             if(!isset($_SESSION)) {
                 $ex = new Exception("verifySession(): Session has not been started. Game play requires session creation. Please sign in again");
                 throw $ex;
+            }
+            if(self::$debug) {
+                print_r($_SESSION);
             }
             if(empty($_SESSION['ses_auth'])) {
                 $ex = new Exception("verifySession(): Session has not been authenticated. Game play requires authenticated session. Please sign in again.");
@@ -31,11 +36,11 @@
                 $ex = new Exception("verifySession(): user details insufficient.. (email|phone_no)==NULL??");
                 throw $ex;
             }
-            if($_SESSION['ses_account_type'] == "PAR" && (empty($_SESSION['ses_cCode']) || empty($_SESSION['ses_college_name']) || empty($_SESSION['ses_dept_name']))) {
+            if(strcasecmp($_SESSION['ses_account_type'], "PAR") == 0 && (empty($_SESSION['ses_cCode']) || empty($_SESSION['ses_college_name']) || empty($_SESSION['ses_dept_name']))) {
                 $ex = new Exception("verifySession(): participant details insufficient (cCode|collegeName|departmentName)==NULL??");
                 throw $ex;
             }
-            if($_SESSION['ses_account_type'] == "ALU" && (empty($_SESSION['ses_alumni_rollno']) || empty($_SESSION['ses_alumni_name']))) {
+            if(strcasecmp($_SESSION['ses_account_type'], "ALU") == 0 && (empty($_SESSION['ses_alumni_rollno']) || empty($_SESSION['ses_alumni_name']))) {
                 $ex = new Exception("verifySession(): alumni details insufficient. (rollno|name)==NULL??");
                 throw $ex;
             }

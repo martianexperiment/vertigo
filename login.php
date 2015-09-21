@@ -28,7 +28,7 @@
             $_SESSION['ses_cCode'] = "1234";
             $_SESSION['ses_college_name'] = "PSG College Of Technology";
             $_SESSION['ses_dept_name'] = "DAMCS";
-            //echo $_SESSION['ses_account_type'] . "; " . $_SESSION['ses_email'] . "; " . $_SESSION['ses_phone'] . "; " . $_SESSION['ses_cCode'] . "; " . $_SESSION['ses_college_name'] . "; " . $_SESSION['ses_dept_name'];*/
+            //echo $_SESSION['ses_account_type'] . "; " . $_SESSION['ses_email'] . "; " . $_SESSION['ses_phone'] . "; " . $_SESSION['ses_cCode'] . "; " . $_SESSION['ses_college_name'] . "; " . $_SESSION['ses_dept_name'];
         }
         //*/
     }
