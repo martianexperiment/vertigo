@@ -11,9 +11,18 @@
         */
         public static function errorHandler(Exception $ex, $errorOccuredIn) {
             $errorOccuredIn = "Error occured during **".$errorOccuredIn."** msg=" . $ex->getMessage() ;
-            $errorMsg = $errorOccuredIn . self::errorMsgToShowToHackinUser($errorOccuredIn);
+            //$errorMsg = $errorOccuredIn . self::errorMsgToShowToHackinUser($errorOccuredIn);
             //log in the file here
-            return $errorMsg;
+            $errorMsg = "";
+            
+            $errorMsg = file_get_contents(__DIR__ . "/../views/errorPagePart1.view");
+            $errorMsg = $errorMsg . '<p id="error-text">';
+            $errorMsg = $errorMsg. $errorOccuredIn;
+            $errorMsg = $errorMsg. '</p>';
+            $errorMsg = $errorMsg . file_get_contents(__DIR__ . "/../views/errorPagePart2.view");
+            
+            echo $errorMsg;
+            self::endStackTrace();
         }
 
         /**
@@ -37,47 +46,25 @@
                 //$jsonObject = json_decode($interruptionMsg);
                 $interruptionMsg = $interruptionMsg;
             }*/
+            $jsonObject = json_decode($interruptionMsg);
+            $multipleSessionPage = file_get_contents(__DIR__ . "/../views/multipleSessionsPart1.view");
+            $multipleSessionPage = $multipleSessionPage . 
+                '<p class="error-msg"> Alive Session: ' . $jsonObject->{'liveSession'}->{'browser'} . ", " . $jsonObject->{'liveSession'}->{'ip'} . ", " .
+                    $jsonObject->{'liveSession'}->{'lastActiveTime'} . "" .
+                '<p class="error-msg"> Current Session: ' . $jsonObject->{'currentSession'}->{'browser'} . ", " . $jsonObject->{'currentSession'}->{'ip'} . ", " .
+                    $jsonObject->{'currentSession'}->{'lastActiveTime'} . "";
+            $multipleSessionPage = $multipleSessionPage . file_get_contents(__DIR__ . "/../views/multipleSessionsPart2.view");
+            echo $multipleSessionPage;
+        }
 
-            return $interruptionMsg;
-            /*$obj = json_decode($interruptionMsg);
-            $file = __DIR__ . "\..\mutiple.html";
-            echo $file . "<br>";
-            print_r($file);
-            $doc = new DOMDocument();
-            $doc->loadHTMLFile('C:\DevTools\WebKits\wamp22\www\hackin15\vertigo\mutiple.html');
-            $div = $dom->getElementById('error-msg');
-
-            $xpath = new DOMXpath($doc);
-            $elements = $xpath->query("//*[@id='error-msg']");
-            if (!is_null($elements)) {
-                foreach ($elements as $element) {
-                    $nodes = $element->childNodes;
-                    $browser =  $obj->{'liveSession'}->{'browser'};
-                    $nodes[0]->nodeValue = $browser;
-                    $browser =  $obj->{'currentSession'}->{'browser'};
-                    $nodes[1]->nodeValue = $browser;
-                }
-            }
-            echo $doc->saveHTML;
-            * /
-            $path = '/wiki/Pop_music';
-            $url = "http://en.wikipedia.org$path";
-            $doc = new \DOMDocument();
-            $success = @$doc->loadHTMLFile($url);
-
-            if ($success) {
-                $xpath = new DOMXPath($doc);
-                $xpathCode = "//h1[@id='firstHeading']";
-                $nodes = $xpath->query($xpathCode);
-                echo $nodes->item(0)->nodeValue."<br />";
-                print $doc->saveHTML;
-            }
-            echo $success;*/
+        public static function endStackTrace() {
+            session_destroy();
+            exit();
         }
 
     }
     //$interruption = HackinConfig::$multipleSessionInterruption;
     //$interruptionMsg = 
         //  '{"interruption": "MulitpleSessionsInterruption","liveSession": {"browser": "Firefox","ip": "::1","lastActiveTime": "2015-09-21 07:19:32"},"currentSession": {"browser": "Chrome", "ip": "::1", "lastActiveTime": "2015-09-21 07:28:12"}}'
-    HackinErrorHandler::interruptHandler("", "");
+    //HackinErrorHandler::interruptHandler("", "");
 ?>

@@ -173,7 +173,7 @@
                         $aliveSession . ',' .
                         $currentSession .
                     '}';
-                echo HackinErrorHandler::interruptHandler($interruption, $interruptionMsg);
+                //echo HackinErrorHandler::interruptHandler($interruption, $interruptionMsg);
                 exit();
             }
             $gameState = NULL;//$hackinDbHelper->getHackinGameState();

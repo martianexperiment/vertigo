@@ -82,8 +82,9 @@
                             '"interruption": ' . json_encode($interruption) . ',' .
                             $liveSession . ',' .
                             $currentSession . 
-                            ',' ."\"html\" :"  . json_encode(file_get_contents(__DIR__ . "/../multiple.html")) .
+                            //',' ."\"html\" :"  . json_encode(file_get_contents(__DIR__ . "/../multiple.html")) .
                          '}';
+                    //echo $interruptionMsg;
                     echo HackinErrorHandler::interruptHandler($interruption, $interruptionMsg);
                     exit();
                 }
