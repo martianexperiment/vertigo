@@ -15,6 +15,7 @@
             return: throws exception if not.
         */
         public static $debug = 0;
+        private static $hackinDbHelper;
 
         public static function verifySession() {
             if(!isset($_SESSION)) {
@@ -132,7 +133,10 @@
 
         public static function getHackinGameStateForRegisterdUser() {
             $hackinUserInfo = self::getHackinUserInfo();
-            $hackinDbHelper = new HackinDbHelper();
+            if(self::$hackinDbHelper == NULL) {
+                self::$hackinDbHelper = new HackinDbHelper();
+            }
+            $hackinDbHelper = self::$hackinDbHelper;
             $gameState = $hackinDbHelper->getHackinGameStateForRegisterdUser($hackinUserInfo);
             return $gameState;
         }
