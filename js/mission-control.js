@@ -20,9 +20,10 @@ function fetchGameState()
 		{'function': 'getGameState()'},
 		function(data, textStatus, xhr)
 		{
-			console.log(data);
-			data = JSON.parse(data);
+			//console.log(typeof data);
 			checkError(data);
+			data = data.replace(/\\(.)/mg, "$1");
+			data = JSON.parse(data);
 			bindCharacterInfo(data, $('.user-panel'));
 		}
 	);
@@ -35,9 +36,10 @@ function fetchUserInfo()
 		{'function': 'getUserInfo()'},
 		function(data, textStatus, xhr)
 		{
-			console.log(data);
-			data = JSON.parse(data);
+			//console.log(typeof data);
 			checkError(data);
+			data = data.replace(/\\(.)/mg, "$1");
+			data = JSON.parse(data);
 			bindUser(data, $('#user-account-menu'));
 		}
 	);
