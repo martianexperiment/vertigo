@@ -47,13 +47,13 @@
                 $interruptionMsg = $interruptionMsg;
             }*/
             $jsonObject = json_decode($interruptionMsg);
-            $multipleSessionPage = file_get_contents(__DIR__ . "/../views/multipleSessionsPart1.view");
+            $multipleSessionPage = file_get_contents(__DIR__ . "/../views/multipleSessionsPagePart1.view");
             $multipleSessionPage = $multipleSessionPage . 
                 '<p class="error-msg"> Alive Session: ' . $jsonObject->{'liveSession'}->{'browser'} . ", " . $jsonObject->{'liveSession'}->{'ip'} . ", " .
                     $jsonObject->{'liveSession'}->{'lastActiveTime'} . "" .
                 '<p class="error-msg"> Current Session: ' . $jsonObject->{'currentSession'}->{'browser'} . ", " . $jsonObject->{'currentSession'}->{'ip'} . ", " .
                     $jsonObject->{'currentSession'}->{'lastActiveTime'} . "";
-            $multipleSessionPage = $multipleSessionPage . file_get_contents(__DIR__ . "/../views/multipleSessionsPart2.view");
+            $multipleSessionPage = $multipleSessionPage . file_get_contents(__DIR__ . "/../views/multipleSessionsPagePart2.view");
             echo $multipleSessionPage;
         }
 
