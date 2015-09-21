@@ -1,4 +1,4 @@
-/*Sessiom Management*/
+/*Session Management*/
 
 function prepareErrorToPrint(errorMsg)
 {
@@ -12,14 +12,29 @@ function prepareErrorToPrint(errorMsg)
 
 function checkError(reply)
 {
-	var repDOM = $(reply);
-	if(repDOM.find('#error-msg'))
+	reply = reply.replace(/\\(.)/mg, "$1");
+	var isJSON = IsJsonString(reply);
+	if(!isJSON)
 	{
-		$('html').html(reply);
+		var repDOM = $(reply);
+	
+		if(!isJSON && repDOM.find('#error-msg'))
+		{
+			$('html').html(reply);
+		}
 	}
-	else if(reply.error!=null || reply.interruption!=null)
+	else if(isJSON && (reply.error!=null || reply.interruption!=null))
 	{
 		$('html').html(reply.html);
 		$('#error-msg').html(prepareErrorToPrint(reply));
 	}
+}
+
+function IsJsonString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
 }

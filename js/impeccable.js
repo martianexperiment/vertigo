@@ -11,7 +11,7 @@ var elapseInSecs = -(Math.round(elapseMilliSecs / 1000.0));
 jQuery(document).ready(function($) {
 
 	var ua = window.navigator.userAgent;
-	var msie = ua.indexOf("MSIE ");
+	var msie = ua.indexOf("MSIE");
 
 	var isIE = false;
 

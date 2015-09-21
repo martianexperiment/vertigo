@@ -16,7 +16,7 @@ function bindCharacterInfo(gameState, sidebarDOM)
 		var charImgElement = sidebarDOM.find('#characterImage');
 		var charNameElement = sidebarDOM.find('#characterName');	
 
-		var charModel = gameState.playsAsCharacter;
+		var charModel = JSON.parse(gameState.playsAsCharacter);
 
 		if(charImgElement)
 			charImgElement.attr('src',charModel.profilePic);
