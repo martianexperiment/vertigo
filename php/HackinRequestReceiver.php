@@ -68,10 +68,12 @@ require_once(__DIR__ . "/HackinRequestHandler.php");
                     echo json_encode(HackinRequestHandler::getGameState());
                     break;
                 case "getCurrentView()":
-                    //
+                    $obj = json_decode(readfile(__DIR__."/../questionModel/q1.json"));
+                    json_encode($obj);
                     break;
                 case "getNextQuestion()":
-                    //gives you the entire json file for that question.
+                    $obj = file_get_contents(__DIR__."/../questionModel/q1.json");
+                    addslashes($obj);
                     break;
                 case "verifyAnswer()":
                     //

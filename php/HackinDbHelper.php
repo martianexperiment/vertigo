@@ -281,6 +281,10 @@
             $additionalInfo =  '{"hasUserRegistered": {' .
                                     '"hackinUserInfo": ' . json_encode($hackinUserInfo) . 
                                 '}';
+            if($this->debug) {
+                echo "hasUserRegistered():";
+                print_r($additionalInfo);
+            }
             $pdo = $this->getPDOConnectionToDbAndVerifyUser($additionalInfo);
             $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
             $db_check_user_registration_query = "SELECT * FROM `registration` WHERE `email_id`='". $hackinUserInfo->emailId ."'";
@@ -301,8 +305,15 @@
             $additionalInfo =  '{"registerNewUser": {' .
                                     '"hackinUserInfo": ' . json_encode($hackinUserInfo) . 
                                 '}';
+            if($this->debug) {
+                echo "registerNewUserAndCreateGameState():";
+                print_r($additionalInfo);
+            }
             $pdo = $this->getPDOConnectionToDbAndVerifyUser($additionalInfo);
             $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
+            if($this->debug) {
+                print_r($additionalInfo);
+            }
             $db_register_user_query = 
                 "INSERT INTO `". $this->db_accounts . "`.`registration` 
                     (     `email_id`
@@ -368,7 +379,8 @@
                                     '"hackinSessionInfo": ' . json_encode($hackinSessionInfo) . 
                                 '}';
             if($this->debug) {
-                echo $additionalInfo;
+                echo "createLiveHackinSession():";
+                print_r($additionalInfo);
             }
             $pdo = $this->getPDOConnectionToDbAndVerifyUser($additionalInfo);
             $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
@@ -429,6 +441,10 @@
             $additionalInfo =  '{"updateLiveSession": {' .
                                     '"liveHackinSessionInfo": ' . json_encode($liveHackinSessionInfo) . 
                                 '}';
+            if($this->debug) {
+                echo "updateLiveSession():";
+                print_r($additionalInfo);
+            }
             $functionalityForWhichExceptionExpected = "updateLiveSession: " . json_encode($liveHackinSessionInfo);
             $pdo = $this->getPDOConnectionToDbAndVerifyUser($additionalInfo);
             $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
@@ -456,6 +472,10 @@
             $additionalInfo =  '{"updateNewLiveSession": {' .
                                     '"liveHackinSessionInfo": ' . json_encode($liveHackinSessionInfo) . 
                                 '}';
+            if($this->debug) {
+                echo "updateNewLiveSession():";
+                print_r($additionalInfo);
+            }
             $functionalityForWhichExceptionExpected = $additionalInfo;
             $pdo = $this->getPDOConnectionToDbAndVerifyUser($additionalInfo);
             $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
@@ -513,6 +533,10 @@
 
         public function removeLiveHackinSession($hackinSessionInfo) {
             $additionalInfo = '{"logout-removeLiveHackinSession" :' . json_encode($hackinSessionInfo) . ' }' ;
+            if($this->debug) {
+                echo "removeLiveHackinSession():";
+                print_r($additionalInfo);
+            }
             $functionalityForWhichExceptionExpected = $additionalInfo;
             $pdo = $this->getPDOConnectionToDbAndVerifyUser($additionalInfo);
             $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
@@ -535,6 +559,10 @@
 
         public function getHackinGameStateForRegisterdUser($hackinUserInfo) {
             $additionalInfo = '{"getGameState":' . json_encode($hackinUserInfo). ' }';
+            if($this->debug) {
+                echo "getHackinGameStateForRegisterdUser():";
+                print_r($additionalInfo);
+            }
             $functionalityForWhichExceptionExpected = $additionalInfo;
             $pdo = $this->getPDOConnectionToDbAndVerifyUser($additionalInfo);
             $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
