@@ -6,7 +6,7 @@
         Gets all info related to the current request and validates it.
     */
     class HackinRequestHandler {
-        public $debug = 1;
+        public $debug = 0;
         private $hackinDbHelper;
 
         public function __construct() {

@@ -3,7 +3,7 @@
         /**
             Insert or remove '/' at the end of the line before public static $phpServer to switch
         */
-        /*/*
+        /*/*/
         public static $phpServer = 'localhost/hackin15/vertigo';
         public static $dbServer = "localhost";
         public static $dbUser = "root";
