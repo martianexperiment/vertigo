@@ -20,33 +20,33 @@ require_once(__DIR__ . "/HackinRequestHandler.php");
         $functionalityForWhichExceptionExpected = "Verify whether session is valid";
         //$hackinSession = HackinSessionHandler::getHackinSession();
         //process all requests here.
+        $hackinRequestHandler = new HackinRequestHandler();
         if(isset($_REQUEST["function"])){
             $functionRequest = $_REQUEST["function"];
             switch ($functionRequest) {
                 case "logIn()":
-                    HackinRequestHandler::logIn();
+                    $hackinRequestHandler->logIn();
                     break;
                 case "logOut()":
-                    HackinRequestHandler::logOut();
+                    $hackinRequestHandler->logOut();
                     session_destroy();
-                    header("Location: http://hackin.psglogin.in/");
+                    header("Location: http://" . HackinConfig::$phpServer);
                     break;
                 case "forceLogIn()":
-                    HackinRequestHandler::forceLogIn();
-                    HackinRequestHandler::logIn();
+                    $hackinRequestHandler->forceLogIn();
                     break;
                 case "getUserInfo()":
                     //userinfo -> emailid, colgname obj
-                    echo json_encode(HackinRequestHandler::getHackinUserInfo());
+                    echo json_encode($hackinRequestHandler->getHackinUserInfo());
                     break;
                 case "getGameState()":
-                    echo json_encode(HackinRequestHandler::getGameState());
+                    echo json_encode($hackinRequestHandler->getGameState());
                     break;
                 case "getCurrentView()":
-                    //
+                    echo file_get_contents(__DIR__."/../questionModel/q1.json");
                     break;
                 case "getNextQuestion()":
-                    //gives you the entire json file for that question.
+                    echo file_get_contents(__DIR__."/../questionModel/q1.json");
                     break;
                 case "verifyAnswer()":
                     //
