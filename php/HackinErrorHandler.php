@@ -16,7 +16,16 @@
             $errorMsg = "";
             
             $errorMsg = file_get_contents(__DIR__ . "/../views/errorPagePart1.view");
-            $errorMsg = $errorMsg . '<p id="error-text">';
+            $errorMsg = $errorMsg . 
+                '<div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 text-center">
+                            <img src="http://'. HackinConfig::$phpServer .'/img/sad.png" height="150" alt="Sad Smiley :(">
+                        </div>
+                    </div>
+                <div class="row voffset">
+                    <div class="col-lg-12 text-center">
+                        <p id="error-text">';
             $errorMsg = $errorMsg. $errorOccuredIn;
             $errorMsg = $errorMsg. '</p>';
             $errorMsg = $errorMsg . file_get_contents(__DIR__ . "/../views/errorPagePart2.view");
