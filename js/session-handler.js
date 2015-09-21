@@ -12,9 +12,14 @@ function prepareErrorToPrint(errorMsg)
 
 function checkError(reply)
 {
-	if(reply.error!=null || reply.interruption!=null)
+	var repDOM = $(reply);
+	if(repDOM.find('#error-msg'))
+	{
+		$('html').html(reply);
+	}
+	else if(reply.error!=null || reply.interruption!=null)
 	{
 		$('html').html(reply.html);
-		$('#error-msg').html('hey');
+		$('#error-msg').html(prepareErrorToPrint(reply));
 	}
 }

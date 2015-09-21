@@ -1,0 +1,23 @@
+{
+	charactersInvolved:
+	[
+		{name: 'Dimitry', profilePic: 'img/dimitry.png'},
+		{name: 'Nicolas', profilePic: 'img/nicolas.png'}
+	],
+	messages:
+	[
+		{'fromCharacterIndex': 0, 'text': '(gasps after a long run from the prison as Veronica failed to make up to the exit) That\'s a blunder..I should have let her run first..' },
+		{'fromCharacterIndex': 0, 'text': 'I should some how help her escape from the prison...' },
+		{'fromCharacterIndex': 0, 'text': '(approaches the public telephone center and calls) Plan A failed. We are separated. It\'s Veronica who could not make out of the prison.'},
+		{'fromCharacterIndex': 1, 'text': 'Never thought this would happen. Reach Manhattan immediately. And I hope you still remember the entry access code.'},
+		{'fromCharacterIndex': 0, 'text': 'Yes Sir. What about Veronica?'},
+		{'fromCharacterIndex': 1, 'text': 'First proceed to the Manhattan safehouse and protect yourself. Then listen to the further orders.'},
+		{'fromCharacterIndex': 0, 'text': '(Hangs the call and tells himself) I will save you Veronica..'}
+	],
+	location:
+	{
+		city: 'Manhattan',
+		state: 'NY'
+	},
+	question: '<strong><i class="fa fa-book margin-r-5"></i>Objective</strong> <p class="text-muted" id="description-text">Keenly observe the pattern of lights being lit which is present on a circuit grid, the pattern represent a string which gains you access to the safe house</p><hr> <div id="attachments"> <p><strong><i class="fa fa-external-link-square margin-r-5"></i><a href="https://123d.circuits.io/circuits/1033901-the-serial-led-hack/embed#breadboard" target="__new">Circuit Grid</a></strong></p></div>'
+}

@@ -135,31 +135,6 @@ function loadCharacters(charactersModel, charactersDOMNode)
 	}
 	return null;
 }
-/*
-Given the list of character models.
-And a character container node.
-Loops thro the list and populates the characters
-
-function loadCharacters(charactersModel, charactersDOMNode)
-{
-	var charactersUL = charactersDOMNode.find('ul.users-list');
-	var numOfCharactersElement = charactersDOMNode.find('#num-of-characters');
-	if(charactersUL != null)
-	{
-		var iter = 0;
-		var len = charactersModel.length;
-		numOfCharactersElement.html(len);
-		for (; iter < len; iter++)
-		{
-			var characterModel = charactersModel[iter];
-    		var characterDOMNode = createCharacterDOMNode();
-			bindCharacterModel(characterModel, characterDOMNode);
-			charactersUL.append(characterDOMNode);
-		}
-		return charactersDOMNode;
-	}
-	return null;
-}*/
 
 /*
 Given the list of texts.

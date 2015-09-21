@@ -30,7 +30,7 @@
 		}
 		.voffset
 		{
-			margin-top:35%;
+			margin-top:30%;
 		}
 		button
 		{
@@ -63,9 +63,15 @@
 		<div class="row voffset">
 			<div class="col-lg-12 text-center" id="disclaimer">Do you want to kill all other sessions and continue?</div>
 		</div>
+		<div class="row">
+			<div class="col-lg-12 text-center">
+				<p id="error-msg">Live Session: Firefox, 134:72:1:1</p>
+				<p id="error-msg">Current Session: Chrome, 134:72:1:1</p>
+			</div>
+		</div>
 		<div class="row voffset1">
 			<div class="col-lg-12 text-center">
-				<button class="btn btn-success">Agree</button>
+				<button class="btn btn-success" href="">Agree</button>
 				<button class="btn btn-danger">Decline</button>
 			</div>
 		</div>
