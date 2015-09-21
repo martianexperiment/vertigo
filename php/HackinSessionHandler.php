@@ -28,15 +28,15 @@
                 throw $ex;
             }
             if(empty($_SESSION['ses_email']) || empty($_SESSION['ses_phone'])) {
-                $ex = new Exception("verifySession(): user details insufficient");
+                $ex = new Exception("verifySession(): user details insufficient.. (email|phone_no)==NULL??");
                 throw $ex;
             }
             if($_SESSION['ses_account_type'] == "PAR" && (empty($_SESSION['ses_cCode']) || empty($_SESSION['ses_college_name']) || empty($_SESSION['ses_dept_name']))) {
-                $ex = new Exception("verifySession(): participant details insufficient");
+                $ex = new Exception("verifySession(): participant details insufficient (cCode|collegeName|departmentName)==NULL??");
                 throw $ex;
             }
             if($_SESSION['ses_account_type'] == "ALU" && (empty($_SESSION['ses_alumni_rollno']) || empty($_SESSION['ses_alumni_name']))) {
-                $ex = new Exception("verifySession(): alumni details insufficient");
+                $ex = new Exception("verifySession(): alumni details insufficient. (rollno|name)==NULL??");
                 throw $ex;
             }
         }
