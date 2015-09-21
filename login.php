@@ -13,7 +13,7 @@
         /**
             insert or remove '/' between /** and header('... to switch on/off simulations
         */
-        /**/header('LOCATION: //accounts.psglogin.in/index.php?r=hackin');/*/
+        /**header('LOCATION: //accounts.psglogin.in/index.php?r=hackin');/*/
         //Simulating  the sessions from accounts.psglogin.in
         $_SESSION['ses_auth'] = "1";
         $_SESSION['ses_account_type'] = 'PAR';
