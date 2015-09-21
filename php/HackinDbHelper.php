@@ -28,7 +28,7 @@
         private $db_session_logger;
         private $db_request_logger;
 
-        private $debug = 0;
+        private $debug = 1;
 
         /**
             TODO: input all supported platforms here and make use of it in DSN creation.
