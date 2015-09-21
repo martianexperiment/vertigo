@@ -38,10 +38,12 @@ require_once(__DIR__ . "/HackinRequestHandler.php");
                     break;
                 case "getUserInfo()":
                     //userinfo -> emailid, colgname obj
-                    echo json_encode($hackinRequestHandler->getHackinUserInfo());
+                    $hackinUserInfo = json_encode($hackinRequestHandler->getHackinUserInfo());
+                    echo addslashes($hackinUserInfo);
                     break;
                 case "getGameState()":
-                    echo json_encode($hackinRequestHandler->getGameState());
+                    $gameState = json_encode($hackinRequestHandler->getGameState());
+                    echo addslashes($gameState);
                     break;
                 case "getCurrentView()":
                     $obj = json_decode(readfile(__DIR__."/../questionModel/q1.json"));
@@ -49,7 +51,7 @@ require_once(__DIR__ . "/HackinRequestHandler.php");
                     break;
                 case "getNextQuestion()":
                     $obj = file_get_contents(__DIR__."/../questionModel/q1.json");
-                    addslashes($obj);
+                    echo addslashes($obj);
                     break;
                 case "verifyAnswer()":
                     //
