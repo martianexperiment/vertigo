@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 20, 2015 at 10:57 AM
+-- Generation Time: Sep 21, 2015 at 09:45 AM
 -- Server version: 5.5.24-log
 -- PHP Version: 5.3.13
 
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `game_state` (
   `current_count_of_attempts_made` int(8) NOT NULL DEFAULT '0' COMMENT 'no of attempts made for this question',
   `current_score` int(8) NOT NULL DEFAULT '0',
   `is_user_alumni` tinyint(1) NOT NULL DEFAULT '0',
-  `plays_as_character` int(4) NOT NULL DEFAULT '1' COMMENT 'character no from the game engine characters table',
+  `plays_as_character` varchar(70) CHARACTER SET latin1 COLLATE latin1_general_cs NOT NULL DEFAULT '{"name":"Dimitry", "profilePic":"img/dimitry.png"}' COMMENT 'character json',
   PRIMARY KEY (`email_id`),
   KEY `current_level_no` (`current_level_no`,`current_mission_no`,`current_plot_no`,`current_score`,`is_user_alumni`,`plays_as_character`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='table to preserve game state';

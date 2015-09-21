@@ -25,7 +25,8 @@ require_once(__DIR__ . "/HackinRequestHandler.php");
             $functionRequest = $_REQUEST["function"];
             switch ($functionRequest) {
                 case "logIn()":
-                    $hackinRequestHandler->logIn();
+                    //echo "logIn() called";
+                    echo $hackinRequestHandler->logIn();
                     break;
                 case "logOut()":
                     $hackinRequestHandler->logOut();
@@ -33,7 +34,7 @@ require_once(__DIR__ . "/HackinRequestHandler.php");
                     header("Location: http://" . HackinConfig::$phpServer);
                     break;
                 case "forceLogIn()":
-                    $hackinRequestHandler->forceLogIn();
+                    echo $hackinRequestHandler->forceLogIn();
                     break;
                 case "getUserInfo()":
                     //userinfo -> emailid, colgname obj

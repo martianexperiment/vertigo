@@ -16,56 +16,56 @@
         public function logIn() {
             $hackinDbHelper = $this->hackinDbHelper;
             $functionalityForWhichExceptionExpected = "logIn()";
-            /*if($this->debug) {
+            if($this->debug) {
                 echo "<br>***************** logIn() page<br>";
-            }*/
+            }
             HackinSessionHandler::verifySession();
             $hackinUserInfo = HackinSessionHandler::getHackinUserInfo();
             $hackinSessionInfo = HackinSessionHandler::getCurrentHackinSessionInfo();
-            /*if($this->debug) {
+            if($this->debug) {
                 echo "<br>logIn():<br>";
                 print_r($hackinUserInfo);
                 print_r($hackinSessionInfo);
-            }*/
+            }
             $hasUserRegistered = $hackinDbHelper->hasUserRegistered($hackinUserInfo);
-            /*if($this->debug) {
+            if($this->debug) {
                 echo "<br>hasUserRegistered:??" . $hasUserRegistered;
-            }*/
+            }
             if($hasUserRegistered == 0) {
-                /*if($this->debug) {
+                if($this->debug) {
                     echo "<br>user to be Registered now";
-                }*/
+                }
                 $hackinDbHelper->registerNewUserAndCreateGameState($hackinUserInfo);
                 $hackinDbHelper->createLiveHackinSession($hackinSessionInfo);
-                /*if($this->debug) {
+                if($this->debug) {
                     echo "<br>user to be Registered now";
-                }*/
+                }
                 //create session log with type register()
             } else {
                 $liveHackinSessionInfo = $hackinDbHelper->getLiveSessionInfo($hackinUserInfo);
-                /*if($this->debug) {
+                if($this->debug) {
                     echo "<br>retrieve live session::<br>";
                     print_r($liveHackinSessionInfo);
                 }
-                /*if($this->debug) {
+                if($this->debug) {
                     echo "<br>";
-                }*/
+                }
                 if($liveHackinSessionInfo == NULL ) {
-                    /*if($this->debug) {
+                    if($this->debug) {
                         echo "live session info is null";
-                    }*/
+                    }
                     $hackinDbHelper->createLiveHackinSession($hackinSessionInfo);
                     //create session log with type login()
                 } else if(strcasecmp($liveHackinSessionInfo->hackinSessionId, $hackinSessionInfo->hackinSessionId) == 0) {//same User
-                    /*if($this->debug) {
+                    if($this->debug) {
                         echo "<br>live session info is equal to the current session";
-                    }*/
+                    }
                     $hackinDbHelper->updateLiveSession($liveHackinSessionInfo);
                     //create session log with type refresh()
                 } else {
-                    /*if($this->debug) {
+                    if($this->debug) {
                         echo "not equal";
-                    }*/
+                    }
                     $interruption = HackinConfig::$multipleSessionInterruption;
                     $liveSession = "\"liveSession\": {" . 
                                             "\"browser\": " . json_encode($liveHackinSessionInfo->lastActiveBrowser) . ",". 
@@ -87,8 +87,8 @@
                     echo HackinErrorHandler::interruptHandler($interruption, $interruptionMsg);
                     exit();
                 }
-                echo file_get_contents(__DIR__ . "/../dash.html");
             }
+            echo file_get_contents(__DIR__ . "/../dash.html");
         }
 
         public function logOut() {
@@ -96,10 +96,10 @@
             //remove live session()
             $functionalityForWhichExceptionExpected = "logOut()";
             $hackinSessionInfo = HackinSessionHandler::getCurrentHackinSessionInfo();
-            /*/*if($this->debug) {
+            if($this->debug) {
                 echo "<br>**********logOut():";
                 print_r($hackinSessionInfo);
-            }*/
+            }
             $hackinDbHelper->removeLiveHackinSession($hackinSessionInfo);
         }
 
