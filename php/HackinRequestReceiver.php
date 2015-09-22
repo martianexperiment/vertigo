@@ -1,10 +1,8 @@
 <?php
-require_once(__DIR__ . "/HackinSessionHandler.php");
 require_once(__DIR__ . "/HackinGlobalFunctions.php");
 require_once(__DIR__ . "/HackinRequestHandler.php");
 /**
     Every request comes and flows through this php.
-    Handles session via HackinSessionHandler.php
     Handles Game requests via HackinGameEngine.php
     Acts as the mapper for the requests.
     When moving on to MVC, replace this file with the url mapper, and provide urls for every functionality mentioned here.
@@ -18,7 +16,6 @@ require_once(__DIR__ . "/HackinRequestHandler.php");
             exit();
         }
         $functionalityForWhichExceptionExpected = "Verify whether session is valid";
-        //$hackinSession = HackinSessionHandler::getHackinSession();
         //process all requests here.
         $hackinRequestHandler = new HackinRequestHandler();
         if(isset($_REQUEST["function"])){
@@ -36,6 +33,10 @@ require_once(__DIR__ . "/HackinRequestHandler.php");
                 case "forceLogIn()":
                     echo $hackinRequestHandler->forceLogIn();
                     break;
+
+                /**
+                    Functionalities for which verifying live sessions doesn't matter.
+                */
                 case "getUserInfo()":
                     //userinfo -> emailid, colgname obj
                     $hackinUserInfo = json_encode($hackinRequestHandler->getHackinUserInfo());
@@ -45,24 +46,33 @@ require_once(__DIR__ . "/HackinRequestHandler.php");
                     $gameState = json_encode($hackinRequestHandler->getGameState());
                     echo addslashes($gameState);
                     break;
+
+                /**
+                    Verify live sessions without fail.
+                */
                 case "getCurrentView()":
+                    $hackinRequestHandler->verifyLiveSessionBeforeProcessingRequest();
                     $obj = json_decode(readfile(__DIR__."/../questionModel/q1.json"));
                     json_encode($obj);
                     break;
+                case "getNextQuestion()":
                 case "getNextQuestion(1)":
+                    $hackinRequestHandler->verifyLiveSessionBeforeProcessingRequest();
                     $obj = file_get_contents(__DIR__."/../questionModel/q1.json");
                     echo addslashes($obj);
                     break;
                 case "getNextQuestion(2)":
+                    $hackinRequestHandler->verifyLiveSessionBeforeProcessingRequest();
                     $obj = file_get_contents(__DIR__."/../questionModel/q2.json");
                     echo addslashes($obj);
                     break;
                 case "verifyAnswer()":
+                    $hackinRequestHandler->verifyLiveSessionBeforeProcessingRequest();
                     //
                     break;
                 default:
                     try {
-                        throw new Exception("illegal request");
+                        throw new Exception("illegal request to Hackin");
                     } catch(Exception $ex) {
                         echo HackinErrorHandler::errorHandler($ex, $_REQUEST['function']);
                         exit();

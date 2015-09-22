@@ -46,11 +46,14 @@
                     echo "<br>user has already registered.. proceeding to verify session";
                 }
                 $hackinDbHelper->logRefresh($hackinSessionInfo);
-                HackinSessionHandler::verifyLiveSession();
+                $this->verifyLiveSessionBeforeProcessingRequest();
             }
             echo file_get_contents(__DIR__ . "/../dash.html");
         }
 
+        /**
+            When the user logs out
+        */
         public function logOut() {
             $hackinDbHelper = $this->hackinDbHelper;
             //remove live session()
@@ -74,6 +77,9 @@
             return;
         }
 
+        /**
+            Live sessions not verified for these 2 getGameState() and getHackinUserInfo() functions.
+        */
         public function getHackinUserInfo() {
             HackinSessionHandler::verifySession();
             return HackinSessionHandler::getHackinUserInfo();
@@ -82,6 +88,10 @@
         public function getGameState() {
             HackinSessionHandler::verifySession();
             return HackinSessionHandler::getHackinGameStateForRegisterdUser();
+        }
+
+        public function verifyLiveSessionBeforeProcessingRequest() {
+            HackinSessionHandler::verifyLiveSession();
         }
 
     }

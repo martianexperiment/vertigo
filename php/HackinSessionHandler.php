@@ -144,8 +144,9 @@
             return $gameState;
         }
 
-
-
+        /**
+            Verifies live session and redirects to interrupt handler if any
+        */
         public function verifyLiveSession() {
             try {
                 $hackinDbHelper = self::$hackinDbHelper;
@@ -154,7 +155,6 @@
                 $hackinUserInfo = self::getHackinUserInfo();
                 $hackinSessionInfo = self::getCurrentHackinSessionInfo();
                 $additionalInfo = "verifyLiveSession()";
-                $hackinDbHelper->logForceLogin($hackinSessionInfo);
 
                 $functionalityForWhichExceptionExpected = $additionalInfo;
                 if(self::$debug) {
@@ -181,6 +181,7 @@
                     $hackinDbHelper->updateLiveSession($liveHackinSessionInfo);
                     //create session log with type refresh()
                 } else {
+                    $hackinDbHelper->logForceLogin($hackinSessionInfo);
                     if(self::$debug) {
                         echo "not equal";
                     }
