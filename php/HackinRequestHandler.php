@@ -42,52 +42,11 @@
                 }
                 //create session log with type register()
             } else {
-                $liveHackinSessionInfo = $hackinDbHelper->getLiveSessionInfo($hackinUserInfo);
                 if($this->debug) {
-                    echo "<br>retrieve live session::<br>";
-                    print_r($liveHackinSessionInfo);
+                    echo "<br>user has already registered.. proceeding to verify session";
                 }
-                if($this->debug) {
-                    echo "<br>";
-                }
-                if($liveHackinSessionInfo == NULL ) {
-                    if($this->debug) {
-                        echo "live session info is null";
-                    }
-                    $hackinDbHelper->createLiveHackinSession($hackinSessionInfo);
-                    //create session log with type login()
-                } else if(strcasecmp($liveHackinSessionInfo->hackinSessionId, $hackinSessionInfo->hackinSessionId) == 0) {//same User
-                    if($this->debug) {
-                        echo "<br>live session info is equal to the current session";
-                    }
-                    $hackinDbHelper->updateLiveSession($liveHackinSessionInfo);
-                    //create session log with type refresh()
-                } else {
-                    if($this->debug) {
-                        echo "not equal";
-                    }
-                    $interruption = HackinConfig::$multipleSessionInterruption;
-                    $liveSession = "\"liveSession\": {" . 
-                                            "\"browser\": " . json_encode($liveHackinSessionInfo->lastActiveBrowser) . ",". 
-                                            "\"ip\": " . json_encode($liveHackinSessionInfo->lastActiveIp) . ',' .
-                                            "\"lastActiveTime\": " . json_encode(HackinGlobalFunctions::timeStampFromPhpToSql($liveHackinSessionInfo->lastActiveTime)) .
-                                     "}";
-                    $currentSession = '"currentSession": {' .
-                                               '"browser": ' . json_encode($hackinSessionInfo->lastActiveBrowser) . ', ' .
-                                                '"ip": ' . json_encode($hackinSessionInfo->lastActiveIp) . ', ' .
-                                                '"lastActiveTime": ' . json_encode(HackinGlobalFunctions::timeStampFromPhpToSql($hackinSessionInfo->lastActiveTime)) .
-                                             '}';
-                    $interruptionMsg = 
-                        '{' .  
-                            '"interruption": ' . json_encode($interruption) . ',' .
-                            $liveSession . ',' .
-                            $currentSession . 
-                            //',' ."\"html\" :"  . json_encode(file_get_contents(__DIR__ . "/../multiple.html")) .
-                         '}';
-                    //echo $interruptionMsg;
-                    echo HackinErrorHandler::interruptHandler($interruption, $interruptionMsg);
-                    exit();
-                }
+                $hackinDbHelper->logRefresh($hackinSessionInfo);
+                HackinSessionHandler::verifyLiveSession();
             }
             echo file_get_contents(__DIR__ . "/../dash.html");
         }

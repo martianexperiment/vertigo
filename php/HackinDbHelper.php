@@ -130,7 +130,9 @@
         */
         private function getPDOConnectionToDbAndVerifyUser($additionalInfo="NULL") {
             if($this->debug) {
-                echo "<br><br>getPDOConnectionToDbAndVerifyUser()<br>"."dsn=" . $this->dsn . ", user=" . $this->user . ", pwd=". $this->pwd . ", db_test=" . $this->db_test;
+                echo "<br><br>getPDOConnectionToDbAndVerifyUser()<br>";
+                //echo "dsn=" . $this->dsn . ", user=" . $this->user . ", pwd=". $this->pwd . ", db_test=" . $this->db_test;
+                //don't allow logging of username and password even while debugging
             }
             $pdo = self::createPDOConnectionToDbAndVerifyUser($this->dsn, $this->user, $this->pwd, $this->db_test);
             $this->newConnectionCreated($pdo, $additionalInfo);
@@ -200,7 +202,7 @@
             echo "<br> user info";
             echo json_encode($hackinUserInfo);//*/
 
-            $this->getAliveHackinSessionNotEqualToCurrentSession($hackinSessionInfo, $hackinUserInfo);
+            $this->getLiveSessionInfo($hackinUserInfo);
         }
 
         public function testHasUserRegistered() {
@@ -370,8 +372,28 @@
             $pdo->query($db_create_game_state);
         }
 
-        public function hasUserLiveSession($hackinUserInfo) {
+        public function logRefresh($hackinSessionInfo) {
+            $additionalInfo = '{"logRefresh()": {' . 
+                                    '"HackinSessionInfo": ' . json_encode($hackinSessionInfo) .
+                                '}';
+            if($this->debug) {
+                echo "<br><br><br>******************logRefresh():";
+                print_r($additionalInfo);
+            }
+            $pdo = $this->getPDOConnectionToDbAndVerifyUser($additionalInfo);
+            $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
+        }
 
+        public function logForceLogin($hackinSessionInfo) {
+            $additionalInfo = '{"logForceLogin()": {' . 
+                                    '"HackinSessionInfo": ' . json_encode($hackinSessionInfo) .
+                                '}';
+            if($this->debug) {
+                echo "<br><br><br>******************logForceLogin():";
+                print_r($additionalInfo);
+            }
+            $pdo = $this->getPDOConnectionToDbAndVerifyUser($additionalInfo);
+            $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
         }
 
         public function createLiveHackinSession($hackinSessionInfo) {

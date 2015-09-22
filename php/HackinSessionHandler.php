@@ -17,6 +17,12 @@
         public static $debug = 0;
         private static $hackinDbHelper;
 
+        public function __construct() {
+            if(self::$hackinDbHelper == NULL) {
+                self::$hackinDbHelper = new HackinDbHelper();
+            }
+        }
+
         public static function verifySession() {
             if(!isset($_SESSION)) {
                 $ex = new Exception("verifySession(): Session has not been started. Game play requires session creation. Please sign in again");
@@ -133,12 +139,77 @@
 
         public static function getHackinGameStateForRegisterdUser() {
             $hackinUserInfo = self::getHackinUserInfo();
-            if(self::$hackinDbHelper == NULL) {
-                self::$hackinDbHelper = new HackinDbHelper();
-            }
             $hackinDbHelper = self::$hackinDbHelper;
             $gameState = $hackinDbHelper->getHackinGameStateForRegisterdUser($hackinUserInfo);
             return $gameState;
+        }
+
+
+
+        public function verifyLiveSession() {
+            try {
+                $hackinDbHelper = self::$hackinDbHelper;
+
+                self::verifySession();
+                $hackinUserInfo = self::getHackinUserInfo();
+                $hackinSessionInfo = self::getCurrentHackinSessionInfo();
+                $additionalInfo = "verifyLiveSession()";
+                $hackinDbHelper->logForceLogin($hackinSessionInfo);
+
+                $functionalityForWhichExceptionExpected = $additionalInfo;
+                if(self::$debug) {
+                    echo "<br>***************** verifying live session() page<br>";
+                }
+                $liveHackinSessionInfo = $hackinDbHelper->getLiveSessionInfo($hackinUserInfo);
+                if(self::$debug) {
+                    echo "<br>retrieve live session::<br>";
+                    print_r($liveHackinSessionInfo);
+                }
+                if(self::$debug) {
+                    echo "<br>";
+                }
+                if($liveHackinSessionInfo == NULL ) {
+                    if(self::$debug) {
+                        echo "live session info is null";
+                    }
+                    $hackinDbHelper->createLiveHackinSession($hackinSessionInfo);
+                    //create session log with type login()
+                } else if(strcasecmp($liveHackinSessionInfo->hackinSessionId, $hackinSessionInfo->hackinSessionId) == 0) {//same User
+                    if(self::$debug) {
+                        echo "<br>live session info is equal to the current session";
+                    }
+                    $hackinDbHelper->updateLiveSession($liveHackinSessionInfo);
+                    //create session log with type refresh()
+                } else {
+                    if(self::$debug) {
+                        echo "not equal";
+                    }
+                    $interruption = HackinConfig::$multipleSessionInterruption;
+                    $liveSession = "\"liveSession\": {" . 
+                                            "\"browser\": " . json_encode($liveHackinSessionInfo->lastActiveBrowser) . ",". 
+                                            "\"ip\": " . json_encode($liveHackinSessionInfo->lastActiveIp) . ',' .
+                                            "\"lastActiveTime\": " . json_encode(HackinGlobalFunctions::timeStampFromPhpToSql($liveHackinSessionInfo->lastActiveTime)) .
+                                     "}";
+                    $currentSession = '"currentSession": {' .
+                                               '"browser": ' . json_encode($hackinSessionInfo->lastActiveBrowser) . ', ' .
+                                                '"ip": ' . json_encode($hackinSessionInfo->lastActiveIp) . ', ' .
+                                                '"lastActiveTime": ' . json_encode(HackinGlobalFunctions::timeStampFromPhpToSql($hackinSessionInfo->lastActiveTime)) .
+                                             '}';
+                    $interruptionMsg = 
+                        '{' .  
+                            '"interruption": ' . json_encode($interruption) . ',' .
+                            $liveSession . ',' .
+                            $currentSession . 
+                            //',' ."\"html\" :"  . json_encode(file_get_contents(__DIR__ . "/../multiple.html")) .
+                         '}';
+                    //echo $interruptionMsg;
+                    echo HackinErrorHandler::interruptHandler($interruption, $interruptionMsg);
+                    exit();
+                } 
+            } catch(Exception $ex) {
+                    echo HackinErrorHandler::errorHandler($ex, $functionalityForWhichExceptionExpected);
+                    exit();
+            }
         }
 
         /**
@@ -181,5 +252,6 @@
             return $hackinSession;
         }
     }
+    new HackinSessionHandler();//Mandatory to instantiate dbhelper
     //HackinSessionHandler::getHackinSession();
 ?>
