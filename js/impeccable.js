@@ -1,5 +1,6 @@
 today = new Date();
-var BigDay = new Date("September 21, 2015 00:00:00");
+var BigDay = new Date("September 27, 2015 00:00:00");
+console.log(BigDay);
 
 var countDownStartDate = new Date(BigDay);
 countDownStartDate.setDate(countDownStartDate.getDate() - 100);
@@ -12,8 +13,7 @@ jQuery(document).ready(function($) {
 
 	var ua = window.navigator.userAgent;
 	var msie = ua.indexOf("MSIE");
-
-	var isIE = false;
+	/*var isIE = false;
 
 	if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))
 	{   
@@ -26,10 +26,10 @@ jQuery(document).ready(function($) {
 	{ 
 		$('#sign-in').hide();
 		isIE = false;
-	}
+	}*/
 
-	if( !isIE)
-	{
+	//if( !isIE)
+	//{
 
 		$('.time-part.hundredths.ones').css('-webkit-animation-timing-function', 'cubic-bezier(1.000, -0.530, 0.405, 1.425)');
 		$('.time-part.hundredths.ones').css('animation-timing-function', 'cubic-bezier(1.000, -0.530, 0.405, 1.425)');
@@ -68,4 +68,5 @@ jQuery(document).ready(function($) {
 
 		$('.digit-wrapper').addClass('animation-running');
 
-	}
+	//}
+});
