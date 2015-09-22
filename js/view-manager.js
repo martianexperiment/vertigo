@@ -14,7 +14,7 @@ function gideonRoutine()
 	setTimeout(
 	function()
 	{
-		speakGideon('Read the mission desciption, to know the objective');
+		speakGideon('Input will be enabled soon. You may continue to work on the solution in the mean time');
 	},
 	10*1000
 	);
