@@ -43,6 +43,10 @@
             return $hackinGameState;
         }
     }
-    /*$obj = file_get_contents(__DIR__."/../questionModel/q1.json");
-    echo addslashes($obj);*/
+  /*
+    $obj = file_get_contents(__DIR__."/../questionModel/q2.json");
+    $json = json_decode($obj);
+    print_r($json);
+    //echo addslashes($obj);
+    //*/
 ?>

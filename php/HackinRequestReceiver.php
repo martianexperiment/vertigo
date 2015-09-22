@@ -49,8 +49,12 @@ require_once(__DIR__ . "/HackinRequestHandler.php");
                     $obj = json_decode(readfile(__DIR__."/../questionModel/q1.json"));
                     json_encode($obj);
                     break;
-                case "getNextQuestion()":
+                case "getNextQuestion(1)":
                     $obj = file_get_contents(__DIR__."/../questionModel/q1.json");
+                    echo addslashes($obj);
+                    break;
+                case "getNextQuestion(2)":
+                    $obj = file_get_contents(__DIR__."/../questionModel/q2.json");
                     echo addslashes($obj);
                     break;
                 case "verifyAnswer()":
