@@ -147,7 +147,7 @@
         /**
             Verifies live session and redirects to interrupt handler if any
         */
-        public function verifyLiveSession() {
+        public static function verifyLiveSession() {
             try {
                 $hackinDbHelper = self::$hackinDbHelper;
 
