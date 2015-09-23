@@ -69,8 +69,11 @@ require_once(__DIR__ . "/HackinRequestHandler.php");
                     echo addslashes($obj);
                     break;
                 case "verifyAnswer()":
+                    //TODO: get from request string, else throw exception
+                    $qnNo = 1;
+                    $answer = "Answer";
                     $hackinRequestHandler->verifyLiveSessionBeforeProcessingRequest();
-                    //
+                    echo $hackinRequestHandler->verifyAnswerAndReturnJson($qnNo, $answer);
                     break;
                 default:
                     try {

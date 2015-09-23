@@ -1,5 +1,6 @@
 <?php
     require_once(__DIR__ . "/HackinSessionHandler.php");
+    require_once(__DIR__ . "/HackinGameEngine.php");
     require_once(__DIR__ . "/HackinDbHelper.php");
     /**
         All requests pass via this handler.
@@ -8,9 +9,13 @@
     class HackinRequestHandler {
         public $debug = 0;
         private $hackinDbHelper;
+        private $hackinGameEngine;
+        private $hackinSessionHandler;
 
         public function __construct() {
             $this->hackinDbHelper = new HackinDbHelper();
+            $this->hackinGameEngine = new HackinGameEngine($this->hackinDbHelper);
+            $this->hackinSessionHandler = new HackinSessionHandler($this->hackinDbHelper);
         }
 
         public function logIn() {
@@ -72,7 +77,6 @@
             $hackinUserInfo = HackinSessionHandler::getHackinUserInfo();
             $hackinSessionInfo = HackinSessionHandler::getCurrentHackinSessionInfo();
             $hackinDbHelper->updateNewLiveSession($hackinSessionInfo);
-            //$this->logIn();
             echo file_get_contents(__DIR__ . "/../dash.html");
             return;
         }
@@ -87,13 +91,28 @@
 
         public function getGameState() {
             HackinSessionHandler::verifySession();
-            return HackinSessionHandler::getHackinGameStateForRegisterdUser();
+            $hackinUserInfo = HackinSessionHandler::getHackinUserInfo();
+            return $this->hackinGameEngine->getGameStateOfUser($hackinUserInfo);
         }
 
         public function verifyLiveSessionBeforeProcessingRequest() {
             HackinSessionHandler::verifyLiveSession();
         }
 
+        public function verifyAnswerAndReturnJson($qnNo, $answer) {
+            $hackinUserInfo = HackinSessionHandler::getHackinUserInfo();
+            $isCorrectAnswer = $this->hackinGameEngine->validateAnswer($hackinUserInfo, $qnNo, $answer);
+            $gameState = $this->getGameState();
+            //TODO: populate these too.
+            $noOfAttemptsSoFar = $this->hackinGameEngine->getNoOfAttemptsMadeSoFarForQn($hackinUserInfo, $qnNo);
+            $totalAttemptsAllowed = $this->hackinGameEngine->getTotalAttemptsAllowedForQn($qnNo);
+            $result = "{ \"isCorrectAnswer\": " . $isCorrectAnswer . ", " . 
+                        "\"noOfAttemptsSoFar\": " . $noOfAttemptsSoFar . ", " . 
+                        "\"totalAttemptsAllowed:\"" . $totalAttemptsAllowed . ", " . 
+                        "\"gameState\": " . json_encode($gameState) .
+                      "}";
+            return $result;
+        }
     }
     //echo json_encode($_SERVER);
 ?>

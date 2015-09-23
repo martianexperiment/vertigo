@@ -619,5 +619,20 @@
             }
             return $hackinGameState;
         }
+
+        public function validateAnswer($hackinUserInfo, $qnNo, $answer) {
+            $isCorrectAnswer = 0;
+            return $isCorrectAnswer;
+        }
+
+        public function noOfAttemptsMadeSoFarForQn($hackinUserInfo, $qnNo) {
+            $noOfAttemptsMadeSoFarForQn = 0;
+            return $noOfAttemptsMadeSoFarForQn;
+        }
+
+        public function totalAttemptsAllowedForQn($qnNo) {
+            $totalAttemptsAllowedForQn = 0;
+            return $totalAttemptsAllowedForQn;
+        }
     }
 ?>

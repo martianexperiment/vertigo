@@ -17,10 +17,11 @@
         public static $debug = 0;
         private static $hackinDbHelper;
 
-        public function __construct() {
-            if(self::$hackinDbHelper == NULL) {
-                self::$hackinDbHelper = new HackinDbHelper();
+        public function __construct($hackinDbHelper = NULL) {
+            if($hackinDbHelper == NULL) {
+                $hackinDbHelper = new HackinDbHelper();
             }
+            self::$hackinDbHelper = $hackinDbHelper;
         }
 
         public static function verifySession() {
@@ -137,13 +138,6 @@
             return $hackinSessionInfo;
         }
 
-        public static function getHackinGameStateForRegisterdUser() {
-            $hackinUserInfo = self::getHackinUserInfo();
-            $hackinDbHelper = self::$hackinDbHelper;
-            $gameState = $hackinDbHelper->getHackinGameStateForRegisterdUser($hackinUserInfo);
-            return $gameState;
-        }
-
         /**
             Verifies live session and redirects to interrupt handler if any
         */
@@ -212,47 +206,7 @@
                     exit();
             }
         }
-
-        /**
-            to get the hackin session object populated with values
-            Retrieves HackinUserInfo and HackinGameState objects from session variables and database respectively
-            Used everywhere instead of session variables.
-            TODO: getHackinGameState from db for the user.
-            return: $hackinSession
-        */
-        public static function getHackinSession() {
-            self::verifySession();
-            $hackinUserInfo = self::getHackinUserInfo();
-            $hackinSessionInfo = self::getCurrentHackinSessionInfo();
-            $hackinDbHelper = new HackinDbHelper();
-            $liveHackinSessionInfo = $hackinDbHelper->getAliveHackinSessionNotEqualToCurrentSession($hackinSessionInfo, $hackinUserInfo);
-            
-            if(strcasecmp($liveHackinSessionInfo->hackinSessionId, $hackinSessionInfo->hackinSessionId) != 0) {
-                $interruption = HackinConfig::$multipleSessionInterruption;
-                $aliveSession = "\"aliveSession\": {" . 
-                                        "\"browser\": " . json_encode($liveHackinSessionInfo->lastActiveBrowser) . ",". 
-                                        "\"ip\": " . json_encode($liveHackinSessionInfo->lastActiveIp) . ',' .
-                                        "\"lastActiveTime\": " . json_encode(HackinGlobalFunctions::timeStampFromPhpToSql($liveHackinSessionInfo->lastActiveTime)) .
-                                 "}";
-                $currentSession = '"currentSession": {' .
-                                           '"browser": ' . json_encode($hackinSessionInfo->lastActiveBrowser) . ', ' .
-                                            '"ip": ' . json_encode($hackinSessionInfo->lastActiveIp) . ', ' .
-                                            '"lastActiveTime": ' . json_encode(HackinGlobalFunctions::timeStampFromPhpToSql($hackinSessionInfo->lastActiveTime)) .
-                                         '}';
-                $interruptionMsg = 
-                    '{' .  
-                        '"interruption": ' . json_encode($interruption) . ',' .
-                        $aliveSession . ',' .
-                        $currentSession .
-                    '}';
-                //echo HackinErrorHandler::interruptHandler($interruption, $interruptionMsg);
-                exit();
-            }
-            $gameState = NULL;//$hackinDbHelper->getHackinGameState();
-            $hackinSession = new HackinSession($hackinSessionInfo, $hackinUserInfo, $gameState);
-            return $hackinSession;
-        }
     }
-    new HackinSessionHandler();//Mandatory to instantiate dbhelper
+    //new HackinSessionHandler();//Mandatory to instantiate dbhelper
     //HackinSessionHandler::getHackinSession();
 ?>
