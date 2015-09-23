@@ -59,9 +59,9 @@
             $multipleSessionPage = file_get_contents(__DIR__ . "/../views/multipleSessionsPagePart1.view");
             $multipleSessionPage = $multipleSessionPage . 
                 '<p class="error-msg"> Alive Session: ' . $jsonObject->{'liveSession'}->{'browser'} . ", " . $jsonObject->{'liveSession'}->{'ip'} . ", " .
-                    $jsonObject->{'liveSession'}->{'lastActiveTime'} . "" .
+                    $jsonObject->{'liveSession'}->{'lastActiveTime'} . "</p>" .
                 '<p class="error-msg"> Current Session: ' . $jsonObject->{'currentSession'}->{'browser'} . ", " . $jsonObject->{'currentSession'}->{'ip'} . ", " .
-                    $jsonObject->{'currentSession'}->{'lastActiveTime'} . "";
+                    $jsonObject->{'currentSession'}->{'lastActiveTime'} . "</p>";
             $multipleSessionPage = $multipleSessionPage . file_get_contents(__DIR__ . "/../views/multipleSessionsPagePart2.view");
             echo $multipleSessionPage;
         }
