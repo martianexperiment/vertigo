@@ -284,12 +284,23 @@
                                     '"hackinUserInfo": ' . json_encode($hackinUserInfo) . 
                                 '}';
             if($this->debug) {
-                echo "hasUserRegistered():";
-                print_r($additionalInfo);
+                echo $additionalInfo;
             }
             $pdo = $this->getPDOConnectionToDbAndVerifyUser($additionalInfo);
             $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
-            $db_check_user_registration_query = "SELECT * FROM `registration` WHERE `email_id`='". $hackinUserInfo->emailId ."'";
+            /**
+                QUERY:: registration, check if the user is registered
+            */
+            $db_check_user_registration_query = 
+                "SELECT " . 
+                    " * " .
+                " FROM " .
+                    $this->db_accounts . ".`registration`" .
+                " WHERE " .
+                    " `email_id`='". $hackinUserInfo->emailId ."'";
+            if($this->debug) {
+                echo $db_check_user_registration_query;
+            }
             $stmt = $pdo->query($db_check_user_registration_query);
             $row_count = $stmt->rowCount();
             if($row_count > 1) {
@@ -300,6 +311,9 @@
             if($row_count == 1) {
                 $hasUserRegistered = 1;
             }
+            if($this->debug) {
+                echo "<br>hasUserRegistered=".$hasUserRegistered;
+            }
             return $hasUserRegistered;
         }
 
@@ -308,14 +322,16 @@
                                     '"hackinUserInfo": ' . json_encode($hackinUserInfo) . 
                                 '}';
             if($this->debug) {
-                echo "registerNewUserAndCreateGameState():";
-                print_r($additionalInfo);
+                echo $additionalInfo;
             }
             $pdo = $this->getPDOConnectionToDbAndVerifyUser($additionalInfo);
             $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
             if($this->debug) {
                 print_r($additionalInfo);
             }
+            /**
+                QUERY:: register new user, registration db, first time the user arrives
+            */
             $db_register_user_query = 
                 "INSERT INTO `". $this->db_accounts . "`.`registration` 
                     (     `email_id`
@@ -360,15 +376,20 @@
                                     '"hackinUserInfo": ' . json_encode($hackinUserInfo) . 
                                 '}';
             $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
-            $db_create_game_state = "insert into `". $this->db_accounts . "`.`game_state` 
-                (
-                    email_id,
-                    is_user_alumni
-                ) values 
-                (" .
-                    "'" .   $hackinUserInfo->emailId . "'" .
-                    ", '" . $hackinUserInfo->isUserAlumni . "'" .
-                ")";
+
+            /**
+                QUERY: Game engine, create game state, registering new user
+            */
+            $db_create_game_state = 
+                "insert into `". $this->db_accounts . "`.`game_state` 
+                    (
+                        email_id,
+                        is_user_alumni
+                    ) values 
+                    (" .
+                        "'" .   $hackinUserInfo->emailId . "'" .
+                        ", '" . $hackinUserInfo->isUserAlumni . "'" .
+                    ")"; 
             $pdo->query($db_create_game_state);
         }
 
@@ -377,8 +398,7 @@
                                     '"HackinSessionInfo": ' . json_encode($hackinSessionInfo) .
                                 '}';
             if($this->debug) {
-                echo "<br><br><br>******************logRefresh():";
-                print_r($additionalInfo);
+                echo "<br><br>".$additionalInfo;
             }
             $pdo = $this->getPDOConnectionToDbAndVerifyUser($additionalInfo);
             $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
@@ -389,8 +409,7 @@
                                     '"HackinSessionInfo": ' . json_encode($hackinSessionInfo) .
                                 '}';
             if($this->debug) {
-                echo "<br><br><br>******************logForceLogin():";
-                print_r($additionalInfo);
+                echo "<br><br>".$additionalInfo;
             }
             $pdo = $this->getPDOConnectionToDbAndVerifyUser($additionalInfo);
             $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
@@ -456,10 +475,10 @@
             }
         }
 
+        /**
+            TODO: rename it to refreshLiveSession
+        */
         public function updateLiveSession($liveHackinSessionInfo) {
-            /**
-                QUERY: logger, session, update active time.
-            */
             $additionalInfo =  '{"updateLiveSession": {' .
                                     '"liveHackinSessionInfo": ' . json_encode($liveHackinSessionInfo) . 
                                 '}';
@@ -471,14 +490,14 @@
             $pdo = $this->getPDOConnectionToDbAndVerifyUser($additionalInfo);
             $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
             try{
+                /**
+                    QUERY: session, time log, page refresh (=> active time)
+                */
                 $db_live_session_updation_query = 
                     "update `" . $this->db_accounts . "`.`sessions_alive` " . 
                         "set `last_active_time` = now(),  `last_refresh_time` = now() " .
                         "where `email_id` = '". $liveHackinSessionInfo->emailId ."' ";
-                /**
-                    QUERY: logger, session, insert access.
-                */
-
+                
                 if($this->debug) {
                     echo "<br><br>firstLiveSession: db_live_session_updation_query<br>" . $db_live_session_updation_query;
                 }
@@ -495,13 +514,15 @@
                                     '"liveHackinSessionInfo": ' . json_encode($liveHackinSessionInfo) . 
                                 '}';
             if($this->debug) {
-                echo "updateNewLiveSession():";
-                print_r($additionalInfo);
+                echo $additionalInfo;
             }
             $functionalityForWhichExceptionExpected = $additionalInfo;
             $pdo = $this->getPDOConnectionToDbAndVerifyUser($additionalInfo);
             $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
             try{
+                /**
+                    QUERY: logger, session, force access.
+                */
                 $db_force_live_session_accounting_query = 
                     "update `" . $this->db_accounts . "`.`sessions_alive`  " .
                         "set php_session_id = '". $liveHackinSessionInfo->phpSessionId . "'" .
@@ -556,13 +577,15 @@
         public function removeLiveHackinSession($hackinSessionInfo) {
             $additionalInfo = '{"logout-removeLiveHackinSession" :' . json_encode($hackinSessionInfo) . ' }' ;
             if($this->debug) {
-                echo "removeLiveHackinSession():";
-                print_r($additionalInfo);
+                echo $additionalInfo;
             }
             $functionalityForWhichExceptionExpected = $additionalInfo;
             $pdo = $this->getPDOConnectionToDbAndVerifyUser($additionalInfo);
             $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
             try{
+                /**
+                    QUERY: session, logout, delete live session
+                */
                 $db_live_session_deletion_query = 
                     "delete from `". $this->db_accounts ."`.`sessions_alive` where email_id = '" . $hackinSessionInfo->emailId . "' and hackin_session_id = '" . $hackinSessionInfo->hackinSessionId . "'" ;
                 if($this->debug) {
@@ -589,6 +612,9 @@
             $pdo = $this->getPDOConnectionToDbAndVerifyUser($additionalInfo);
             $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
             try{
+                /**
+                    QUERY: gameEngine, gameState retrieval
+                */
                 $db_game_state_retrieval_query = 
                     "select * from `". $this->db_accounts ."`.`game_state` where email_id = '" . $hackinUserInfo->emailId . "'" ;
                 if($this->debug) {
@@ -625,7 +651,19 @@
             return $isCorrectAnswer;
         }
 
-        public function noOfAttemptsMadeSoFarForQn($hackinUserInfo, $qnNo) {
+        public function noOfAttemptsMadeSoFarByUserForQn($hackinUserInfo, $qnNo) {
+            $additionalInfo =  '{"noOfAttemptsMadeSoFarByUserForQn": {' .
+                                    '"hackinUserInfo": ' . json_encode($hackinUserInfo) . 
+                                '}';
+            if($this->debug) {
+                echo "noOfAttemptsMadeSoFarByUserForQn():";
+                print_r($additionalInfo);
+            }
+            $pdo = $this->getPDOConnectionToDbAndVerifyUser($additionalInfo);
+            $this->newAccessToDb($pdo, $this->db_quora, $additionalInfo);
+            /**
+                QUERY: gameEngine, noOfAttemptsMadeSoFar
+            */
             $noOfAttemptsMadeSoFarForQn = 0;
             return $noOfAttemptsMadeSoFarForQn;
         }

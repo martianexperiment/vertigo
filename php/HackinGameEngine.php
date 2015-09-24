@@ -41,8 +41,8 @@
             return $isCorrectAnswer;
         }
 
-        public function getNoOfAttemptsMadeSoFarForQn($hackinUserInfo, $qnNo) {
-            $noOfAttemptsMadeSoFarForQn = $this->hackinDbHelper->noOfAttemptsMadeSoFarForQn($hackinUserInfo, $qnNo);
+        public function getNoOfAttemptsMadeSoFarByUserForQn($hackinUserInfo, $qnNo) {
+            $noOfAttemptsMadeSoFarForQn = $this->hackinDbHelper->noOfAttemptsMadeSoFarByUserForQn($hackinUserInfo, $qnNo);
             return $noOfAttemptsMadeSoFarForQn;
         }
 

@@ -47,8 +47,14 @@
                 }
                 //create session log with type register()
             } else {
+                //TODO: pass this info to identify login from accounts or local refresh
                 if($this->debug) {
-                    echo "<br>user has already registered.. proceeding to verify session";
+                    echo "<br>user has already registered.. He either refreshes the page or logs in from first.. proceeding to verify session";
+                    if(isset($_SERVER['HTTP_REFERRER']) && !empty($_SERVER["HTTP_REFERRER"])) {
+                        echo "<br><br>.*************Referred by::" . $_SERVER["HTTP_REFERRER"];
+                    } else {
+                        echo "<br><br>**********referer null";
+                    }
                 }
                 $hackinDbHelper->logRefresh($hackinSessionInfo);
                 $this->verifyLiveSessionBeforeProcessingRequest();
@@ -101,14 +107,16 @@
 
         public function verifyAnswerAndReturnJson($qnNo, $answer) {
             $hackinUserInfo = HackinSessionHandler::getHackinUserInfo();
-            $isCorrectAnswer = $this->hackinGameEngine->validateAnswer($hackinUserInfo, $qnNo, $answer);
+            $noOfAttemptsSoFar = $this->hackinGameEngine->getNoOfAttemptsMadeSoFarByUserForQn($hackinUserInfo, $qnNo);
+            $totalAttemptsAllowed = $this->hackinGameEngine->getTotalAttemptsAllowedForQn($qnNo);
+            if($totalAttemptsAllowed >= $noOfAttemptsSoFar) {
+                $isCorrectAnswer = $this->hackinGameEngine->validateAnswer($hackinUserInfo, $qnNo, $answer);
+            }
             $gameState = $this->getGameState();
             //TODO: populate these too.
-            $noOfAttemptsSoFar = $this->hackinGameEngine->getNoOfAttemptsMadeSoFarForQn($hackinUserInfo, $qnNo);
-            $totalAttemptsAllowed = $this->hackinGameEngine->getTotalAttemptsAllowedForQn($qnNo);
             $result = "{ \"isCorrectAnswer\": " . $isCorrectAnswer . ", " . 
                         "\"noOfAttemptsSoFar\": " . $noOfAttemptsSoFar . ", " . 
-                        "\"totalAttemptsAllowed:\"" . $totalAttemptsAllowed . ", " . 
+                        "\"totalAttemptsAllowed\":" . $totalAttemptsAllowed . ", " . 
                         "\"gameState\": " . json_encode($gameState) .
                       "}";
             return $result;
