@@ -98,7 +98,7 @@
         public function getGameState() {
             $hackinUserInfo = HackinSessionHandler::getHackinUserInfo();
             $gameState = $this->hackinGameEngine->getGameStateOfUser($hackinUserInfo);
-            echo $gameState;
+            return $gameState;
         }
 
         public function getQuestionState($qnNo) {
