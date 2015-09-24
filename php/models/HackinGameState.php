@@ -1,21 +1,12 @@
 <?php
     class HackinGameState {
         public $emailId;
-        public $currentLevelNo;
-        public $currentMissionNo;
-        public $currentPlotNo;
-        public $currentCountOfAttemptsMade;
         public $currentScore;
         public $isUserAlumni;
         public $playsAsCharacter;
 
-        public function __construct($emailId = NULL, $currentLevelNo = NULL, $currentMissionNo = NULL, $currentPlotNo = NULL, $currentCountOfAttemptsMade = NULL, 
-            $currentScore = NULL, $isUserAlumni = NULL, $playsAsCharacter = NULL) {
+        public function __construct($emailId = NULL, $currentScore = NULL, $isUserAlumni = NULL, $playsAsCharacter = NULL) {
             $this->emailId = $emailId;
-            $this->currentLevelNo = $currentLevelNo;
-            $this->currentMissionNo = $currentMissionNo;
-            $this->currentPlotNo = $currentPlotNo;
-            $this->currentCountOfAttemptsMade = $currentCountOfAttemptsMade;
             $this->currentScore = $currentScore;
             $this->isUserAlumni = $isUserAlumni;
             $this->playsAsCharacter = $playsAsCharacter;
