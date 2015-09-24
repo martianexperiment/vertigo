@@ -629,7 +629,6 @@
                     $ex = "Integrity constraint violation. Multiple game states stored in db for same user";
                     throw $ex;
                 }
-                $gameState = new HackinGameState();
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 foreach($rows as $row) {
@@ -644,6 +643,63 @@
                 exit();
             }
             return $hackinGameState;
+        }
+
+        public function getHackinQuestionStateForRegisterdUser($hackinUserInfo, $qnNo) {
+            $additionalInfo = '{"getQuestionState":' . json_encode($hackinUserInfo). ' }';
+            if($this->debug) {
+                echo "getHackinGameStateForRegisterdUser():";
+                print_r($additionalInfo);
+            }
+            $functionalityForWhichExceptionExpected = $additionalInfo;
+            $pdo = $this->getPDOConnectionToDbAndVerifyUser($additionalInfo);
+            $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
+            try{
+                /**
+                    QUERY: gameEngine, gameState retrieval
+                */
+                $db_question_state_retrieval_query = 
+                    "SELECT " . 
+                        "qn_state.* " .
+                        ", qn.max_no_of_attempts_allowed " .
+                    "FROM " .
+                        "`" . $this->db_accounts . "`.`question_state` qn_state " .
+                    "JOIN " .
+                        "`" . $this->db_quora ."`.`question_details` qn " .
+                        " ON qn.question_no = qn_state.question_no " .
+                    "WHERE " .
+                        "qn_state.question_no = " . $qnNo . 
+                        "and qn_state.emailId = '" . $hackinUserInfo->emailId . "'" ;
+                    //"select * from `". $this->db_accounts ."`.`game_state` where email_id = '" . $hackinUserInfo->emailId . "'" ;
+
+                if($this->debug) {
+                    echo "<br><br>getHackinQuestionState: db_question_state_retrieval_query<br>" . $db_game_state_retrieval_query;
+                    echo "<br>";
+                    print_r($hackinUserInfo);
+                }
+
+                $stmt = $pdo->query($db_question_state_retrieval_query);
+                $row_count = $stmt->rowCount();
+                if($row_count > 1) {
+                    $ex = "Integrity constraint violation. Multiple question states stored in db for same user";
+                    throw $ex;
+                }
+
+                $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                foreach($rows as $row) {
+                     $hackinGameState = HackinJsonHandler::hackinQuestionStateInfoRetrievalFromObject($row);
+                    
+                    if($this->debug) {
+                        echo "<br>hackinQuestionState (for user= " . $hackinUserInfo->emailId . " and for question= ". $qnNo .
+                            " )= ". json_encode($hackinQuestionState);
+                    }
+                }
+            } catch(Exception $ex) {
+                echo HackinErrorHandler::errorHandler($ex, $functionalityForWhichExceptionExpected);
+                exit();
+            }
+            return $hackinQuestionState;
         }
 
         public function validateAnswer($hackinUserInfo, $qnNo, $answer) {

@@ -1,6 +1,7 @@
 <?php
     require_once(__DIR__ . "/HackinDbHelper.php");
     require_once(__DIR__ . "/models/HackinUserInfo.php");
+    require_once(__DIR__ . "/models/HackinQuestionState.php");
     /**
         Place at which all decisions related to the game are made.
         Question Choosing and Retrieval, Mission choosing and retrieval, Answer validation, etc.
@@ -23,6 +24,11 @@
         public function getGameStateOfUser($hackinUserInfo) {
             $gameState = $this->hackinDbHelper->getHackinGameStateForRegisterdUser($hackinUserInfo);
             return $gameState;
+        }
+
+        public function getQuestionStateOfUser($hackinUserInfo, $qnNo) {
+            $questionState = $this->hackinDbHelper->getHackinQuestionStateForRegisterdUser($hackinUserInfo, $qnNo);
+            return $questionState;
         }
 
         /**

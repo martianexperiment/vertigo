@@ -101,6 +101,12 @@
             echo $gameState;
         }
 
+        public function getQuestionState($qnNo) {
+            HackinSessionHandler::verifySession();
+            $hackinUserInfo = HackinSessionHandler::getHackinUserInfo();
+            return $this->hackinGameEngine->getQuestionStateOfUser($hackinUserInfo, $qnNo);
+        }
+
         public function verifyLiveSessionBeforeProcessingRequest() {
             HackinSessionHandler::verifyLiveSession();
         }

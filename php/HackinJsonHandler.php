@@ -4,7 +4,9 @@
     require_once(__DIR__ . "/models/HackinSessionInfo.php");
     require_once(__DIR__ . "/models/HackinUserInfo.php");
     require_once(__DIR__ . "/models/HackinGameState.php");
+    require_once(__DIR__ . "/models/HackinQuestionState.php");
     require_once(__DIR__ . "/models/HackinSession.php");
+
     /**
         From associative array to corresponding model object retrieval.
     */
@@ -41,6 +43,21 @@
                 exit();
             }
             return $hackinGameState;
+        }
+
+        public static function hackinQuestionStateInfoRetrievalFromObject($row) {
+            $functionalityWhenInterruptionExpected = "Retrieve data for HackinQuestionState object= " . json_encode($row);
+            $hackinQuestionState = new HackinQuestionState();
+            try {
+                foreach($obj as $field => $fieldValue) {
+                    $member = HackinGlobalFunctions::underscores_toCamelCase($field);
+                    $hackinQuestionState->$member = $fieldValue;
+                }
+            } catch(Exception $ex) {
+                echo HackinErrorHandler::errorHandler($ex, $functionalityWhenInterruptionExpected);
+                exit();
+            }
+            return $hackinQuestionState;
         }
     }
   /*
