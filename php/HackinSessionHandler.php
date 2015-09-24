@@ -144,15 +144,15 @@
             Verifies live session and redirects to interrupt handler if any
         */
         public static function verifyLiveSession() {
+            $additionalInfo = "verifyLiveSession()";
+            $functionalityForWhichExceptionExpected = $additionalInfo;
             try {
                 $hackinDbHelper = self::$hackinDbHelper;
 
                 self::verifySession();
                 $hackinUserInfo = self::getHackinUserInfo();
                 $hackinSessionInfo = self::getCurrentHackinSessionInfo();
-                $additionalInfo = "verifyLiveSession()";
 
-                $functionalityForWhichExceptionExpected = $additionalInfo;
                 if(self::$debug) {
                     echo "<br>***************** verifying live session() page<br>";
                 }
