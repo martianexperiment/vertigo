@@ -11,8 +11,6 @@
         */
         public static function errorHandler(Exception $ex, $errorOccuredIn) {
             $errorOccuredIn = "Error occured during **".$errorOccuredIn."** msg=" . $ex->getMessage() ;
-            //$errorMsg = $errorOccuredIn . self::errorMsgToShowToHackinUser($errorOccuredIn);
-            //log in the file here
             $errorMsg = "";
             
             $errorMsg = file_get_contents(__DIR__ . "/../views/errorPagePart1.view");
@@ -30,7 +28,7 @@
             $errorMsg = $errorMsg. '</p>';
             $errorMsg = $errorMsg . file_get_contents(__DIR__ . "/../views/errorPagePart2.view");
             
-            echo $errorMsg;
+            echo $errorMsg;//donot comment this line
             self::endStackTrace();
         }
 

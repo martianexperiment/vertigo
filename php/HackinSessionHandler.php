@@ -14,7 +14,7 @@
             Verify whether all required session variables are set.
             return: throws exception if not.
         */
-        public static $debug = 0;
+        public static $debug = 0;   
         private static $hackinDbHelper;
 
         public function __construct($hackinDbHelper = NULL) {
@@ -55,6 +55,7 @@
         }
 
         public static function getHackinUserInfo() {
+            self::verifySession();
             $hackinUserInfo = NULL;
             $isUserAlumni = NULL;
             if(strcasecmp($_SESSION['ses_account_type'], 'PAR') == 0) {
@@ -109,6 +110,7 @@
         }
 
         public static function getHackinUserMonitor() {
+            self::verifySession();
             $hackinUserMonitor = new HackinUserMonitor();
             $userBrowserInfo = $hackinUserMonitor->userBrowserInfo;
             if(empty($userBrowserInfo->userAgent)) {

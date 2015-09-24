@@ -47,7 +47,4 @@
     $method = 'POST';
     session_write_close();
     echo HackinGlobalFunctions::simulateHttpRequest($protocol, HackinConfig::$phpServer, $filePathFromServer, $header, $method, $data);
-    if(!isset($_SESSION)) {
-        session_start();
-    }
 ?>

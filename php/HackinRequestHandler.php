@@ -96,9 +96,9 @@
         }
 
         public function getGameState() {
-            HackinSessionHandler::verifySession();
             $hackinUserInfo = HackinSessionHandler::getHackinUserInfo();
-            return $this->hackinGameEngine->getGameStateOfUser($hackinUserInfo);
+            $gameState = $this->hackinGameEngine->getGameStateOfUser($hackinUserInfo);
+            echo $gameState;
         }
 
         public function verifyLiveSessionBeforeProcessingRequest() {
