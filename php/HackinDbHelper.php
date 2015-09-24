@@ -256,7 +256,7 @@
                     return NULL;
                 }
                 if($row_count > 1) {
-                    $ex = "Integrity constraint violation. Multiple alive sessions stored in db for same user";
+                    $ex = new Exception("Integrity constraint violation. Multiple alive sessions stored in db for same user");
                     throw $ex;
                 }
                 $liveHackinSessionInfo = new HackinSessionInfo();
@@ -304,7 +304,7 @@
             $stmt = $pdo->query($db_check_user_registration_query);
             $row_count = $stmt->rowCount();
             if($row_count > 1) {
-                $ex = "Integrity constraint violation. Multiple alive sessions stored in db for same user";
+                $ex = new Exception("Integrity constraint violation. Multiple alive sessions stored in db for same user");
                 throw $ex;
             }
             $hasUserRegistered = 0;
@@ -622,11 +622,15 @@
                     echo "<br>";
                     print_r($hackinUserInfo);
                 }
-
+                $hackinGameState="";
                 $stmt = $pdo->query($db_game_state_retrieval_query);
                 $row_count = $stmt->rowCount();
+                if($row_count == 0) {
+                    $ex = new Exception("Game state table empty.. Violating constraints");
+                    throw $ex;
+                }
                 if($row_count > 1) {
-                    $ex = "Integrity constraint violation. Multiple game states stored in db for same user";
+                    $ex = new Exception("Integrity constraint violation. Multiple game states stored in db for same user");
                     throw $ex;
                 }
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -654,6 +658,7 @@
             $functionalityForWhichExceptionExpected = $additionalInfo;
             $pdo = $this->getPDOConnectionToDbAndVerifyUser($additionalInfo);
             $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
+            $hackinQuestionState = new HackinQuestionState();
             try{
                 /**
                     QUERY: gameEngine, gameState retrieval
@@ -668,12 +673,12 @@
                         "`" . $this->db_quora ."`.`question_details` qn " .
                         " ON qn.question_no = qn_state.question_no " .
                     "WHERE " .
-                        "qn_state.question_no = " . $qnNo . 
-                        "and qn_state.emailId = '" . $hackinUserInfo->emailId . "'" ;
+                        "qn_state.question_no = " . $qnNo . " " .
+                        "and qn_state.email_id = '" . $hackinUserInfo->emailId . "'" ;
                     //"select * from `". $this->db_accounts ."`.`game_state` where email_id = '" . $hackinUserInfo->emailId . "'" ;
 
                 if($this->debug) {
-                    echo "<br><br>getHackinQuestionState: db_question_state_retrieval_query<br>" . $db_game_state_retrieval_query;
+                    echo "<br><br>getHackinQuestionState: db_question_state_retrieval_query<br>" . $db_question_state_retrieval_query;
                     echo "<br>";
                     print_r($hackinUserInfo);
                 }
@@ -681,14 +686,17 @@
                 $stmt = $pdo->query($db_question_state_retrieval_query);
                 $row_count = $stmt->rowCount();
                 if($row_count > 1) {
-                    $ex = "Integrity constraint violation. Multiple question states stored in db for same user";
+                    $ex = new Exception("Integrity constraint violation. Multiple question states stored in db for same user");
                     throw $ex;
                 }
 
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+                if($this->debug) {
+                    print_r($rows);
+                }
+                $hackinQuestionState = new HackinQuestionState();
                 foreach($rows as $row) {
-                     $hackinGameState = HackinJsonHandler::hackinQuestionStateInfoRetrievalFromObject($row);
+                     $hackinQuestionState = HackinJsonHandler::hackinQuestionStateInfoRetrievalFromObject($row);
                     
                     if($this->debug) {
                         echo "<br>hackinQuestionState (for user= " . $hackinUserInfo->emailId . " and for question= ". $qnNo .
