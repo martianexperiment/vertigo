@@ -45,12 +45,12 @@ require_once(__DIR__ . "/HackinRequestHandler.php");
                 case "getGameState()":
                     $gameState = json_encode($hackinRequestHandler->getGameState());
                     echo addslashes($gameState);
-                    print_r($gameState);
                     break;
                 case "getQuestionState()":
                     $qnNo = 1;
                     $questionState = json_encode($hackinRequestHandler->getQuestionState($qnNo));
                     echo $questionState;
+                    break;
                 /**
                     Verify live sessions without fail.
                 */
