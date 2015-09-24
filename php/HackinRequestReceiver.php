@@ -64,6 +64,10 @@ require_once(__DIR__ . "/HackinRequestHandler.php");
                     $obj = file_get_contents(__DIR__."/../questionModel/q2.json");
                     echo addslashes($obj);
                     break;
+                case "getQuestion(3)":
+                    $obj = file_get_contents(__DIR__."/../questionModel/q3.json");
+                    echo addslashes($obj);
+                    break;
                 case "verifyAnswer()":
                     $hackinRequestHandler->verifyLiveSessionBeforeProcessingRequest();
                     //
