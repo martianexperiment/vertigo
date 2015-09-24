@@ -11,6 +11,7 @@
         From associative array to corresponding model object retrieval.
     */
     class HackinJsonHandler {
+        public static $debug = 0;
         /**
             Convert Hackin Session Information retrieved from Db(associative array $obj) to HackinSessionInfo object
             return: $hackinSessionInfo
@@ -45,12 +46,19 @@
             return $hackinGameState;
         }
 
-        public static function hackinQuestionStateInfoRetrievalFromObject($row) {
-            $functionalityWhenInterruptionExpected = "Retrieve data for HackinQuestionState object= " . json_encode($row);
+        public static function hackinQuestionStateInfoRetrievalFromObject($obj) {
+            $functionalityWhenInterruptionExpected = "Retrieve data for HackinQuestionState object= " . json_encode($obj);
+            if(self::$debug) {
+                echo "<br>@jsonDecoder::<br>".$functionalityWhenInterruptionExpected;
+            }
             $hackinQuestionState = new HackinQuestionState();
             try {
                 foreach($obj as $field => $fieldValue) {
                     $member = HackinGlobalFunctions::underscores_toCamelCase($field);
+                    if(self::$debug) {
+                        echo "<br>". $field." is " . $member ."";
+                        echo " ";
+                    }
                     $hackinQuestionState->$member = $fieldValue;
                 }
             } catch(Exception $ex) {
@@ -60,6 +68,10 @@
             return $hackinQuestionState;
         }
     }
+    /*$obj = array("email_id" => "thirukkakarnan@gmail.com", "question_no" => 1, "has_solved" => 0, "no_of_attempts_made" => 0, 
+        "plays_as_character" => "{\"name\":\"Dimitry\", \"profilePic\":\"img/dimitry.png\"}", "max_no_of_attempts_allowed" => 15);
+    $jsonObj = HackinJsonHandler::hackinQuestionStateInfoRetrievalFromObject($obj) ;
+    echo json_encode($jsonObj);*/
   /*
     $obj = file_get_contents(__DIR__."/../questionModel/q2.json");
     $json = json_decode($obj);
