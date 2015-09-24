@@ -49,7 +49,7 @@ require_once(__DIR__ . "/HackinRequestHandler.php");
                 case "getQuestionState()":
                     $qnNo = 1;
                     $questionState = json_encode($hackinRequestHandler->getQuestionState($qnNo));
-                    echo $questionState;
+                    echo addslashes($questionState);
                     break;
                 /**
                     Verify live sessions without fail.
@@ -74,10 +74,12 @@ require_once(__DIR__ . "/HackinRequestHandler.php");
                     break;
                 case "verifyAnswer()":
                     //TODO: get from request string, else throw exception
-                    $qnNo = 1;
-                    $answer = "Answer";
+                    $qnNo = intval("1") ;
+                    $answer = "answer";
                     $hackinRequestHandler->verifyLiveSessionBeforeProcessingRequest();
-                    echo $hackinRequestHandler->verifyAnswerAndReturnJson($qnNo, $answer);
+                    //echo md5($answer);
+                    $questionState = json_encode($hackinRequestHandler->verifyAnswer($qnNo, $answer));
+                    echo addslashes($questionState);
                     break;
                 default:
                     try {

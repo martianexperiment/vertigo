@@ -3,12 +3,14 @@
         public $emailId;
         public $currentScore;
         public $isUserAlumni;
+        public $noOfViolationsMade;
         public $playsAsCharacter;
 
-        public function __construct($emailId = NULL, $currentScore = NULL, $isUserAlumni = NULL, $playsAsCharacter = NULL) {
+        public function __construct($emailId = NULL, $currentScore = NULL, $isUserAlumni = NULL, $noOfViolationsMade = NULL, $playsAsCharacter = NULL) {
             $this->emailId = $emailId;
             $this->currentScore = $currentScore;
             $this->isUserAlumni = $isUserAlumni;
+            $this->noOfViolationsMade = $noOfViolationsMade;
             $this->playsAsCharacter = $playsAsCharacter;
         }
     }

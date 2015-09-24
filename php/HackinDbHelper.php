@@ -401,7 +401,7 @@
                 echo "<br><br>".$additionalInfo;
             }
             $pdo = $this->getPDOConnectionToDbAndVerifyUser($additionalInfo);
-            $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
+            //$this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
         }
 
         public function logForceLogin($hackinSessionInfo) {
@@ -412,7 +412,7 @@
                 echo "<br><br>".$additionalInfo;
             }
             $pdo = $this->getPDOConnectionToDbAndVerifyUser($additionalInfo);
-            $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
+            //$this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
         }
 
         public function createLiveHackinSession($hackinSessionInfo) {
@@ -599,7 +599,6 @@
                 echo HackinErrorHandler::errorHandler($ex, $functionalityForWhichExceptionExpected);
                 exit();
             }
-            
         }
 
         public function getHackinGameStateForRegisterdUser($hackinUserInfo) {
@@ -652,7 +651,7 @@
         public function getHackinQuestionStateForRegisterdUser($hackinUserInfo, $qnNo) {
             $additionalInfo = '{"getQuestionState":' . json_encode($hackinUserInfo). ' }';
             if($this->debug) {
-                echo "getHackinGameStateForRegisterdUser():";
+                echo "getHackinQuestionStateForRegisterdUser():";
                 print_r($additionalInfo);
             }
             $functionalityForWhichExceptionExpected = $additionalInfo;
@@ -661,7 +660,7 @@
             $hackinQuestionState = new HackinQuestionState();
             try{
                 /**
-                    QUERY: gameEngine, gameState retrieval
+                    QUERY: gameEngine, questionState retrieval
                 */
                 $db_question_state_retrieval_query = 
                     "SELECT " . 
@@ -673,7 +672,7 @@
                         "`" . $this->db_quora ."`.`question_details` qn " .
                         " ON qn.question_no = qn_state.question_no " .
                     "WHERE " .
-                        "qn_state.question_no = " . $qnNo . " " .
+                        "qn_state.question_no = " . intval($qnNo) . " " .
                         "and qn_state.email_id = '" . $hackinUserInfo->emailId . "'" ;
                     //"select * from `". $this->db_accounts ."`.`game_state` where email_id = '" . $hackinUserInfo->emailId . "'" ;
 
@@ -689,18 +688,46 @@
                     $ex = new Exception("Integrity constraint violation. Multiple question states stored in db for same user");
                     throw $ex;
                 }
-
-                $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                if($this->debug) {
-                    print_r($rows);
-                }
-                $hackinQuestionState = new HackinQuestionState();
-                foreach($rows as $row) {
-                     $hackinQuestionState = HackinJsonHandler::hackinQuestionStateInfoRetrievalFromObject($row);
-                    
+                if($row_count == 0) {
+                    /**
+                        QUERY: Game engine, question state, create question state for the current question for this User
+                    */
+                    $additionalInfo = "{ \"questionStateCreation\": { " .
+                                            "\"emailId\": " . json_encode($hackinUserInfo->emailId) . ", " .
+                                            "\"questionNo\": " . intval($qnNo) . " " .
+                                      "}";
                     if($this->debug) {
-                        echo "<br>hackinQuestionState (for user= " . $hackinUserInfo->emailId . " and for question= ". $qnNo .
-                            " )= ". json_encode($hackinQuestionState);
+                        echo "<br>" . $additionalInfo;
+                    }
+                    $functionalityForWhichExceptionExpected = $additionalInfo;
+                    $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
+                    $db_question_state_creation_query = 
+                        "Insert into `" . $this->db_accounts . "`.`question_state`  " .
+                            "(" .
+                                "email_id, " .
+                                "question_no " .
+                            ") values " .
+                            "(" .
+                                "'" . $hackinUserInfo->emailId . "', " .
+                                "" . intval($qnNo) . " " .
+                            ")";
+                    if($this->debug) {
+                        echo "<br>inserting question state():query:<br>" . $db_question_state_creation_query;
+                    }
+                    $pdo->query($db_question_state_creation_query);
+                    $hackinQuestionState = $this->getHackinQuestionStateForRegisterdUser($hackinUserInfo, $qnNo);
+                } else {
+                    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    if($this->debug) {
+                        print_r($rows);
+                    }
+                    $hackinQuestionState = new HackinQuestionState();
+                    foreach($rows as $row) {
+                         $hackinQuestionState = HackinJsonHandler::hackinQuestionStateInfoRetrievalFromObject($row);
+                        if($this->debug) {
+                            echo "<br>hackinQuestionState (for user= " . $hackinUserInfo->emailId . " and for question= ". intval($qnNo) .
+                                " )= ". json_encode($hackinQuestionState);
+                        }
                     }
                 }
             } catch(Exception $ex) {
@@ -710,31 +737,75 @@
             return $hackinQuestionState;
         }
 
-        public function validateAnswer($hackinUserInfo, $qnNo, $answer) {
+        public function validateAnswerAndLogResults($hackinUserInfo, $hackinSessionInfo, $qnNo, $answer, $isViolationDetected) {
             $isCorrectAnswer = 0;
-            return $isCorrectAnswer;
+            $md5Answer = md5($answer);
+            if($isViolationDetected == 1) {
+                $isCorrectAnswer = 0;
+            } else {
+                $pdo = $this->getPDOConnectionToDbAndVerifyUser();
+                $this->newAccessToDb($pdo, $this->db_quora);
+                /**
+                    QUERY: quora, answer, validation
+                */
+                $db_answer_verification_query = 
+                    "select " .
+                        "* ".
+                    "from " .
+                        "`" . $this->db_quora . "`.`answer_details` " .
+                    "where " . 
+                         "question_no = " . intval($qnNo) . " " .
+                    "and answer = '" . md5($answer) . "' ";
+
+                if($this->debug) {
+                    echo "<br>validateAnswer(): query:</br>" . $db_answer_verification_query . "<br>";
+                }
+                $stmt = $pdo->query($db_answer_verification_query);
+                $row_count = $stmt->rowCount();
+                if($row_count > 1) {
+                    $ex = new Exception("Integrity constraint violation. Same answer duplicated in db for same question");
+                    throw $ex;
+                }
+                $isCorrectAnswer = $row_count;
+            }
+            $this->logAnswer($hackinUserInfo, $hackinSessionInfo, $qnNo, $answer, $isCorrectAnswer, $isViolationDetected);
+            $questionState = $this->getHackinQuestionStateForRegisterdUser($hackinUserInfo, $qnNo);
+            $questionState->isViolationDetected = $isViolationDetected;
+            if($isViolationDetected) {
+                //TODO: integrate 
+            }
+            return $questionState;
         }
 
-        public function noOfAttemptsMadeSoFarByUserForQn($hackinUserInfo, $qnNo) {
-            $additionalInfo =  '{"noOfAttemptsMadeSoFarByUserForQn": {' .
-                                    '"hackinUserInfo": ' . json_encode($hackinUserInfo) . 
+        public function logAnswer($hackinUserInfo, $hackinSessionInfo, $qnNo, $answer, $isCorrectAnswer, $isViolationDetected) {
+            $additionalInfo = '{"logAnswer": {' . 
+                                    '"hackinUserInfo": ' . json_encode($hackinUserInfo) . ", " .
+                                    '"hackinSessionInfo": ' . json_encode($hackinSessionInfo) . ", " .
+                                    '"questionNo": ' . $qnNo . ", " .
+                                    '"answer": ' . json_encode($answer) . ', ' .
+                                    '"isCorrectAnswer": ' . json_encode($isCorrectAnswer) . ', ' .
+                                    '"isViolationDetected": ' . $isViolationDetected . " " .
                                 '}';
             if($this->debug) {
-                echo "noOfAttemptsMadeSoFarByUserForQn():";
-                print_r($additionalInfo);
+                echo "<br>logAnswer:<br>".$additionalInfo;
             }
             $pdo = $this->getPDOConnectionToDbAndVerifyUser($additionalInfo);
-            $this->newAccessToDb($pdo, $this->db_quora, $additionalInfo);
+            $this->newAccessToDb($pdo, $this->db_accounts, $additionalInfo);
             /**
-                QUERY: gameEngine, noOfAttemptsMadeSoFar
+                QUERY: game engine, answer validation done, log answer in question state
             */
-            $noOfAttemptsMadeSoFarForQn = 0;
-            return $noOfAttemptsMadeSoFarForQn;
-        }
-
-        public function totalAttemptsAllowedForQn($qnNo) {
-            $totalAttemptsAllowedForQn = 0;
-            return $totalAttemptsAllowedForQn;
+            $db_update_question_state_query = 
+                "update question_state " .
+                    "set " . 
+                        "no_of_attempts_made = no_of_attempts_made+1 " . 
+                        ", has_solved = " . $isCorrectAnswer . " "  .
+                "where "  .
+                    "email_id = '" . $hackinUserInfo->emailId ."' " .
+                    "and question_no = " . intval($qnNo) . " ";
+            if($this->debug) {
+                echo "<br>logAnswerAttempt()<br>". $db_update_question_state_query;
+            }
+            $pdo->query($db_update_question_state_query);
         }
     }
 ?>

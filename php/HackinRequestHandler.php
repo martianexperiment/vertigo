@@ -111,21 +111,11 @@
             HackinSessionHandler::verifyLiveSession();
         }
 
-        public function verifyAnswerAndReturnJson($qnNo, $answer) {
+        public function verifyAnswer($qnNo, $answer) {
             $hackinUserInfo = HackinSessionHandler::getHackinUserInfo();
-            $noOfAttemptsSoFar = $this->hackinGameEngine->getNoOfAttemptsMadeSoFarByUserForQn($hackinUserInfo, $qnNo);
-            $totalAttemptsAllowed = $this->hackinGameEngine->getTotalAttemptsAllowedForQn($qnNo);
-            if($totalAttemptsAllowed >= $noOfAttemptsSoFar) {
-                $isCorrectAnswer = $this->hackinGameEngine->validateAnswer($hackinUserInfo, $qnNo, $answer);
-            }
-            $gameState = $this->getGameState();
-            //TODO: populate these too.
-            $result = "{ \"isCorrectAnswer\": " . $isCorrectAnswer . ", " . 
-                        "\"noOfAttemptsSoFar\": " . $noOfAttemptsSoFar . ", " . 
-                        "\"totalAttemptsAllowed\":" . $totalAttemptsAllowed . ", " . 
-                        "\"gameState\": " . json_encode($gameState) .
-                      "}";
-            return $result;
+            $hackinSessionInfo = HackinSessionHandler::getCurrentHackinSessionInfo();
+            $questionState = $this->hackinGameEngine->validateAnswer($hackinUserInfo, $hackinSessionInfo, $qnNo, $answer);
+            return $questionState;
         }
     }
     //echo json_encode($_SERVER);

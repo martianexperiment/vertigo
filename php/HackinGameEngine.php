@@ -10,6 +10,7 @@
     */
     class HackinGameEngine {
         private $hackinDbHelper;
+        private $debug = 0;
 
         public function __construct($hackinDbHelper = NULL) {
             if($hackinDbHelper == NULL) {
@@ -32,31 +33,37 @@
         }
 
         /**
-            Fetches the current Mission for the user
-        */
-        public function getMissionForUser($hackinUserInfo) {
-
-        }
-
-        /**
             validate the answer for the question
-            return: 1/0 after updating GameState
+            return: $questionState after updation
         */
-        public function validateAnswer($hackinUserInfo, $qnNo, $answer) {
-            $isCorrectAnswer = $this->hackinDbHelper->validateAnswer($hackinUserInfo, $qnNo, $answer);
-            return $isCorrectAnswer;
+        public function validateAnswer($hackinUserInfo, $hackinSessionInfo, $qnNo, $answer) {
+            /**
+                get question state of the user before validation
+                if he has not answered it yet, then, a state will be created for the first time he views it(getsGameStateFromFrontEnd)
+            */
+            $hackinQuestionState = $this->getQuestionStateOfUser($hackinUserInfo, $qnNo);
+            if($this->debug) {
+                echo "<br>validateAnswer-GameEngine::<br>";
+                print_r($hackinQuestionState);
+            }
+            $noOfAttemptsSoFar = $hackinQuestionState->noOfAttemptsMade;
+            $maxNoOfAttemptsAllowed = $hackinQuestionState->maxNoOfAttemptsAllowed;
+            /**
+                Though u can retrieve violationDetection column from Db, calculate again from db
+            */
+            $isViolationDetected = 0;
+            if($maxNoOfAttemptsAllowed <= $noOfAttemptsSoFar) {
+                $isViolationDetected = 1;
+            }
+            if($this->debug) {
+                echo "<br>isViolationDetected-gameEngine:<br>" . $isViolationDetected;
+            }
+            if($hackinQuestionState->hasSolved == 0){
+                $hackinQuestionState = $this->hackinDbHelper->validateAnswerAndLogResults($hackinUserInfo, $hackinSessionInfo, $qnNo, $answer, $isViolationDetected);
+            }
+            $hackinQuestionState->isViolationDetected = $isViolationDetected;
+            return $hackinQuestionState;
         }
-
-        public function getNoOfAttemptsMadeSoFarByUserForQn($hackinUserInfo, $qnNo) {
-            $noOfAttemptsMadeSoFarForQn = $this->hackinDbHelper->noOfAttemptsMadeSoFarByUserForQn($hackinUserInfo, $qnNo);
-            return $noOfAttemptsMadeSoFarForQn;
-        }
-
-        public function getTotalAttemptsAllowedForQn($qnNo) {
-            $totalAttemptsAllowedForQn = $this->hackinDbHelper->totalAttemptsAllowedForQn($qnNo);
-            return $totalAttemptsAllowedForQn;
-        }
-
     }
     /*$gameEngine = new HackinGameEngine();//only public members are encoded, encoding doesn't show up the class name
     echo json_encode($gameEngine);*/
