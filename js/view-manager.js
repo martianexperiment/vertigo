@@ -10,7 +10,7 @@ var quesContainer = '<div class="row"> <div class="col-lg-4"> <div class="row"> 
 function gideonRoutine()
 {
 	playGideon();
-	speakGideon('Look at the conversation to grasp the plot.');
+	speakGideon('Mission 2 has been added');
 	setTimeout(
 	function()
 	{
@@ -70,4 +70,35 @@ function fillContainer(content, container)
 {
 	container.html(content);
 	return container;
+}
+
+function getMission(qNum)
+{
+	$('.box').append(overlay);
+	$.post(
+		accessPoint,
+		{'function': 'getQuestion('+qNum+')'},
+		function(data, textStatus, xhr)
+		{
+			checkError(data);
+			data = data.replace(/\\(.)/mg, "$1")
+			data = JSON.parse(data);
+			$('section.content').html(quesContainer);
+
+			var chars = data.charactersInvolved;
+			//console.log(chars);
+			var charsView = $('#characters');
+			//Clear the list;
+			//charsView.find('ul.users-list').html('');
+			loadCharacters(chars, charsView);
+			//$('#conversation .direct-chat-messages').html('');
+			loadConversation(chars, data.messages,$('#conversation'));
+			bindLocation($('#location'), data.location.city + ', '+ data.location.state);
+			$('#question-holder').html(data.question);
+			
+			gideonRoutine();
+			setInterval(gideonRoutine,40*1000);
+			$('.overlay').remove();
+		}
+	);
 }
