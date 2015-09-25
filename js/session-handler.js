@@ -20,11 +20,13 @@ function checkError(reply)
 	
 		if(!isJSON && repDOM.find('#error-msg'))
 		{
-			$('html').html(reply);
+			document.write(reply);
+			document.close();
 		}
 	}
 	else if(isJSON && (reply.error!=null || reply.interruption!=null))
 	{
+		//TODO: alter using document.write
 		$('html').html(reply.html);
 		$('#error-msg').html(prepareErrorToPrint(reply));
 	}

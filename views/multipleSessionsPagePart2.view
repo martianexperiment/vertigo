@@ -9,8 +9,9 @@
         			{function: 'forceLogIn()'},
         			function(data, textStatus, xhr)
         			{
-        				$('html').html(data);
-        			}
+                        document.write(data);
+                        document.close();
+                    }
         		);
         	}
         	function decline()
@@ -20,7 +21,7 @@
         			{function: 'logOut()'},
         			function(data, textStatus, xhr)
         			{
-        				$('html').html(data);
+        				window.location='index.php';
         			}
         		);
         	}
@@ -28,7 +29,7 @@
         <div class="row voffset1">
             <div class="col-lg-12 text-center">
                 <button class="btn btn-success" onclick="accept();">Agree</a>
-                <button class="btn btn-success" onclick="decline();">Decline</a>
+                <button class="btn btn-danger" onclick="decline();">Decline</a>
             </div>
         </div>
     </div>
