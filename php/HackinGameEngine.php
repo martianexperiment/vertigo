@@ -54,10 +54,16 @@
             $isViolationDetected = 0;
             if($maxNoOfAttemptsAllowed <= $noOfAttemptsSoFar) {
                 $isViolationDetected = 1;
+                $isCorrectAnswer = 0;
+                $this->logAnswer($hackinUserInfo, $hackinSessionInfo, $qnNo, $answer, $isCorrectAnswer, $isViolationDetected);
+                throw new Exception("Attempt made to solve the closed mission. Instructions violated. Session destroyed to avert casualties");
             }
             if($this->debug) {
                 echo "<br>isViolationDetected-gameEngine:<br>" . $isViolationDetected;
             }
+            /**
+                Don't allow to answer answered question
+            */
             if($hackinQuestionState->hasSolved == 0){
                 $hackinQuestionState = $this->hackinDbHelper->validateAnswerAndLogResults($hackinUserInfo, $hackinSessionInfo, $qnNo, $answer, $isViolationDetected);
             }
