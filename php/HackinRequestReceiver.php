@@ -47,7 +47,12 @@ require_once(__DIR__ . "/HackinRequestHandler.php");
                     echo addslashes($gameState);
                     break;
                 case "getQuestionState()":
-                    $qnNo = 1;
+                    if(empty($_REQUEST['questionNum'])) {
+                        $functionalityForWhichExceptionExpected = "getting question state";
+                        $ex = new Exception("invalid request to get question state. Pls try again after refreshing the front end");
+                        throw $ex;
+                    }
+                    $qnNo = intval($_REQUEST['questionNum']);
                     $questionState = json_encode($hackinRequestHandler->getQuestionState($qnNo));
                     echo addslashes($questionState);
                     break;
@@ -78,8 +83,13 @@ require_once(__DIR__ . "/HackinRequestHandler.php");
                 case "verifyAnswer()":
                     $hackinRequestHandler->verifyLiveSessionBeforeProcessingRequest();
                     //TODO: get from request string, else throw exception
-                    $qnNo = intval("1") ;
-                    $answer = "answer";
+                    if(empty($_REQUEST['questionNum']) || empty($_REQUEST['answer'])) {
+                        $functionalityForWhichExceptionExpected = "verifying answer";
+                        $ex = new Exception("invalid request to verify answer. Pls try again after refreshing the front end");
+                        throw $ex;
+                    }
+                    $qnNo = intval($_REQUEST['questionNum']);
+                    $answer = $_REQUEST['answer'];
                     $hackinRequestHandler->verifyLiveSessionBeforeProcessingRequest();
                     //echo md5($answer);
                     $questionState = json_encode($hackinRequestHandler->verifyAnswer($qnNo, $answer));
