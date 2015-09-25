@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 15, 2015 at 06:09 PM
+-- Generation Time: Sep 24, 2015 at 11:51 PM
 -- Server version: 5.5.24-log
 -- PHP Version: 5.3.13
 
@@ -19,9 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `psgtech_login15_hackin_quora`
 --
-DROP DATABASE `psgtech_login15_hackin_quora`;
-CREATE DATABASE `psgtech_login15_hackin_quora` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `psgtech_login15_hackin_quora`;
 
 -- --------------------------------------------------------
 
@@ -89,16 +86,15 @@ CREATE TABLE IF NOT EXISTS `question_category_metadata` (
 --
 
 CREATE TABLE IF NOT EXISTS `question_details` (
-  `question_no` int(4) NOT NULL AUTO_INCREMENT COMMENT 'id for the table',
-  `question_text` text CHARACTER SET latin1 COLLATE latin1_bin NOT NULL COMMENT 'question text',
-  `max_attempts_to_allow` int(4) NOT NULL DEFAULT '15' COMMENT 'maximum no of attempts permitted for the question',
+  `question_no` int(4) NOT NULL COMMENT 'id for the table',
+  `question_text` text CHARACTER SET latin1 COLLATE latin1_bin COMMENT 'question text',
+  `max_no_of_attempts_allowed` int(4) NOT NULL DEFAULT '15' COMMENT 'maximum no of attempts permitted for the question',
   `has_hints` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'does the question has hint(s)',
   `question_variable_ans` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'false->constant answer',
-  `question_category` int(4) NOT NULL COMMENT 'category to which the question belongs to',
+  `question_categories` text COMMENT 'JSON array format, categories to which the question belongs to',
   `has_attachments` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'does the question have attachment(s)',
-  PRIMARY KEY (`question_no`),
-  KEY `question_category` (`question_category`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Question details' AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`question_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Question details';
 
 -- --------------------------------------------------------
 
@@ -160,6 +156,12 @@ ALTER TABLE `question_category_attachments`
 --
 ALTER TABLE `question_hints`
   ADD CONSTRAINT `question_hints_ibfk_1` FOREIGN KEY (`question_no`) REFERENCES `question_details` (`question_no`);
+
+--
+-- Constraints for table `question_scores`
+--
+ALTER TABLE `question_scores`
+  ADD CONSTRAINT `question_scores_ibfk_1` FOREIGN KEY (`question_no`) REFERENCES `question_details` (`question_no`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
