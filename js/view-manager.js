@@ -51,6 +51,24 @@ function getNextViewFromPrologue()
 			loadConversation(chars, data.messages,$('#conversation'));
 			bindLocation($('#location'), data.location.city + ', '+ data.location.state);
 			$('#question-holder').html(data.question);
+
+			$('#question-holder').parent().append(tb1+1+tb2 );
+			
+			$.post(
+				accessPoint,
+				{function: 'getQuestionState()', questionNum:1},
+				function(data, textStatus, xhr)
+				{
+					checkError(data);
+					data = data.replace(/\\(.)/mg, "$1")
+					data = JSON.parse(data);
+
+					if(data.hasSolved)
+					{
+						$('.box-footer').remove();
+					}
+				}
+			);
 			
 			gideonRoutine();
 			setInterval(gideonRoutine,40*1000);
@@ -106,6 +124,8 @@ function getMission(qNum)
 			bindLocation($('#location'), data.location.city + ', '+ data.location.state);
 			$('#question-holder').html(data.question);
 
+			$('#question-holder').parent().append(tb1+qNum+tb2 );
+
 			$.post(
 				accessPoint,
 				{function: 'getQuestionState()', questionNum:qNum},
@@ -121,8 +141,6 @@ function getMission(qNum)
 					}
 				}
 			);
-
-			$('#question-holder').parent().append(tb1+qNum+tb2 );
 			
 			gideonRoutine();
 			setInterval(gideonRoutine,40*1000);
