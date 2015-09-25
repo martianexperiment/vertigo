@@ -68,10 +68,14 @@ function getNextViewFromPrologue()
 						speakGideon('Solved');
 						$('.box-footer').remove();
 					}
-					else if(data.noOfAttemptsMade > data.maxNoOfAttemptsAllowed)
+					else if(data.noOfAttemptsMade < data.maxNoOfAttemptsAllowed) 
 					{
-						speakGideon('Closed');
+						speakGideon('Attempts '+data.noOfAttemptsMade+'/'+data.maxNoOfAttemptsAllowed);
+					}
+					else
+					{
 						$('.box-footer').remove();
+						speakGideon('Unsolved and Closed');
 					}
 				}
 			);
@@ -146,10 +150,14 @@ function getMission(qNum)
 						speakGideon('Solved');
 						$('.box-footer').remove();
 					}
-					else if(data.noOfAttemptsMade > data.maxNoOfAttemptsAllowed)
+					else if(data.noOfAttemptsMade < data.maxNoOfAttemptsAllowed) 
 					{
-						speakGideon('Closed');
+						speakGideon('Attempts '+data.noOfAttemptsMade+'/'+data.maxNoOfAttemptsAllowed);
+					}
+					else
+					{
 						$('.box-footer').remove();
+						speakGideon('Unsolved and Closed');
 					}
 				}
 			);
@@ -191,7 +199,7 @@ function verifyAnswer(qNum)
 			else
 			{
 				$('.box-footer').remove();
-				speakGideon('Closed');
+				speakGideon('Unsolved and Closed');
 			}
 		}
 	);
