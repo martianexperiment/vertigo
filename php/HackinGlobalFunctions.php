@@ -76,6 +76,17 @@
             }
             return $str;
         }
+
+        public static function truncate($string, $length=40, $append="&hellip;") {
+            $string = trim($string);
+            if(strlen($string) > $length) {
+                $string = wordwrap($string, $length);
+                $string = explode("\n", $string, 2);
+                $string = $string[0] . $append;
+            }
+            return $string;
+        }
+
     }
     HackinGlobalFunctions::phpConfigInitilaization();
     /*$inputTimeStamp = "2015-09-18 10:50:06";
