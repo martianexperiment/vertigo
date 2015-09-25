@@ -7,7 +7,15 @@ var overlay = '<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>'
 
 var quesContainer = '<div class="row"> <div class="col-lg-4"> <div class="row"> <div class="col-lg-12"> <div class="box box-primary direct-chat direct-chat-primary" id="conversation"> <div class="box-header with-border"> <h3 class="box-title">Conversation</h3> <div class="box-tools pull-right"> <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button> </div></div><div class="box-body"> <div class="direct-chat-messages nano"> </div></div></div></div></div><div class="row"> <div class="col-lg-12"> <div class="box box-danger" id="characters" > <div class="box-header with-border"> <h3 class="box-title">Characters</h3> <div class="box-tools pull-right"> <span class="label label-danger" id="num-of-characters">0</span> <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button> </div></div><div class="box-body no-padding"> <ul class="users-list clearfix"> </ul> </div></div></div></div></div><div class="col-lg-4 fill-height-or-more"> <div class="row"> <div class="col-lg-12"> <div class="box box-warning"> <div class="box-header with-border"> <h3 class="box-title" id="location">{{location}}</h3> <div class="box-tools pull-right"> <button class="btn btn-box-tool"><i class="fa fa-map-marker"></i></button> </div></div></div></div></div><div class="row"> <div class="col-lg-12"> <div class="box box-success"> <div class="box-header with-border"> <h3 class="box-title">Mission Description</h3> <div class="box-tools pull-right"> <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button> </div></div><div class="box-body" id="question-holder"> </div></div></div></div></div><div class="col-lg-4"> <div class="box box-primary"> <div class="box-header with-border"> <h3 class="box-title">Gideon</h3> <div class="box-tools pull-right"> </div></div><div class="box-body"> <div class="gideon"> <h1> <div class="gideon-holder"> <span class="gideon-loader"></span> </div><p class="response">Response Text</p></h1> </div></div></div></div></div>';
 
-var textBox = '';
+var tb1 = '<div class="box-footer"> \
+                    <div class="input-group"> \
+                      <input type="text" name="message" placeholder="Answer Here.." class="form-control"> \
+                      <span class="input-group-btn"> \
+                        <button type="button" class="btn btn-primary btn-flat" onclick="javascript:verifyAnswer(';
+var tb2 =');" >Verify</button> \
+                      </span> \
+                    </div> \
+                </div>';
 
 function gideonRoutine()
 {
@@ -97,10 +105,62 @@ function getMission(qNum)
 			loadConversation(chars, data.messages,$('#conversation'));
 			bindLocation($('#location'), data.location.city + ', '+ data.location.state);
 			$('#question-holder').html(data.question);
+
+			$.post(
+				accessPoint,
+				{function: 'getQuestionState()', questionNum:qNum},
+				function(data, textStatus, xhr)
+				{
+					checkError(data);
+					data = data.replace(/\\(.)/mg, "$1")
+					data = JSON.parse(data);
+
+					if(data.hasSolved)
+					{
+						$('.box-footer').remove();
+					}
+				}
+			);
+
+			$('#question-holder').parent().append(tb1+qNum+tb2 );
 			
 			gideonRoutine();
 			setInterval(gideonRoutine,40*1000);
 			$('.overlay').remove();
+		}
+	);
+}
+
+
+function verifyAnswer(qNum)
+{
+	$('#input-holder').append(overlay);
+	$.post('php/HackinRequestReceiver.php',
+		{
+			function: 'verifyAnswer()',
+			questionNum: qNum,
+			answer: $('input[name=message]').val()
+		}
+		, function(data, textStatus, xhr) 
+		{
+			checkError(data);
+			data = data.replace(/\\(.)/mg, "$1")
+			data = JSON.parse(data);
+
+			console.log(data);
+			playGideon();
+			if(data.hasSolved)
+			{
+				speakGideon('Solved');
+				$('.box-footer').remove();
+			}
+			else if(data.noOfAttemptsMade < data.maxNoOfAttemptsAllowed)
+				speakGideon('Try Again <br/>'+'Attempts '+data.noOfAttemptsMade+'/'+data.maxNoOfAttemptsAllowed);
+			else
+			{
+				$('.box-footer').remove();
+				speakGideon('Closed');
+			}
 		}
 	);
 }
