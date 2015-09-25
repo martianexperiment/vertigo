@@ -61,18 +61,22 @@ require_once(__DIR__ . "/HackinRequestHandler.php");
                     break;
                 case "getNextQuestion()":
                 case "getQuestion(1)":
+                    $hackinRequestHandler->verifyLiveSessionBeforeProcessingRequest();
                     $obj = file_get_contents(__DIR__."/../questionModel/q1.json");
                     echo addslashes($obj);
                     break;
                 case "getQuestion(2)":
+                    $hackinRequestHandler->verifyLiveSessionBeforeProcessingRequest();
                     $obj = file_get_contents(__DIR__."/../questionModel/q2.json");
                     echo addslashes($obj);
                     break;
                 case "getQuestion(3)":
+                    $hackinRequestHandler->verifyLiveSessionBeforeProcessingRequest();
                     $obj = file_get_contents(__DIR__."/../questionModel/q3.json");
                     echo addslashes($obj);
                     break;
                 case "verifyAnswer()":
+                    $hackinRequestHandler->verifyLiveSessionBeforeProcessingRequest();
                     //TODO: get from request string, else throw exception
                     $qnNo = intval("1") ;
                     $answer = "answer";
