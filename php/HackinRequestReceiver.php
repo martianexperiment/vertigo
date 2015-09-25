@@ -16,6 +16,7 @@ require_once(__DIR__ . "/HackinRequestHandler.php");
             exit();
         }
         $functionalityForWhichExceptionExpected = "Verify whether session is valid";
+
         //process all requests here.
         $hackinRequestHandler = new HackinRequestHandler();
         if(isset($_REQUEST["function"])){
@@ -95,6 +96,7 @@ require_once(__DIR__ . "/HackinRequestHandler.php");
                     }
                     $qnNo = intval($_REQUEST['questionNum']);
                     $answer = $_REQUEST['answer'];
+                    $answer = strtolower(addslashes($answer));
                     $hackinRequestHandler->verifyLiveSessionBeforeProcessingRequest();
                     //echo md5($answer);
                     $questionState = json_encode($hackinRequestHandler->verifyAnswer($qnNo, $answer));

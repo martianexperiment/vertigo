@@ -150,12 +150,13 @@
             */
             $connection_logger_query = 
                 "insert into `" . $this->db_connection_logger . "`.`connections_creation_logger` " . 
-                    "(      `additional_info`     ) values " . 
-                    "( '" . $additionalInfo . "' )";
+                    "( `additional_info` ) values " . 
+                    "(  :additionalInfo   )";
+            $stmt = $pdo->prepare($connection_logger_query);
             if($this->debug) {
                 echo "<br><br>newConnectionCreated()<br>" . $connection_logger_query;
             }
-            $pdo->query($connection_logger_query);
+            $stmt->execute(array(':additionalInfo' => $additionalInfo));
         }
 
         /**
@@ -168,12 +169,13 @@
             */
             $db_logger_query = 
                 "insert into `" . $this->db_connection_logger . "`.`connections_db_access_logger` " .
-                    "(      `db_name`     ,      `additional_info`   ) values " .
-                    "( '" . $db_name . "' , '" . $additionalInfo ."' )";
+                    "( `db_name` , `additional_info`   ) values " .
+                    "( :dbName   , :additionalInfo )";
+            $stmt = $pdo->prepare($db_logger_query);
             if($this->debug) {
                 echo "<br><br>newAccessToDb():<br>" . $db_logger_query;
             }
-            $pdo->query($db_logger_query);
+            $stmt->execute(array(':dbName' => $db_name, ':additionalInfo' => $additionalInfo));
         }
 
         private function newSessionAccess($pdo, $sessionAccessType) {
@@ -755,7 +757,7 @@
                         "`" . $this->db_quora . "`.`answer_details` " .
                     "where " . 
                          "question_no = " . intval($qnNo) . " " .
-                    "and answer = '" . md5($answer) . "' ";
+                    "and answer = '" . $md5Answer . "' ";
 
                 if($this->debug) {
                     echo "<br>validateAnswer(): query:</br>" . $db_answer_verification_query . "<br>";
@@ -803,7 +805,7 @@
                     "email_id = '" . $hackinUserInfo->emailId ."' " .
                     "and question_no = " . intval($qnNo) . " ";
             if($this->debug) {
-                echo "<br>logAnswerAttempt()<br>". $db_update_question_state_query;
+                echo "<br>logAnswer()<br>". $db_update_question_state_query;
             }
             $pdo->query($db_update_question_state_query);
         }
