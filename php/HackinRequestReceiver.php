@@ -80,6 +80,11 @@ require_once(__DIR__ . "/HackinRequestHandler.php");
                     $obj = file_get_contents(__DIR__."/../questionModel/q3.json");
                     echo addslashes($obj);
                     break;
+                case "getQuestion(4)":
+                    $hackinRequestHandler->verifyLiveSessionBeforeProcessingRequest();
+                    $obj = file_get_contents(__DIR__."/../questionModel/q4.json");
+                    echo addslashes($obj);
+                    break;
                 case "verifyAnswer()":
                     $hackinRequestHandler->verifyLiveSessionBeforeProcessingRequest();
                     //TODO: get from request string, else throw exception

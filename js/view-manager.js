@@ -21,13 +21,13 @@ function gideonRoutine()
 {
 	playGideon();
 	speakGideon('Mission 2 & 3 added');
-	setTimeout(
+	/*setTimeout(
 	function()
 	{
 		speakGideon('Input will be enabled soon. You may continue to work on the solution in the mean time');
 	},
 	10*1000
-	);
+	);*/
 	setTimeout(pauseGideon, 25*1000);
 }
 
@@ -63,8 +63,14 @@ function getNextViewFromPrologue()
 					data = data.replace(/\\(.)/mg, "$1")
 					data = JSON.parse(data);
 
-					if(data.hasSolved)
+					if(data.hasSolved == 1)
 					{
+						speakGideon('Solved');
+						$('.box-footer').remove();
+					}
+					else if(data.noOfAttemptsMade > data.maxNoOfAttemptsAllowed)
+					{
+						speakGideon('Closed');
 						$('.box-footer').remove();
 					}
 				}
@@ -135,8 +141,14 @@ function getMission(qNum)
 					data = data.replace(/\\(.)/mg, "$1")
 					data = JSON.parse(data);
 
-					if(data.hasSolved)
+					if(data.hasSolved == 1)
 					{
+						speakGideon('Solved');
+						$('.box-footer').remove();
+					}
+					else if(data.noOfAttemptsMade > data.maxNoOfAttemptsAllowed)
+					{
+						speakGideon('Closed');
 						$('.box-footer').remove();
 					}
 				}
@@ -167,7 +179,7 @@ function verifyAnswer(qNum)
 
 			console.log(data);
 			playGideon();
-			if(data.hasSolved)
+			if(data.hasSolved == 1)
 			{
 				speakGideon('Solved');
 				$('.box-footer').remove();

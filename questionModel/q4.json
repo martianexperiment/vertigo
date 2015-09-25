@@ -1,0 +1,95 @@
+{
+    "charactersInvolved": [
+        {
+            "name": "Dimitry",
+            "profilePic": "img/dimitry.png"
+        },
+        {
+            "name": "Viktor",
+            "profilePic": "img/viktor.png"
+        }
+    ],
+    "messages": [
+        {
+            "fromCharacterIndex": "1",
+            "text": "Well done Dimitry. Easy one right?"
+        },
+        {
+            "fromCharacterIndex": "0",
+            "text": "Yes. Prison escape charges and now impersonation..(laughs)"
+        },
+        {
+            "fromCharacterIndex": "1",
+            "text": "And burglary too."
+        },
+        {
+            "fromCharacterIndex": "0",
+            "text": "What?"
+        },
+        {
+            "fromCharacterIndex": "1",
+            "text": "The next mission is one its way."
+        },
+        {
+            "fromCharacterIndex": "0",
+            "text": "Listen Viktor, we have to sketch out a plan to rescue Veronica.."
+        },
+        {
+            "fromCharacterIndex": "1",
+            "text": "We need to wait Dimitry.. Do you think at any cost Veronica will reveal the truth?"
+        },
+        {
+            "fromCharacterIndex": "0",
+            "text": "Never in her life time."
+        },
+        {
+            "fromCharacterIndex": "1",
+            "text": "Yes. That's the trust. We have to wait. The next move is a burglar attempt at the Donald Emerson's residence."
+        },
+        {
+            "fromCharacterIndex": "0",
+            "text": "Who the hell is he?"
+        },
+        {
+            "fromCharacterIndex": "1",
+            "text": "He's just a member of the Defense team. But reports indicate that he might have a hand in the nuclear program."
+        },
+        {
+            "fromCharacterIndex": "0",
+            "text": "Got it. So you want me to break into his home and kick him out untill he reveals the truth?"
+        },
+        {
+            "fromCharacterIndex": "1",
+            "text": "(laughs) That would be plan B. But there a much simpler option. "
+        },
+        {
+            "fromCharacterIndex": "1",
+            "text": "You have the identity of US soldier, you can easily get into his house. But somehow look out for his phone and get access to his image gallery. Easy?"
+        },
+        {
+            "fromCharacterIndex": "0",
+            "text": "Simple. So do you mean the images will also contain the nuclear location's photos?"
+        },
+        {
+            "fromCharacterIndex": "1",
+            "text": "It wouldn't contain. It's a top secret facility. Surely he wouldn't have captured them."
+        },
+        {
+            "fromCharacterIndex": "0",
+            "text": "Then, find the GPS movement history from the phone?"
+        },
+        {
+            "fromCharacterIndex": "1",
+            "text": "No. Let us just focus on the images and get the nuclear location."
+        },
+        {
+            "fromCharacterIndex": "0",
+            "text": "Just get my Aviator. Whats his address?"
+        }
+    ],
+    "location": {
+        "city": "Manhattan",
+        "state": "NY"
+    },
+    "question": "<strong><i class='fa fa-book margin-r-5'></i>Objective</strong><p class='text-muted' id='description-text'>Get access to Donald Emerson's  phone gallery and obtain the nuclear site location coordinates.</p><hr><div id='attachments'><p><strong><i class='fa fa-external-link-square margin-r-5'></i><a href='mission/PhoneGallery/' target='_blank'>Phone Gallery</a></strong></p></div>"
+}
