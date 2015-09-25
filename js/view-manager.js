@@ -20,15 +20,15 @@ var tb2 =');" >Verify</button> \
 function gideonRoutine()
 {
 	playGideon();
-	speakGideon('Mission 4 added');
+	/*speakGideon('Mission 4 added');
 	/*setTimeout(
 	function()
 	{
 		speakGideon('Input will be enabled soon. You may continue to work on the solution in the mean time');
 	},
 	10*1000
-	);*/
-	setTimeout(pauseGideon, 25*1000);
+	);* /
+	setTimeout(pauseGideon, 25*1000);*/
 }
 
 function getNextViewFromPrologue()
@@ -62,27 +62,12 @@ function getNextViewFromPrologue()
 					checkError(data);
 					data = data.replace(/\\(.)/mg, "$1")
 					data = JSON.parse(data);
-
-					if(data.hasSolved == 1)
-					{
-						speakGideon('Solved');
-						$('.box-footer').remove();
-					}
-					else if(data.noOfAttemptsMade < data.maxNoOfAttemptsAllowed) 
-					{
-						speakGideon('Attempts '+data.noOfAttemptsMade+'/'+data.maxNoOfAttemptsAllowed);
-					}
-					else
-					{
-						$('.box-footer').remove();
-						speakGideon('Unsolved and Closed');
-					}
+					instructGideon(data);
 				}
 			);
 			
 			gideonRoutine();
 			setInterval(gideonRoutine,40*1000);
-
 		}
 	);
 }
@@ -144,21 +129,7 @@ function getMission(qNum)
 					checkError(data);
 					data = data.replace(/\\(.)/mg, "$1")
 					data = JSON.parse(data);
-
-					if(data.hasSolved == 1)
-					{
-						speakGideon('Solved');
-						$('.box-footer').remove();
-					}
-					else if(data.noOfAttemptsMade < data.maxNoOfAttemptsAllowed) 
-					{
-						speakGideon('Attempts '+data.noOfAttemptsMade+'/'+data.maxNoOfAttemptsAllowed);
-					}
-					else
-					{
-						$('.box-footer').remove();
-						speakGideon('Unsolved and Closed');
-					}
+					instructGideon(data);
 				}
 			);
 			
@@ -189,18 +160,24 @@ function verifyAnswer(qNum)
 
 			console.log(data);
 			playGideon();
-			if(data.hasSolved == 1)
-			{
-				speakGideon('Solved');
-				$('.box-footer').remove();
-			}
-			else if(data.noOfAttemptsMade < data.maxNoOfAttemptsAllowed)
-				speakGideon('Try Again <br/>'+'Attempts '+data.noOfAttemptsMade+'/'+data.maxNoOfAttemptsAllowed);
-			else
-			{
-				$('.box-footer').remove();
-				speakGideon('Unsolved and Closed');
-			}
+			instructGideon(data);
 		}
 	);
+}
+	
+
+function instructGideon(data) 
+{
+	if(data.hasSolved == 1)
+	{
+		speakGideon('Congrats!! <br> Mission Accomplished.');
+		$('.box-footer').remove();
+	}
+	else if(Number(data.noOfAttemptsMade) < Number(data.maxNoOfAttemptsAllowed))
+		speakGideon('Try Again <br/>'+'Attempts '+data.noOfAttemptsMade+'/'+data.maxNoOfAttemptsAllowed);
+	else
+	{
+		$('.box-footer').remove();
+		speakGideon('Unsolved and Closed');
+	}
 }
