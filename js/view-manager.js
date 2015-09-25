@@ -160,21 +160,36 @@ function verifyAnswer(qNum)
 
 			console.log(data);
 			playGideon();
-			instructGideon(data);
+			var isAttemptMadeToAnswer = 1;
+
+			instructGideon(data, isAttemptMadeToAnswer);
 		}
 	);
 }
 	
 
-function instructGideon(data) 
+function instructGideon(data, isAttemptMadeToAnswer) 
 {
 	if(data.hasSolved == 1)
 	{
-		speakGideon('Congrats!! <br> Mission Accomplished.');
+		var statement = 'Mission Accomplished.';
+		if (typeof(isAttemptMadeToAnswer) !== 'undefined') 
+		{
+			statement = 'Congrats!! <br> ' + statement;
+		}
+
+		speakGideon(statement);
 		$('.box-footer').remove();
 	}
 	else if(Number(data.noOfAttemptsMade) < Number(data.maxNoOfAttemptsAllowed))
-		speakGideon('Try Again <br/>'+'Attempts '+data.noOfAttemptsMade+'/'+data.maxNoOfAttemptsAllowed);
+	{
+		var statement = 'Attempts ' + data.noOfAttemptsMade + '/' + data.maxNoOfAttemptsAllowed
+		if (typeof(isAttemptMadeToAnswer) !== 'undefined') 
+		{
+			statement = 'Mission Failed! <br> Try Again! <br>' + statement;
+		}
+		speakGideon(statement);
+	}
 	else
 	{
 		$('.box-footer').remove();
